@@ -1,5 +1,25 @@
 <div class="jumbotron">
   <h1>'Allo, 'Allo!</h1>
+
+  <div>
+  <input type="text" ng-model="cntInputs" placeholder="#Inputs"><br/>
+        
+    <input ng-repeat="i in getTimes()" type="text"  ng-model="inputs[i-1]">    
+    
+  </div>
+
+
+
+  <div class="inputContainer">
+    
+  </div>
+
+  <button class="debugBtn" type="button" value="debug" ng-click="debugBtn()">Debug</button>
+  <button ng-click="addfield()">Add Input</button>
+
+
+
+
   <p class="lead">
     <img src="images/yeoman.png" alt="I'm Yeoman"><br>
     Always a pleasure scaffolding your apps.
