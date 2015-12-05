@@ -1,23 +1,26 @@
 <div class="mainInput">
-  <div class="inputColumn0 col-md-6">
-    <div class="" ng-repeat="i in getTimes()" type="text">
-      <input ng-model="inputs[i-1]">    
-    </div>
-  </div>
+  <table id="example" class="table table-striped table-bordered" cellspacing="0" cellpadding="0" width="100%">
+    <thead>
+    </thead>
 
-  <div class="inputColumn1 col-md-6">
-    <div class="" ng-repeat="i in getTimes()" type="text">
-      <input ng-model="inputs[i-1]">    
-    </div>
-  </div>
+    <tbody>
 
-  <button class="debugBtn" type="button" value="debug" ng-click="debugBtn()">Debug</button>
-  <button ng-click="addfield()">Add Input</button>
+      <div class="col-md-1" >
+      <tr ng-repeat="i in addRow()">
+          <td class="inputRepeat">
+            <input class="inputForm" ng-model="inputs0[i]">    
+          </td>
+          <td class="inputRepeat">
+            <input class="inputForm" ng-model="inputs1[i]">    
+          </td>
+      </tr>
+      </div>
 
+    </tbody>
 
-
-
-
+    <button class="debugBtn" type="button" value="debug" ng-click="debugBtn()">Debug</button>
+    <button ng-click="addfield()">Add Input</button>
+  </table>
 </div>
 
 <div class="row marketing">
