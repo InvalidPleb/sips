@@ -11,26 +11,13 @@
 angular.module('statscalcApp')
   .controller('MainCtrl', function ($scope) {
 
-  	var i;
-    $scope.inputs = [];
-
-    $scope.addfield = function() {
-
-    	$scope.cntInputs += 1;
-
-    //	for (i=1; i <= 10; i++) {
-    //		$scope.inputs.push(i);
-    //	}
- 
-    };
-
-    $scope.debugBtn = function() {
-    	
+  	$scope.debugBtn = function() {
     	console.log($scope.inputs);
     };
 
+  	var i;
+    $scope.inputs = [];
     $scope.cntInputs = 1;
-    
     
     $scope.getTimes=function(){
 	    var a = [];
@@ -41,6 +28,11 @@ angular.module('statscalcApp')
 
 	    return a;	    
 	};
+
+	$scope.addfield = function() {
+    	$scope.cntInputs += 1;
+    };
+
     
     $scope.getValue = function(){
         //here get the value of that inserted in the element with the id of "input_" + id
