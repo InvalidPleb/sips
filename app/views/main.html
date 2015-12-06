@@ -2,24 +2,38 @@
   <table id="example" class="table table-striped table-bordered" cellspacing="0" cellpadding="0" width="100%">
     <thead>
     </thead>
-
     <tbody>
 
       <div class="col-md-1" >
       <tr ng-repeat="i in addRow()">
-          <td class="inputRepeat">
-            <input class="inputForm" ng-model="inputs0[i]">    
+          <td class="inputRepeat" ng-repeat="j in addCol()">
+            <input class="inputForm" ng-model="inputs0[j]">    
           </td>
           <td class="inputRepeat">
             <input class="inputForm" ng-model="inputs1[i]">    
           </td>
       </tr>
       </div>
-
     </tbody>
-
     <button class="debugBtn" type="button" value="debug" ng-click="debugBtn()">Debug</button>
     <button ng-click="addfield()">Add Input</button>
+  </table>
+
+  <table>
+    <tr class="column-label">
+      <td></td>
+      <td ng-repeat="column in columns">{{column}}</td>
+    </tr>
+    <tr ng-repeat="row in rows">
+      <td class="row-label">{{row}}</td>
+      <td ng-repeat="column in columns">
+        <div>
+          <input ng-model="cells[column+row]">
+          <div ng-bind="compute(column+row)"
+               class="output"></div>
+        </div>
+      </td>
+    </tr>
   </table>
 </div>
 
