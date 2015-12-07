@@ -9,16 +9,16 @@
 
 
 
-<table>
+<table class="table table-striped">
     <tr class="column-label">
       <td></td>
-      <td ng-repeat="column in columns">{{column}}</td>
+      <td class="fontForText" ng-repeat="column in columns">{{column}}</td>
     </tr>
-    <tr ng-repeat="row in rows">
+    <tr class="fontForText" ng-repeat="row in rows">
       <td class="row-label">{{row}}</td>
       <td ng-repeat="column in columns">
-        <div>
-          <input ng-model="cells[column+row]">
+        <div class="fontForText">
+          <input class="inputCell" ng-model="cells[column+row]">
           <div ng-bind="compute(column+row)"
                class="output"></div>
         </div>
