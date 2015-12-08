@@ -14,7 +14,7 @@ angular.module('statscalcApp')
   	$scope.debugBtn = function() {
     	console.log($scope.inputs0);
     	console.log($scope.inputs1);
-    	console.log($scope.cells);
+    	console.log($scope.cells.var33);
     };
 
 	$scope.addRow = function() {

@@ -3,9 +3,11 @@
 // 
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
 
+
+
 body { font-family: sans-serif; }
 
-.output, input { 
+.outputCell, input { 
     font-size: 10pt;
     position: absolute;
     height: 1.2em;
@@ -15,13 +17,13 @@ body { font-family: sans-serif; }
     
   }
 input { border: none;}
-.output { 
+.outputCell { 
     background: white;
     pointer-events: none;
     padding-top: 2pt;
     height: 14pt;
 }
-input:focus + .output { display: none; }
+
 
 table { border-collapse: collapse; } 
 
@@ -38,8 +40,7 @@ td { border: 1px solid #EEE; }
 .row-label { width: 2em; }
 
 
-
-
+/* input:focus + .outputCell { display: none; } */
 
 
 
@@ -50,11 +51,33 @@ td { border: 1px solid #EEE; }
 }
 
 
-.inputCell {
+.inputCell, .outputCell {
   font-family: "Open Sans";
   font-weight: 300;
   font-size: 16px;
+  width: 75px;
+  height: 39px;
+
   text-align: center;
+  background-color: rgba(0,0,0,0);
+  box-sizing: border-box;
+}
+
+
+
+.cellContainer {
+  padding: 0px !important;
+  margin: 0px !important;
+
+}
+
+.outputCell {
+
+}
+
+.cellContainer {
+  padding:0px;
+  margin: 0px;
 }
 
 .browsehappy {
