@@ -12,9 +12,7 @@ angular.module('statscalcApp')
   .controller('MainCtrl', function ($scope, $parse) {
 
   	$scope.debugBtn = function() {
-    	console.log($scope.inputs0);
-    	console.log($scope.inputs1);
-    	console.log($scope.cells.var33);
+    	console.log($scope.cells);
     };
 
 	$scope.addRow = function() {
@@ -45,6 +43,21 @@ angular.module('statscalcApp')
   	
   	$scope.compute = function(cell) {
       return $parse($scope.cells[cell])($scope);
+  	};
+
+  	$scope.clearBtn = function() {
+
+  		for (i=15; i < $scope.rows.length; i++) {
+	  		if (i >= 15) {
+	  			$scope.rows.splice(i);
+	  		}
+  		}
+
+  		for (i=10; i < $scope.columns.length; i++) {
+	  		if (i >= 10) {
+	  			$scope.columns.splice(i);
+	  		}
+  		}
   	};
 
 
