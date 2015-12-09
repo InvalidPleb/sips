@@ -1,11 +1,36 @@
-<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+
+
   
-<table class="table table-bordered table-striped table-hover">
-  <thead> 
-    <button class="debugBtn" type="button" value="debug" ng-click="debugBtn()">Debug</button>
-    <button ng-click="addRow()">Add Row</button>
-    <button ng-click="addCol()">Add Col</button>
-    <button ng-click="clearBtn()">Clear</button>
+<table class="tableBody table table-bordered table-striped table-hover">
+  <thead>
+  <div>
+  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    
+    <button class="mainBtns" ng-click="addRow()">Add Row</button>
+    <button class="mainBtns" ng-click="addCol()">Add Col</button>
+    <button class="mainBtns" ng-click="clearBtn()">Clear</button>
+    <button class="mainBtns" type="button" value="debug" ng-click="debugBtn()">Debug</button>
+  </div>
+  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+    <div class="row">Enter # of Rows:
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        <input class="inputRowsCols form-control" ng-model="inputRows">
+      </div>
+    </div>
+    <div id="inputCols" class="row">Enter # of Cols:
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        
+      </div>
+      <input id="fuckme" class="inputRowsCols form-control" ng-model="inputCols">
+      <button class="setTable mainBtns" ng-click="setTable()">Set Table</button>
+     
+    </div>
+
+  </div>
+</div>
+    
   </thead>
   <tbody>
     <tr class="column-label">

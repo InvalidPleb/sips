@@ -39,10 +39,64 @@ td { border: 1px solid #EEE; }
 }
 .row-label { width: 2em; }
 
-
 /* input:focus + .outputCell { display: none; } */
 
 
+
+
+.mainBtns {
+    width: 100px;
+    height: 25px;
+    color: #51c64f;
+    border: 1px solid #434343;
+    background: #434343;
+    border-radius: 5px;
+    margin-top: 5px;
+    transition: all .15s cubic-bezier(.27,1,1,.9);
+    box-shadow: -1px 1px 5px 1px #888;
+    position: relative;
+    z-index: 1;
+
+}
+
+.mainBtns:hover {
+    color: #000000;
+    background: #51c64f;
+    border: 1px solid #51c64f;
+    cursor: pointer;
+}
+
+.mainBtns:active {
+    background: #ffffff;
+    border: 1px solid white;
+    color: #51c64f;
+}
+
+.mainBtns:focus, .form-control {
+    outline: 0;
+}
+
+.inputRowsCols {
+  left: 170px;
+  width: 100px;
+}
+
+#inputCols {
+  margin-top: 20px;
+}
+
+#fuckme {
+  top: 40px;
+}
+
+.setTable {
+  left: 140px;
+}
+
+
+.tableBody {
+  margin-top: 90px;
+}
 
 .fontForText {
   font-family: "Open Sans";
@@ -68,7 +122,6 @@ td { border: 1px solid #EEE; }
 .cellContainer {
   padding: 0px !important;
   margin: 0px !important;
-
 }
 
 .outputCell {
