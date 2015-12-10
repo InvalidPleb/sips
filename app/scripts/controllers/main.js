@@ -75,17 +75,30 @@ angular.module('statscalcApp')
   		}
   	};
 
+  	var pushRows = 0;
+  	var pushCols = 0;
+
+
   	$scope.setTable = function() {
 
-  		console.log($scope.inputRows);
-  		console.log($scope.inputCols);
-
   		if ($scope.inputRows !== '' && $scope.inputRows !== undefined && $scope.inputRows !== 0) {
-  			numRows = $scope.inputRows;
+  			if ($scope.inputRows > $scope.rows.length) {
+	  			pushRows = $scope.inputRows - $scope.rows.length;
+
+	  			for (i = ($scope.rows.length + 1); i <= (15 + pushRows); i++) {
+	  				$scope.rows.push(i);
+	  			}
+  			}
   		}
 
   		if ($scope.inputCols !== '' && $scope.inputCols !== undefined && $scope.inputRows !== 0) {
-  			
+  			if ($scope.inputCols > $scope.columns.length) {
+	  			pushCols = $scope.inputCols - $scope.columns.length;
+
+	  			for (i = ($scope.columns.length + 1); i <= (10 + pushCols); i++) {
+	  				$scope.columns.push('var' + i);
+	  			}
+  			}
   		}
 
   		numRows = 15;
