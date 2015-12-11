@@ -26,11 +26,11 @@ angular.module('statscalcApp')
 
     $scope.addCol = function(){
     	$scope.columns.push('var' + ($scope.columns.length + 1));
-    	/*
+    	
     	$('.tableBody').css({
     		"margin-left":"-=39px" 
     	});
-		*/
+		
     	countColumns += 1;
 
     	if (countColumns > 1) {
@@ -77,6 +77,8 @@ angular.module('statscalcApp')
 
   	var pushRows = 0;
   	var pushCols = 0;
+  	var tableShift = 0;
+  	var j;
 
 
   	$scope.setTable = function() {
@@ -88,6 +90,7 @@ angular.module('statscalcApp')
 	  			for (i = ($scope.rows.length + 1); i <= (15 + pushRows); i++) {
 	  				$scope.rows.push(i);
 	  			}
+
   			}
   		}
 
@@ -97,6 +100,13 @@ angular.module('statscalcApp')
 
 	  			for (i = ($scope.columns.length + 1); i <= (10 + pushCols); i++) {
 	  				$scope.columns.push('var' + i);
+	  			}
+
+	  			for (j = 1; j <= (i - 10); j++) {
+	  				
+	  				$('.tableBody').css({
+    					"margin-left":"-=39px" 
+    				});
 	  			}
   			}
   		}
