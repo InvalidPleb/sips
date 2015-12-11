@@ -45,6 +45,7 @@ angular.module('statscalcApp')
 
 
   	var i;
+  	var j;
   	var numRows = 15;
   	var numCols = 10;
 
@@ -75,20 +76,38 @@ angular.module('statscalcApp')
   		}
   	};
 
+  	$scope.updateInputCols = function() {
+
+  		numCols = parseInt($scope.columns.length);
+  	};
+
+  	$scope.updateInputRows = function() {
+
+  		numRows = parseInt($scope.rows.length);
+
+  	};
+
+
+
   	var pushRows = 0;
   	var pushCols = 0;
-  	var tableShift = 0;
-  	var j;
-
-
+  	
   	$scope.setTable = function() {
 
   		if ($scope.inputRows !== '' && $scope.inputRows !== undefined && $scope.inputRows !== 0) {
+
   			if ($scope.inputRows > $scope.rows.length) {
 	  			pushRows = $scope.inputRows - $scope.rows.length;
 
-	  			for (i = ($scope.rows.length + 1); i <= (15 + pushRows); i++) {
+	  			for (i = ($scope.rows.length + 1); i <= (numRows + pushRows); i++) {
 	  				$scope.rows.push(i);
+	  			}
+
+  			} else {
+
+  				pushRows = $scope.inputRows;
+  				for (i = ($scope.rows.length); i >= (pushRows); i--) {
+	  				$scope.rows.splice(i);
 	  			}
 
   			}
@@ -108,7 +127,7 @@ angular.module('statscalcApp')
     					"margin-left":"-=39px" 
     				});
 	  			}
-  			}
+  			} 
   		}
 
   		numRows = 15;

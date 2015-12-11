@@ -16,14 +16,14 @@
   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
     <div class="row">Enter # of Rows:
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-        <input class="inputRowsCols form-control" ng-model="inputRows">
+        <input class="inputRowsCols form-control" ng-change="updateInputRows()" ng-model="inputRows">
       </div>
     </div>
     <div id="inputCols" class="row">Enter # of Cols:
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
         
       </div>
-      <input id="fuckme" class="inputRowsCols form-control" ng-model="inputCols">
+      <input id="inputForCols" class="inputRowsCols form-control" ng-change="updateInputCols()" ng-model="inputCols">
       <button class="setTable mainBtns" ng-click="setTable()">Set Table</button>
      
     </div>
