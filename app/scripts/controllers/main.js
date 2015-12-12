@@ -15,13 +15,8 @@ angular.module('statscalcApp')
     	console.log($scope.cells);
     };
 
-    var countColumns = 0;
-    var countRows = 0;
-
 	$scope.addRow = function() {
     	$scope.rows.push($scope.rows.length + 1);
-    	countRows += 1;
-
     };
 
     $scope.addCol = function(){
@@ -34,10 +29,23 @@ angular.module('statscalcApp')
     	});
 
 		*/
-		
-    	countColumns += 1;
+    };
 
-    	if (countColumns > 1) {
+    $scope.deleteRow = function() {
+
+    	if ($scope.rows.length > 1) {
+
+    		$scope.rows.splice($scope.rows.length - 1);
+
+    	}
+
+    };
+
+    $scope.deleteCol = function() {
+
+    	if ($scope.columns.length > 1) {
+
+    		$scope.columns.splice($scope.columns.length - 1);
 
     	}
 
