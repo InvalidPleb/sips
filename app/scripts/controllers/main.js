@@ -12,7 +12,8 @@ angular.module('statscalcApp')
   .controller('MainCtrl', function ($scope, $parse) {
 
   	$scope.debugBtn = function() {
-    	console.log($scope.cells);
+
+  		
     };
 
 	$scope.addRow = function() {
@@ -179,6 +180,26 @@ angular.module('statscalcApp')
   		}
 
   	};
+
+  	var cellsSquaredX = [];
+  	var cellsSquaredY = [];
+  	var cellsSum = [];
+  	var colX, colY;
+
+  	$scope.calcTTest = function () {
+
+  		for (i=1; i <= 15; i++) {
+
+    		cellsSquaredX[i] = Math.pow($scope.cells['var1' + i], 2);
+    		cellsSquaredY[i] = Math.pow($scope.cells['var2' + i], 2);
+    		cellsSum[i] = parseInt($scope.cells['var1' + i]) + parseInt($scope.cells['var2' + i]);
+    	}
+
+    	console.log(cellsSum);
+
+  	};
+
+
 
 
 });
