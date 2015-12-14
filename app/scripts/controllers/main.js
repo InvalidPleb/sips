@@ -189,7 +189,8 @@ angular.module('statscalcApp')
   	var colYArr = [];
   	var cellsCounter = 0;
   	var colX, colY, colXSum, colYSum, cellsXYSum, cellsSquaredXSum, cellsSquaredYSum, numberSamples,
-  	rScore, rScore1, rScore2, rScore3, rScore4;
+  	rScore, rScore1, rScore2, rScore3, rScore4, meanX, meanY, tScore, tScore1, tScore2, tScore3,
+  	tScore4, tScore5, tScore6;
 
   	function add(a, b) {
     	return a + b;
@@ -212,7 +213,6 @@ angular.module('statscalcApp')
 
 	    		cellsCounter += 1;
 	    		
-
     		} else {
 
     			i = ($scope.rows.length + 1);
@@ -233,7 +233,21 @@ angular.module('statscalcApp')
 	    rScore4 = Math.sqrt((rScore2 * rScore3));
 	    rScore = rScore1 / rScore4;
 
-	   	console.log(rScore);
+	   	meanX = colXSum / numberSamples;
+	   	meanY = colYSum / numberSamples;
+
+	   	tScore1 = meanX - meanY;
+	   	// different N is supposed to be used for each group, in this case we use the same N and require equal group sizes
+	   	// Every time N is multiplied by 2, the actual formula requests the sum of both Ns
+	   	tScore2 = cellsSquaredXSum - (Math.pow(colXSum, 2) / numberSamples);
+	   	tScore3 = cellsSquaredYSum - (Math.pow(colYSum, 2) / numberSamples);
+	   	tScore4 = (tScore2 + tScore3) / ((numberSamples * 2) - 2);
+	   	tScore5 = (1 / numberSamples) * 2;
+	   	tScore6 = Math.sqrt(tScore4 * tScore5);
+	   	tScore = tScore1 / tScore6;
+
+	   	
+
 	    
 
   	};
