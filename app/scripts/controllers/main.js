@@ -190,7 +190,7 @@ angular.module('statscalcApp')
   	var cellsCounter = 0;
   	var colX, colY, colXSum, colYSum, cellsXYSum, cellsSquaredXSum, cellsSquaredYSum, numberSamples,
   	rScore, rScore1, rScore2, rScore3, rScore4, meanX, meanY, tScore, tScore1, tScore2, tScore3,
-  	tScore4, tScore5, tScore6;
+  	tScore4, tScore5, tScore6, df, degreesFreedom, chosenT, confidenceLevel;
 
   	function add(a, b) {
     	return a + b;
@@ -235,7 +235,7 @@ angular.module('statscalcApp')
 
 	   	
 	   	// different N is supposed to be used for each group, in this case we use the same N and require equal group sizes
-	   	// Every time N is multiplied by 2, the actual formula requests the sum of both Ns
+	   	// Every time N is multiplied by 2, the actual formula requests the sum of both Ns. this is the df
 	   	
 	   	meanX = colXSum / numberSamples;
 	   	meanY = colYSum / numberSamples;
@@ -247,6 +247,20 @@ angular.module('statscalcApp')
 	   	tScore5 = (1 / numberSamples) * 2;
 	   	tScore6 = Math.sqrt(tScore4 * tScore5);
 	   	tScore = tScore1 / tScore6;
+	   	df = (numberSamples * 2) - 2;
+	   	degreesFreedom = tDistributionTable['df' + df];
+	   	
+
+	   	for (i=1; i < degreesFreedom.length; i++) {
+	   		if (degreesFreedom[i] > Math.abs(tScore)) {
+	   			chosenT = degreesFreedom[i - 1];
+	   			confidenceLevel = tDistributionTable.p[i - 1];
+	   			i = degreesFreedom.length;
+	   				   			
+	   		}
+	   	}
+
+
 
 
   	};
@@ -254,7 +268,6 @@ angular.module('statscalcApp')
 
 
   	var tDistributionTable = {
-
 
   		p: [0.25, 0.20, 0.15, 0.10, 0.05, 0.025, 0.02, 0.01, 0.005, 0.0025, 0.001, 0.0005],
   		df1: [1.000, 1.376, 1.963, 3.078, 6.314, 12.71, 15.89, 31.82, 63.66, 127.3, 318.3, 636.6],
