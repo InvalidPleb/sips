@@ -235,7 +235,7 @@ angular.module('statscalcApp')
 
 	   	
 	   	// different N is supposed to be used for each group, in this case we use the same N and require equal group sizes
-	   	// Every time N is multiplied by 2, the actual formula requests the sum of both Ns. this is the df
+	   	// Every time N is multiplied by 2, the actual formula requests the sum of both Ns. this is also the df
 	   	
 	   	meanX = colXSum / numberSamples;
 	   	meanY = colYSum / numberSamples;
@@ -259,8 +259,6 @@ angular.module('statscalcApp')
 	   				   			
 	   		}
 	   	}
-
-
 
 
   	};
