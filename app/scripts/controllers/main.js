@@ -188,7 +188,7 @@ angular.module('statscalcApp')
   	var colXArr = [];
   	var colYArr = [];
   	var cellsCounter = 0;
-  	var colX, colY, colXSum, colYSum, cellsXYSum, cellsSquaredXSum, cellsSquaredYSum, numberSamples,
+  	var colX, colY, colXSum, colYSum, cellsXYSum, cellsSquaredXSum, cellsSquaredYSum, numberSamples, numberSamplesX, numberSamplesY,
   	rScore, rScore1, rScore2, rScore3, rScore4, meanX, meanY, tScore, tScore1, tScore2, tScore3,
   	tScore4, tScore5, tScore6, df, degreesFreedom, chosenT, confidenceLevel;
 
@@ -201,9 +201,11 @@ angular.module('statscalcApp')
   		cellsCounter = 0;
 
 
+
+
   		for (i=1; i <= $scope.rows.length; i++) {
 
-  			if (isNaN($scope.cells['var1' + i]) === false && isNaN($scope.cells['var2' + i]) === false) {
+  			if (isNaN($scope.cells['var1' + i]) === false || isNaN($scope.cells['var2' + i]) === false) {
 
   				colXArr[i] = parseInt($scope.cells['var1' + i]);
   				colYArr[i] = parseInt($scope.cells['var2' + i]);
@@ -237,17 +239,21 @@ angular.module('statscalcApp')
 	   	// different N is supposed to be used for each group, in this case we use the same N and require equal group sizes
 	   	// Every time N is multiplied by 2, the actual formula requests the sum of both Ns. this is also the df
 	   	
-	   	meanX = colXSum / numberSamples;
-	   	meanY = colYSum / numberSamples;
+
+	   	numberSamplesX = 
+	   	
+	   	
+	   	meanX = colXSum / numberSamplesX;
+	   	meanY = colYSum / numberSamplesY;
 
 	   	tScore1 = meanX - meanY;
-	   	tScore2 = cellsSquaredXSum - (Math.pow(colXSum, 2) / numberSamples);
-	   	tScore3 = cellsSquaredYSum - (Math.pow(colYSum, 2) / numberSamples);
-	   	tScore4 = (tScore2 + tScore3) / ((numberSamples * 2) - 2);
-	   	tScore5 = (1 / numberSamples) * 2;
+	   	tScore2 = cellsSquaredXSum - (Math.pow(colXSum, 2) / numberSamplesX);
+	   	tScore3 = cellsSquaredYSum - (Math.pow(colYSum, 2) / numberSamplesY);
+	   	tScore4 = (tScore2 + tScore3) / ((numberSamplesX + numberSamplesY) - 2);
+	   	tScore5 = (1 / numberSamplesX) + (1 / numberSamplesY);
 	   	tScore6 = Math.sqrt(tScore4 * tScore5);
 	   	tScore = tScore1 / tScore6;
-	   	df = (numberSamples * 2) - 2;
+	   	df = (numberSamplesX + numberSamplesY) - 2;
 	   	degreesFreedom = tDistributionTable['df' + df];
 	   	
 
@@ -259,6 +265,9 @@ angular.module('statscalcApp')
 	   				   			
 	   		}
 	   	}
+
+
+
 
 
   	};
