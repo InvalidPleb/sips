@@ -11,6 +11,9 @@
 angular.module('statscalcApp')
   .controller('MainCtrl', function ($scope, $parse) {
 
+
+  	
+
   	$scope.debugBtn = function() {
 
   		console.log($scope.cells);
@@ -23,14 +26,6 @@ angular.module('statscalcApp')
 
     $scope.addCol = function(){
     	$scope.columns.push('var' + ($scope.columns.length + 1));
-
-    	/*
-    	
-    	$('.tableBody').css({
-    		"margin-left":"-=39px" 
-    	});
-
-		*/
     };
 
     $scope.deleteRow = function() {
@@ -59,7 +54,6 @@ angular.module('statscalcApp')
 
 
   	var i;
-  	var j;
   	var numRows = 15;
   	var numCols = 10;
 
@@ -161,16 +155,6 @@ angular.module('statscalcApp')
 	  				$scope.columns.push('var' + i);
 	  			}
 
-	  			/*
-
-	  			for (j = 1; j <= (i - 10); j++) {
-	  				
-	  				$('.tableBody').css({
-    					"margin-left":"-=39px" 
-    				});
-	  			}
-
-	  			*/
   			} else {
 
   				pushCols = $scope.inputCols;
@@ -200,12 +184,9 @@ angular.module('statscalcApp')
 
   		cellsCounter = 0;
 
-
-
-
   		for (i=1; i <= $scope.rows.length; i++) {
 
-  			if (isNaN($scope.cells['var1' + i]) === false || isNaN($scope.cells['var2' + i]) === false) {
+  			if (isNaN($scope.cells['var1' + i]) === false && isNaN($scope.cells['var2' + i]) === false) {
 
   				colXArr[i] = parseInt($scope.cells['var1' + i]);
   				colYArr[i] = parseInt($scope.cells['var2' + i]);
@@ -240,8 +221,8 @@ angular.module('statscalcApp')
 	   	// Every time N is multiplied by 2, the actual formula requests the sum of both Ns. this is also the df
 	   	
 
-	   	numberSamplesX = 
-	   	
+	   	numberSamplesX = 0;
+	   	numberSamplesY = 0;
 	   	
 	   	meanX = colXSum / numberSamplesX;
 	   	meanY = colYSum / numberSamplesY;
@@ -265,11 +246,6 @@ angular.module('statscalcApp')
 	   				   			
 	   		}
 	   	}
-
-
-
-
-
   	};
 
 
