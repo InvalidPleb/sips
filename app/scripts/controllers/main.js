@@ -171,10 +171,13 @@ angular.module('statscalcApp')
   	var cellsXY = [];
   	var colXArr = [];
   	var colYArr = [];
-  	var cellsCounter = 0;
+  	var cellsCounterX = 0;
+  	var cellsCounterY = 0;
+  	var varCell = $scope.cells;
   	var colX, colY, colXSum, colYSum, cellsXYSum, cellsSquaredXSum, cellsSquaredYSum, numberSamples, numberSamplesX, numberSamplesY,
   	rScore, rScore1, rScore2, rScore3, rScore4, meanX, meanY, tScore, tScore1, tScore2, tScore3,
   	tScore4, tScore5, tScore6, df, degreesFreedom, chosenT, confidenceLevel;
+
 
   	function add(a, b) {
     	return a + b;
@@ -182,19 +185,36 @@ angular.module('statscalcApp')
 
   	$scope.calcTTest = function () {
 
-  		cellsCounter = 0;
+  		cellsCounterX = 0;
+  		cellsCounterY = 0;
 
   		for (i=1; i <= $scope.rows.length; i++) {
 
-  			if (isNaN($scope.cells['var1' + i]) === false && isNaN($scope.cells['var2' + i]) === false) {
+  			if (isNaN(varCell['var1' + i]) === false || isNaN(varCell['var2' + i]) === false) {
 
-  				colXArr[i] = parseInt($scope.cells['var1' + i]);
-  				colYArr[i] = parseInt($scope.cells['var2' + i]);
-  				cellsXY[i] = parseInt($scope.cells['var1' + i]) * parseInt($scope.cells['var2' + i]);
-	    		cellsSquaredX[i] = Math.pow($scope.cells['var1' + i], 2);
-	    		cellsSquaredY[i] = Math.pow($scope.cells['var2' + i], 2);
+  				if (isNaN(varCell['var1' + i]) === false && isNaN(varCell['var2' + i]) === true) {
 
-	    		cellsCounter += 1;
+  					colXArr[i] = parseInt(varCell['var1' + i]);
+  					cellsSquaredX[i] = Math.pow(varCell['var1' + i], 2);
+  					cellsCounterX += 1;
+  				
+  				} else if (isNaN(varCell['var2' + i]) === false && isNaN(varCell['var1' + i]) === true) {
+
+  					colYArr[i] = parseInt(varCell['var2' + i]);
+  					cellsSquaredY[i] = Math.pow(varCell['var2' + i], 2);
+  					cellsCounterY += 1;
+  					
+  				} else if (isNaN(varCell['var1' + i]) === false && isNaN(varCell['var2' + i]) === false) {
+
+  					colXArr[i] = parseInt(varCell['var1' + i]);
+  					colYArr[i] = parseInt(varCell['var2' + i]);
+  					cellsSquaredX[i] = Math.pow(varCell['var1' + i], 2);
+  					cellsSquaredY[i] = Math.pow(varCell['var2' + i], 2);
+  					cellsXY[i] = parseInt(varCell['var1' + i]) * parseInt(varCell['var2' + i]);
+  					cellsCounterX += 1;
+  					cellsCounterY += 1;
+
+  				}	
 	    		
     		} else {
 
@@ -202,8 +222,11 @@ angular.module('statscalcApp')
     		}
     	}
 
+    	numberSamplesX = cellsCounterX;
+	   	numberSamplesY = cellsCounterY;
 
-    	numberSamples = cellsCounter;
+    	// need to use different n for x & y here
+    	numberSamples = cellsCounterX;
     	colXSum = colXArr.reduce(add, 0);
     	colYSum = colYArr.reduce(add, 0);
     	cellsXYSum = cellsXY.reduce(add, 0);
@@ -221,8 +244,7 @@ angular.module('statscalcApp')
 	   	// Every time N is multiplied by 2, the actual formula requests the sum of both Ns. this is also the df
 	   	
 
-	   	numberSamplesX = 0;
-	   	numberSamplesY = 0;
+	   	
 	   	
 	   	meanX = colXSum / numberSamplesX;
 	   	meanY = colYSum / numberSamplesY;
@@ -246,6 +268,8 @@ angular.module('statscalcApp')
 	   				   			
 	   		}
 	   	}
+
+	   	console.log(tScore);
   	};
 
 
