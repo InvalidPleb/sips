@@ -11,13 +11,8 @@
 angular.module('statscalcApp')
   .controller('MainCtrl', function ($scope, $parse) {
 
-
-  	
-
   	$scope.debugBtn = function() {
-
   		console.log($scope.cells);
-  		
     };
 
 	$scope.addRow = function() {
@@ -169,14 +164,17 @@ angular.module('statscalcApp')
   	var cellsSquaredX = [];
   	var cellsSquaredY = [];
   	var cellsXY = [];
+  	var cellsDiff = [];
+  	var cellsDiffSquared = [];
   	var colXArr = [];
   	var colYArr = [];
   	var cellsCounterX = 0;
   	var cellsCounterY = 0;
   	var varCell = $scope.cells;
-  	var colX, colY, colXSum, colYSum, cellsXYSum, cellsSquaredXSum, cellsSquaredYSum, numberSamples, numberSamplesX, numberSamplesY,
-  	rScore, rScore1, rScore2, rScore3, rScore4, meanX, meanY, indTScore, indTScore1, indTScore2, indTScore3,
-  	indTScore4, indTScore5, indTScore6, df, degreesFreedom, chosenT, confidenceLevel;
+  	var colX, colY, colXSum, colYSum, cellsXYSum, cellsSquaredXSum, cellsSquaredYSum, cellsDiffSum, cellsDiffSquaredSum,
+  	numberSamples, numberSamplesX, numberSamplesY, rScore, rScore1, rScore2, rScore3, rScore4, meanX, meanY, indTScore, 
+  	indTScore1, indTScore2, indTScore3, indTScore4, indTScore5, indTScore6, depTScore1, depTScore, depTScore2, depTScore3, 
+  	depTScore4, indDf, depDf, degreesFreedom, chosenT, confidenceLevel;
 
 
   	function add(a, b) {
@@ -210,7 +208,8 @@ angular.module('statscalcApp')
   					colYArr[i] = parseFloat(varCell['var2' + i]);
   					cellsSquaredX[i] = Math.pow(varCell['var1' + i], 2);
   					cellsSquaredY[i] = Math.pow(varCell['var2' + i], 2);
-  				    cellsDiff[i] = 
+  				    cellsDiff[i] = parseFloat(varCell['var1' + i]) - parseFloat(varCell['var2' + i]);
+  				    cellsDiffSquared[i] =  Math.pow(cellsDiff[i], 2);
   					cellsXY[i] = parseFloat(varCell['var1' + i]) * parseFloat(varCell['var2' + i]);
   					cellsCounterX += 1;
   					cellsCounterY += 1;
@@ -223,6 +222,8 @@ angular.module('statscalcApp')
     		}
     	}
 
+    	console.log(cellsDiffSquared);
+
     	numberSamplesX = cellsCounterX;
 	   	numberSamplesY = cellsCounterY;
 
@@ -231,6 +232,8 @@ angular.module('statscalcApp')
 	    cellsXYSum = cellsXY.reduce(add, 0);
 		cellsSquaredXSum = cellsSquaredX.reduce(add, 0);
 		cellsSquaredYSum = cellsSquaredY.reduce(add, 0);
+		cellsDiffSum = cellsDiff.reduce(add, 0);
+		cellsDiffSquaredSum = cellsDiffSquared.reduce(add, 0);
 
     	// need to use different n for x & y here
     	if (numberSamplesX === numberSamplesY) {
@@ -262,12 +265,42 @@ angular.module('statscalcApp')
 	   	indTScore5 = (1 / numberSamplesX) + (1 / numberSamplesY);
 	   	indTScore6 = Math.sqrt(indTScore4 * indTScore5);
 	   	indTScore = indTScore1 / indTScore6;
-	   	df = (numberSamplesX + numberSamplesY) - 2;
-	   	degreesFreedom = tDistributionTable['df' + df];
+	   	indDf = (numberSamplesX + numberSamplesY) - 2;
+
+
+	   	// needs to be iterated for nearest df if specific df is not in table
+
+	   	degreesFreedom = tDistributionTable['df' + indDf];
 	   	
 
 	   	for (i=1; i < degreesFreedom.length; i++) {
+
 	   		if (degreesFreedom[i] > Math.abs(indTScore)) {
+
+	   			chosenT = degreesFreedom[i - 1];
+	   			confidenceLevel = tDistributionTable.p[i - 1];
+	   			i = degreesFreedom.length;
+	   				   			
+	   		}
+
+	   	}
+
+	   	console.log(chosenT);
+
+	   	// Dependent t Score 
+	   	
+	   	depTScore1 = cellsDiffSum / numberSamples;
+	   	depTScore2 = cellsDiffSquaredSum - (Math.pow(cellsDiffSum, 2) / numberSamples);
+	   	depTScore3 = numberSamples * (numberSamples - 1);
+	   	depTScore4 = Math.sqrt(depTScore2 / depTScore3);
+	   	depTScore = depTScore1 / depTScore4;
+	   	depDf = numberSamples - 1;
+
+	   	console.log(depTScore);
+
+	   	for (i=1; i < degreesFreedom.length; i++) {
+
+	   		if (degreesFreedom[i] > Math.abs(depTScore)) {
 	   			chosenT = degreesFreedom[i - 1];
 	   			confidenceLevel = tDistributionTable.p[i - 1];
 	   			i = degreesFreedom.length;
@@ -275,9 +308,11 @@ angular.module('statscalcApp')
 	   		}
 	   	}
 
-	   	console.log(indTScore);
+	   	console.log(chosenT);
 
-	   	// Dependent t Score 
+
+
+	   	
 	   	
 
 	   	
