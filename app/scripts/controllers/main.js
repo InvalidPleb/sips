@@ -175,8 +175,8 @@ angular.module('statscalcApp')
   	var cellsCounterY = 0;
   	var varCell = $scope.cells;
   	var colX, colY, colXSum, colYSum, cellsXYSum, cellsSquaredXSum, cellsSquaredYSum, numberSamples, numberSamplesX, numberSamplesY,
-  	rScore, rScore1, rScore2, rScore3, rScore4, meanX, meanY, tScore, tScore1, tScore2, tScore3,
-  	tScore4, tScore5, tScore6, df, degreesFreedom, chosenT, confidenceLevel;
+  	rScore, rScore1, rScore2, rScore3, rScore4, meanX, meanY, indTScore, indTScore1, indTScore2, indTScore3,
+  	indTScore4, indTScore5, indTScore6, df, degreesFreedom, chosenT, confidenceLevel;
 
 
   	function add(a, b) {
@@ -194,23 +194,24 @@ angular.module('statscalcApp')
 
   				if (isNaN(varCell['var1' + i]) === false && isNaN(varCell['var2' + i]) === true) {
 
-  					colXArr[i] = parseInt(varCell['var1' + i]);
+  					colXArr[i] = parseFloat(varCell['var1' + i]);
   					cellsSquaredX[i] = Math.pow(varCell['var1' + i], 2);
   					cellsCounterX += 1;
   				
   				} else if (isNaN(varCell['var2' + i]) === false && isNaN(varCell['var1' + i]) === true) {
 
-  					colYArr[i] = parseInt(varCell['var2' + i]);
+  					colYArr[i] = parseFloat(varCell['var2' + i]);
   					cellsSquaredY[i] = Math.pow(varCell['var2' + i], 2);
   					cellsCounterY += 1;
   					
   				} else if (isNaN(varCell['var1' + i]) === false && isNaN(varCell['var2' + i]) === false) {
 
-  					colXArr[i] = parseInt(varCell['var1' + i]);
-  					colYArr[i] = parseInt(varCell['var2' + i]);
+  					colXArr[i] = parseFloat(varCell['var1' + i]);
+  					colYArr[i] = parseFloat(varCell['var2' + i]);
   					cellsSquaredX[i] = Math.pow(varCell['var1' + i], 2);
   					cellsSquaredY[i] = Math.pow(varCell['var2' + i], 2);
-  					cellsXY[i] = parseInt(varCell['var1' + i]) * parseInt(varCell['var2' + i]);
+  				    cellsDiff[i] = 
+  					cellsXY[i] = parseFloat(varCell['var1' + i]) * parseFloat(varCell['var2' + i]);
   					cellsCounterX += 1;
   					cellsCounterY += 1;
 
@@ -225,43 +226,48 @@ angular.module('statscalcApp')
     	numberSamplesX = cellsCounterX;
 	   	numberSamplesY = cellsCounterY;
 
+	   	colXSum = colXArr.reduce(add, 0);
+	    colYSum = colYArr.reduce(add, 0);
+	    cellsXYSum = cellsXY.reduce(add, 0);
+		cellsSquaredXSum = cellsSquaredX.reduce(add, 0);
+		cellsSquaredYSum = cellsSquaredY.reduce(add, 0);
+
     	// need to use different n for x & y here
-    	numberSamples = cellsCounterX;
-    	colXSum = colXArr.reduce(add, 0);
-    	colYSum = colYArr.reduce(add, 0);
-    	cellsXYSum = cellsXY.reduce(add, 0);
-	    cellsSquaredXSum = cellsSquaredX.reduce(add, 0);
-	    cellsSquaredYSum = cellsSquaredY.reduce(add, 0);
+    	if (numberSamplesX === numberSamplesY) {
 
-	    rScore1 = (numberSamples * cellsXYSum) - (colXSum * colYSum);
-	    rScore2 = (numberSamples * cellsSquaredXSum) - Math.pow(colXSum, 2);
-	    rScore3 = (numberSamples * cellsSquaredYSum) - Math.pow(colYSum, 2);
-	    rScore4 = Math.sqrt((rScore2 * rScore3));
-	    rScore = rScore1 / rScore4;
+    		numberSamples = numberSamplesX;
+		    rScore1 = (numberSamples * cellsXYSum) - (colXSum * colYSum);
+		    rScore2 = (numberSamples * cellsSquaredXSum) - Math.pow(colXSum, 2);
+		    rScore3 = (numberSamples * cellsSquaredYSum) - Math.pow(colYSum, 2);
+		    rScore4 = Math.sqrt((rScore2 * rScore3));
+		    rScore = rScore1 / rScore4;
 
-	   	
+    	} else {
+
+    		console.log("r needs equal groups?");
+    	}
+
+    	// Independent t Score 
+    	
 	   	// different N is supposed to be used for each group, in this case we use the same N and require equal group sizes
 	   	// Every time N is multiplied by 2, the actual formula requests the sum of both Ns. this is also the df
-	   	
-
-	   	
 	   	
 	   	meanX = colXSum / numberSamplesX;
 	   	meanY = colYSum / numberSamplesY;
 
-	   	tScore1 = meanX - meanY;
-	   	tScore2 = cellsSquaredXSum - (Math.pow(colXSum, 2) / numberSamplesX);
-	   	tScore3 = cellsSquaredYSum - (Math.pow(colYSum, 2) / numberSamplesY);
-	   	tScore4 = (tScore2 + tScore3) / ((numberSamplesX + numberSamplesY) - 2);
-	   	tScore5 = (1 / numberSamplesX) + (1 / numberSamplesY);
-	   	tScore6 = Math.sqrt(tScore4 * tScore5);
-	   	tScore = tScore1 / tScore6;
+	   	indTScore1 = meanX - meanY;
+	   	indTScore2 = cellsSquaredXSum - (Math.pow(colXSum, 2) / numberSamplesX);
+	   	indTScore3 = cellsSquaredYSum - (Math.pow(colYSum, 2) / numberSamplesY);
+	   	indTScore4 = (indTScore2 + indTScore3) / ((numberSamplesX + numberSamplesY) - 2);
+	   	indTScore5 = (1 / numberSamplesX) + (1 / numberSamplesY);
+	   	indTScore6 = Math.sqrt(indTScore4 * indTScore5);
+	   	indTScore = indTScore1 / indTScore6;
 	   	df = (numberSamplesX + numberSamplesY) - 2;
 	   	degreesFreedom = tDistributionTable['df' + df];
 	   	
 
 	   	for (i=1; i < degreesFreedom.length; i++) {
-	   		if (degreesFreedom[i] > Math.abs(tScore)) {
+	   		if (degreesFreedom[i] > Math.abs(indTScore)) {
 	   			chosenT = degreesFreedom[i - 1];
 	   			confidenceLevel = tDistributionTable.p[i - 1];
 	   			i = degreesFreedom.length;
@@ -269,7 +275,12 @@ angular.module('statscalcApp')
 	   		}
 	   	}
 
-	   	console.log(tScore);
+	   	console.log(indTScore);
+
+	   	// Dependent t Score 
+	   	
+
+	   	
   	};
 
 
