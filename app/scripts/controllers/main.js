@@ -251,10 +251,7 @@ angular.module('statscalcApp')
     	}
 
     	// Independent t Score 
-    	
-	   	// different N is supposed to be used for each group, in this case we use the same N and require equal group sizes
-	   	// Every time N is multiplied by 2, the actual formula requests the sum of both Ns. this is also the df
-	   	
+  
 	   	meanX = colXSum / numberSamplesX;
 	   	meanY = colYSum / numberSamplesY;
 
@@ -267,11 +264,9 @@ angular.module('statscalcApp')
 	   	indTScore = indTScore1 / indTScore6;
 	   	indDf = (numberSamplesX + numberSamplesY) - 2;
 
-
 	   	// needs to be iterated for nearest df if specific df is not in table
 
 	   	degreesFreedom = tDistributionTable['df' + indDf];
-	   	
 
 	   	for (i=1; i < degreesFreedom.length; i++) {
 
@@ -309,11 +304,6 @@ angular.module('statscalcApp')
 	   	}
 
 	   	console.log(chosenT);
-
-
-
-	   	
-	   	
 
 	   	
   	};
