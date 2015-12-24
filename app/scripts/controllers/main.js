@@ -1,12 +1,8 @@
 'use strict';
 
-/*
- * @ngdoc function
- * @name statscalcApp.controller:MainCtrl
- * @description
- * # MainCtrl
- * Controller of the statscalcApp
- */
+// @ngdoc function
+// @name statscalcApp.controller:MainCtrl
+// @description
 
 angular.module('statscalcApp')
   .controller('MainCtrl', function ($scope, $parse) {
