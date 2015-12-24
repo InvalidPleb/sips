@@ -3,6 +3,7 @@
 // @ngdoc function
 // @name statscalcApp.controller:MainCtrl
 // @description
+// testing 
 
 angular.module('statscalcApp')
   .controller('MainCtrl', function ($scope, $parse) {
