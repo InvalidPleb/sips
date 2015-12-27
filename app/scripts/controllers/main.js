@@ -9,10 +9,10 @@ angular.module('statscalcApp')
   .controller('MainCtrl', function ($scope, $parse) {
 
   	$scope.debugBtn = function() {
-  		console.log($scope.cells);
+      console.log($scope.cells);
     };
 
-	$scope.addRow = function() {
+    $scope.addRow = function() {
     	$scope.rows.push($scope.rows.length + 1);
     };
 
@@ -65,6 +65,8 @@ angular.module('statscalcApp')
 
   		numRows = parseInt($scope.rows.length);
   		numCols = parseInt($scope.columns.length);
+      
+      for (var cell in $scope.cells) delete $scope.cells[cell];
 
   		if ($scope.rows.length >= 15) {
 
@@ -205,14 +207,14 @@ angular.module('statscalcApp')
   					colYArr[i] = parseFloat(varCell['var2' + i]);
   					cellsSquaredX[i] = Math.pow(varCell['var1' + i], 2);
   					cellsSquaredY[i] = Math.pow(varCell['var2' + i], 2);
-  				    cellsDiff[i] = parseFloat(varCell['var1' + i]) - parseFloat(varCell['var2' + i]);
-  				    cellsDiffSquared[i] =  Math.pow(cellsDiff[i], 2);
+  				  cellsDiff[i] = parseFloat(varCell['var1' + i]) - parseFloat(varCell['var2' + i]);
+  				  cellsDiffSquared[i] =  Math.pow(cellsDiff[i], 2);
   					cellsXY[i] = parseFloat(varCell['var1' + i]) * parseFloat(varCell['var2' + i]);
   					cellsCounterX += 1;
   					cellsCounterY += 1;
 
   				}	
-	    		
+      		
     		} else {
 
     			i = ($scope.rows.length + 1);
@@ -222,15 +224,15 @@ angular.module('statscalcApp')
     	console.log(cellsDiffSquared);
 
     	numberSamplesX = cellsCounterX;
-	   	numberSamplesY = cellsCounterY;
+     	numberSamplesY = cellsCounterY;
 
-	   	colXSum = colXArr.reduce(add, 0);
-	    colYSum = colYArr.reduce(add, 0);
-	    cellsXYSum = cellsXY.reduce(add, 0);
-		cellsSquaredXSum = cellsSquaredX.reduce(add, 0);
-		cellsSquaredYSum = cellsSquaredY.reduce(add, 0);
-		cellsDiffSum = cellsDiff.reduce(add, 0);
-		cellsDiffSquaredSum = cellsDiffSquared.reduce(add, 0);
+     	colXSum = colXArr.reduce(add, 0);
+      colYSum = colYArr.reduce(add, 0);
+      cellsXYSum = cellsXY.reduce(add, 0);
+  		cellsSquaredXSum = cellsSquaredX.reduce(add, 0);
+  		cellsSquaredYSum = cellsSquaredY.reduce(add, 0);
+  		cellsDiffSum = cellsDiff.reduce(add, 0);
+  		cellsDiffSquaredSum = cellsDiffSquared.reduce(add, 0);
 
     	// need to use different n for x & y here
     	if (numberSamplesX === numberSamplesY) {
@@ -243,7 +245,6 @@ angular.module('statscalcApp')
 		    rScore = rScore1 / rScore4;
 
     	} else {
-
     		console.log("r needs equal groups?");
     	}
 
@@ -306,8 +307,6 @@ angular.module('statscalcApp')
 	   	}
 
 	   	console.log(chosenT);
-
-
 
 	   	
 	   	
