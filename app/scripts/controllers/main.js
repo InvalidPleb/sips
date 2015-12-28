@@ -65,8 +65,10 @@ angular.module('statscalcApp')
 
   		numRows = parseInt($scope.rows.length);
   		numCols = parseInt($scope.columns.length);
-      
-      for (var cell in $scope.cells) delete $scope.cells[cell];
+
+      for (var cell in $scope.cells) {
+        delete $scope.cells[cell];
+      }
 
   		if ($scope.rows.length >= 15) {
 
@@ -170,15 +172,46 @@ angular.module('statscalcApp')
   	var cellsCounterX = 0;
   	var cellsCounterY = 0;
   	var varCell = $scope.cells;
-  	var colX, colY, colXSum, colYSum, cellsXYSum, cellsSquaredXSum, cellsSquaredYSum, cellsDiffSum, cellsDiffSquaredSum,
-  	numberSamples, numberSamplesX, numberSamplesY, rScore, rScore1, rScore2, rScore3, rScore4, meanX, meanY, indTScore, 
-  	indTScore1, indTScore2, indTScore3, indTScore4, indTScore5, indTScore6, depTScore1, depTScore, depTScore2, depTScore3, 
-  	depTScore4, indDf, depDf, degreesFreedom, chosenT, confidenceLevel;
-
+  	var colX
+    var colY 
+    var colXSum;
+    var colYSum;
+    var cellsXYSum;
+    var cellsSquaredXSum;
+    var cellsSquaredYSum;
+    var cellsDiffSum;
+    var cellsDiffSquaredSum;
+  	var numberSamples;
+    var numberSamplesX;
+    var numberSamplesY;
+    var rScore;
+    var rScore1;
+    var rScore2;
+    var rScore3;
+    var rScore4;
+    var meanX;
+    var meanY;
+    var indTScore;
+  	var indTScore1;
+    var indTScore2;
+    var indTScore3;
+    var indTScore4;
+    var indTScore5;
+    var indTScore6;
+    var depTScore;
+    var depTScore1;
+    var depTScore2;
+    var depTScore3;
+  	var depTScore4;
+    var indDf;
+    var depDf;
+    var degreesFreedom;
+    var chosenT;
+    var confidenceLevel;
 
   	function add(a, b) {
     	return a + b;
-	}
+	  }
 
   	$scope.calcTTest = function () {
 
@@ -212,7 +245,6 @@ angular.module('statscalcApp')
   					cellsXY[i] = parseFloat(varCell['var1' + i]) * parseFloat(varCell['var2' + i]);
   					cellsCounterX += 1;
   					cellsCounterY += 1;
-
   				}	
       		
     		} else {
@@ -307,9 +339,6 @@ angular.module('statscalcApp')
 	   	}
 
 	   	console.log(chosenT);
-
-	   	
-	   	
 
 	   	
   	};
