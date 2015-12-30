@@ -150,6 +150,15 @@ angular.module('statscalcApp')
 
   	};
 
+  	var varCell = $scope.cells;
+
+  	$scope.selectCol = function(column) {
+
+  		//maybe this function will return true or false depending upon if the col has been clicked is true
+  		$scope.selectedCol = column;
+  		return true; 
+  	};
+
   	var cellsSquaredX = [];
   	var cellsSquaredY = [];
   	var cellsXY = [];
@@ -159,9 +168,8 @@ angular.module('statscalcApp')
   	var colYArr = [];
   	var cellsCounterX = 0;
   	var cellsCounterY = 0;
-  	var varCell = $scope.cells;
-  	var colX
-    var colY 
+  	var colX;
+    var colY;
     var colXSum;
     var colYSum;
     var cellsXYSum;
