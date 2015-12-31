@@ -39,7 +39,7 @@
     <tr class="column-label">
       <td></td>
       <td class="fontForText" id="colTitleCell" ng-repeat="column in columns">
-        <button class="selectColBtns" ng-class="{true: 'colBtnSelected', false: 'colBtn'}[selectedCol]" ng-click="selectCol(column)">{{column}}</button>
+        <button ng-class="{true: 'colBtnSelected', false: 'colBtn'}[colStrings[selectedCol]]" ng-click="selectCol(column)">{{column}}</button>
       </td>
     </tr>
     <tr class="fontForText" ng-repeat="row in rows">

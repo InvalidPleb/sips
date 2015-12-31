@@ -9,7 +9,8 @@ angular.module('statscalcApp')
   .controller('MainCtrl', function ($scope, $parse) {
 
   	$scope.debugBtn = function() {
-      console.log($scope.cells);
+      
+      console.log($scope.colStrings);
     };
 
     $scope.addRow = function() {
@@ -151,12 +152,22 @@ angular.module('statscalcApp')
   	};
 
   	var varCell = $scope.cells;
+  	
+  	var selectedColNum;
+
+  	
 
   	$scope.selectCol = function(column) {
 
   		//maybe this function will return true or false depending upon if the col has been clicked is true
-  		$scope.selectedCol = column;
-  		return true; 
+  		
+  		$scope.selectedCol = 'selectedCol' + column;
+  		selectedColNum = parseInt($scope.selectedCol.slice(14));
+
+  		$scope.colStrings = {};
+  		$scope.colStrings[$scope.selectedCol] = true;
+
+  		return false; 
   	};
 
   	var cellsSquaredX = [];
