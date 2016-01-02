@@ -5,42 +5,37 @@
   
 <table class="tableBody table table-bordered table-striped table-hover">
   <thead>
-  <div>
-  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-    
-    <button class="mainBtns" ng-click="addRow()">Add Row</button>
-    <button class="mainBtns" ng-click="addCol()">Add Col</button>
-    <button class="mainBtns" ng-click="deleteRow()">Delete Row</button>
-    <button class="mainBtns" ng-click="deleteCol()">Delete Col</button>
-    <button class="mainBtns" ng-click="clearBtn()">Clear</button>
-    <button class="mainBtns" type="button" value="debug" ng-click="debugBtn()">Debug</button>
-    <button class="mainBtns" ng-click="calcTTest()">t Test</button>
-    <button class="mainBtns" ng-click="calcAnova()">ANOVA</button>
-  </div>
-  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-    <div class="row">Enter # of Rows:
-      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-        <input class="inputRowsCols form-control" ng-change="updateInputRows()" ng-model="inputRows">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+      
+      <button class="mainBtns" ng-click="addRow()">Add Row</button>
+      <button class="mainBtns" ng-click="addCol()">Add Col</button>
+      <button class="mainBtns" ng-click="deleteRow()">Delete Row</button>
+      <button class="mainBtns" ng-click="deleteCol()">Delete Col</button>
+      <button class="mainBtns" ng-click="clearBtn()">Clear</button>
+      <button class="mainBtns" type="button" value="debug" ng-click="debugBtn()">Debug</button>
+      <button class="mainBtns" ng-click="calcTTest()">t Test</button>
+      <button class="mainBtns" ng-click="calcAnova()">ANOVA</button>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+      <div class="row">Enter # of Rows:
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+          <input class="inputRowsCols form-control" ng-change="updateInputRows()" ng-model="inputRows">
+        </div>
+      </div>
+      <div id="inputCols" class="row">Enter # of Cols:
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+        <input id="inputForCols" class="inputRowsCols form-control" ng-change="updateInputCols()" ng-model="inputCols">
+        <button class="setTable mainBtns" ng-click="setTable()">Set Table</button>
       </div>
     </div>
-    <div id="inputCols" class="row">Enter # of Cols:
-      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-        
-      </div>
-      <input id="inputForCols" class="inputRowsCols form-control" ng-change="updateInputCols()" ng-model="inputCols">
-      <button class="setTable mainBtns" ng-click="setTable()">Set Table</button>
-     
-    </div>
-
-  </div>
-</div>
-    
   </thead>
   <tbody>
     <tr class="column-label">
       <td></td>
       <td class="fontForText" id="colTitleCell" ng-repeat="column in columns">
-        <button ng-class="{colBtnSelected: $index == selectCol}" ng-click="setSelectCol($index)">{{column}}</button>
+        <button class="colBtn" ng-class="{colBtnSelected: selectedColContain.indexOf($index + 1) !== -1}" ng-click="setSelectCol($index)">
+          <span>{{column}}</span>
+        </button>
       </td>
     </tr>
     <tr class="fontForText" ng-repeat="row in rows">

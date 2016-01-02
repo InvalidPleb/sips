@@ -152,7 +152,7 @@ angular.module('statscalcApp')
 
   	
   	var selectedColNum;
-  	var selectedColContain = [];
+  	$scope.selectedColContain = [];
 
 	$scope.selectCol = 0;
 
@@ -169,17 +169,17 @@ angular.module('statscalcApp')
 
   		$scope.selectCol = column;
 
-  		if (selectedColContain.indexOf($scope.selectCol + 1) === -1) {
 
-  			selectedColContain.push($scope.selectCol + 1);
+  		if ($scope.selectedColContain.indexOf($scope.selectCol + 1) === -1) {
+
+  			$scope.selectedColContain.push($scope.selectCol + 1);
 
   		} else {
 
-  			selectedColContain.splice(selectedColContain.indexOf($scope.selectCol + 1), 1);
+  			$scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
   		}
-  		
 
-  		console.log(selectedColContain);
+  		console.log($scope.selectedColContain);
   	};
 
   	var cellsSquaredX = [];

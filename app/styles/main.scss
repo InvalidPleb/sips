@@ -77,13 +77,28 @@ td { border: 1px solid #EEE; }
 }
 
 .colBtn {
-  background-color: #ccc;
+  color: #51c64f;
+  border: 1px solid #434343;
+  background: #434343;
+  border-radius: 5px;
+  margin-top: 5px;
+  transition: all 0.15s cubic-bezier(0.27,1,1,0.9);
+  box-shadow: -1px 1px 5px 1px #888;
   width: 100%;
   height: 100%;
 }
 
+.colBtn:hover {
+  color: #000000;
+  background: #51c64f;
+  border: 1px solid #51c64f;
+  cursor: pointer;
+}
+
+
 .colBtnSelected {
-  background-color: #000;
+  background: #51c64f;
+  color: #000000;
 
 }
 
@@ -112,7 +127,7 @@ td { border: 1px solid #EEE; }
 
 
 .tableBody {
-  margin-top: 90px;
+  margin-top: 150px;
 }
 
 .fontForText {
