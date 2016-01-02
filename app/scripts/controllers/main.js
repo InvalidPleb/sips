@@ -13,6 +13,7 @@ angular.module('statscalcApp')
   	$scope.cells = {};
 
   	var i;
+  	var j;
   	var numRows = 15;
   	var numCols = 10;
 
@@ -25,8 +26,8 @@ angular.module('statscalcApp')
   	}
 
   	$scope.debugBtn = function() {
-      
-      console.log($scope.colStrings);
+     
+      parseData();
     };
 
     $scope.addRow = function() {
@@ -179,9 +180,15 @@ angular.module('statscalcApp')
   			$scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
   		}
 
+
   		console.log($scope.selectedColContain);
+  		console.log($scope.cells);
   	};
 
+
+
+  	var selectedColObj = {};
+  	var selectedColArr = [];
   	var cellsSquaredX = [];
   	var cellsSquaredY = [];
   	var cellsXY = [];
@@ -238,9 +245,48 @@ angular.module('statscalcApp')
 		cellsCounterX = 0;
   		cellsCounterY = 0;
 
+
+
+  		for (i=1; i <= $scope.selectedColContain.length; i++) {
+
+  			
+
+  			for (j=1; j <= $scope.rows.length; j++) {
+
+  				if (isNaN(varCell['var' + $scope.selectedColContain[i] + 'r' + j]) === false) {
+
+  					selectedColArr[i] = [];
+  					
+  					selectedColArr[i].push(varCell['var' + $scope.selectedColContain[i] + 'r' + j]);
+  					
+  				
+
+  				}
+  			}
+
+  			selectedColObj['var' + $scope.selectedColContain[i]] = selectedColArr[i];
+  			console.log(selectedColArr);
+
+
+  		}
+
+  		console.log(varCell);
+
+  		//varCell['var' + $scope.selectedColContain[i] + 'r' + i]
+
+
+
+
+
+
+
+
+
+  		/*
+
   		for (i=1; i <= $scope.rows.length; i++) {
 
-  			if (isNaN(varCell['var1' + i]) === false || isNaN(varCell['var2' + i]) === false) {
+  			if (isNaN(varCell['var' + i]) === false || isNaN(varCell['var2' + i]) === false) {
 
   				if (isNaN(varCell['var1' + i]) === false && isNaN(varCell['var2' + i]) === true) {
 
@@ -272,6 +318,8 @@ angular.module('statscalcApp')
     			i = ($scope.rows.length + 1);
     		}
     	}
+
+    	*/
 	}
 
   	$scope.calcTTest = function () {
@@ -289,7 +337,6 @@ angular.module('statscalcApp')
   		cellsDiffSum = cellsDiff.reduce(add, 0);
   		cellsDiffSquaredSum = cellsDiffSquared.reduce(add, 0);
 
-    	// need to use different n for x & y here
     	if (numberSamplesX === numberSamplesY) {
 
     		numberSamples = numberSamplesX;

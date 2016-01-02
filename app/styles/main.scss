@@ -72,7 +72,7 @@ td { border: 1px solid #EEE; }
   color: #51c64f;
 }
 
-.mainBtns:focus, .form-control {
+.mainBtns:focus, .colBtn:focus, .colBtnSelected:focus, .form-control {
   outline: 0;
 }
 
@@ -81,11 +81,10 @@ td { border: 1px solid #EEE; }
   border: 1px solid #434343;
   background: #434343;
   border-radius: 5px;
-  margin-top: 5px;
   transition: all 0.15s cubic-bezier(0.27,1,1,0.9);
   box-shadow: -1px 1px 5px 1px #888;
   width: 100%;
-  height: 100%;
+  height: 110%;
 }
 
 .colBtn:hover {
@@ -99,7 +98,14 @@ td { border: 1px solid #EEE; }
 .colBtnSelected {
   background: #51c64f;
   color: #000000;
+  border: 1px solid #51c64f;
 
+}
+
+.colBtnSelected:hover {
+  background: #ffffff;
+  border: 1px solid white;
+  color: #51c64f;
 }
 
 
