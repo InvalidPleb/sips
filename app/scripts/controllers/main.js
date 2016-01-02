@@ -8,6 +8,22 @@
 angular.module('statscalcApp')
   .controller('MainCtrl', function ($scope, $parse) {
 
+  	$scope.columns = ['var1'];
+  	$scope.rows = [];
+  	$scope.cells = {};
+
+  	var i;
+  	var numRows = 15;
+  	var numCols = 10;
+
+  	for (i=1; i <= numRows; i++) {
+  		$scope.rows.push(i);
+  	}
+
+  	for (i=2; i <= numCols; i++) {
+  		$scope.columns.push('var' + i);
+  	}
+
   	$scope.debugBtn = function() {
       
       console.log($scope.colStrings);
@@ -40,23 +56,6 @@ angular.module('statscalcApp')
     	}
 
     };
-
-    $scope.columns = ['var1'];
-  	$scope.rows = [];
-  	$scope.cells = {};
-
-
-  	var i;
-  	var numRows = 15;
-  	var numCols = 10;
-
-  	for (i=1; i <= numRows; i++) {
-  		$scope.rows.push(i);
-  	}
-
-  	for (i=2; i <= numCols; i++) {
-  		$scope.columns.push('var' + i);
-  	}
   	
   	$scope.computeCells = function(cell) {
     	return $parse($scope.cells[cell])($scope);
@@ -106,8 +105,6 @@ angular.module('statscalcApp')
   		numCols = parseInt($scope.columns.length);
   	};
 
-
-
   	var pushRows = 0;
   	var pushCols = 0;
   	
@@ -152,22 +149,37 @@ angular.module('statscalcApp')
   	};
 
   	var varCell = $scope.cells;
+
   	
   	var selectedColNum;
+  	var selectedColContain = [];
 
-  	
+	$scope.selectCol = 0;
 
-  	$scope.selectCol = function(column) {
+  	$scope.setSelectCol = function(column) {
 
-  		//maybe this function will return true or false depending upon if the col has been clicked is true
-  		
+  		/*
   		$scope.selectedCol = 'selectedCol' + column;
-  		selectedColNum = parseInt($scope.selectedCol.slice(14));
+
+  		selectedColNum = parseInt(column.slice(3) - 1);
 
   		$scope.colStrings = {};
   		$scope.colStrings[$scope.selectedCol] = true;
+  		*/
 
-  		return false; 
+  		$scope.selectCol = column;
+
+  		if (selectedColContain.indexOf($scope.selectCol + 1) === -1) {
+
+  			selectedColContain.push($scope.selectCol + 1);
+
+  		} else {
+
+  			selectedColContain.splice(selectedColContain.indexOf($scope.selectCol + 1), 1);
+  		}
+  		
+
+  		console.log(selectedColContain);
   	};
 
   	var cellsSquaredX = [];
@@ -221,9 +233,9 @@ angular.module('statscalcApp')
     	return a + b;
 	  }
 
-  	$scope.calcTTest = function () {
+	function parseData() {
 
-  		cellsCounterX = 0;
+		cellsCounterX = 0;
   		cellsCounterY = 0;
 
   		for (i=1; i <= $scope.rows.length; i++) {
@@ -260,8 +272,11 @@ angular.module('statscalcApp')
     			i = ($scope.rows.length + 1);
     		}
     	}
+	}
 
-    	console.log(cellsDiffSquared);
+  	$scope.calcTTest = function () {
+
+  		parseData();
 
     	numberSamplesX = cellsCounterX;
      	numberSamplesY = cellsCounterY;
@@ -343,14 +358,16 @@ angular.module('statscalcApp')
 	   	}
 
 
-
-
-
 	   	console.log(chosenT);
 
+  	};
+
+  	$scope.calcAnova = function() {
 
 
-	   	
+
+
+
   	};
 
 

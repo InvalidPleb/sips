@@ -15,6 +15,7 @@
     <button class="mainBtns" ng-click="clearBtn()">Clear</button>
     <button class="mainBtns" type="button" value="debug" ng-click="debugBtn()">Debug</button>
     <button class="mainBtns" ng-click="calcTTest()">t Test</button>
+    <button class="mainBtns" ng-click="calcAnova()">ANOVA</button>
   </div>
   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
     <div class="row">Enter # of Rows:
@@ -39,14 +40,14 @@
     <tr class="column-label">
       <td></td>
       <td class="fontForText" id="colTitleCell" ng-repeat="column in columns">
-        <button ng-class="{true: 'colBtnSelected', false: 'colBtn'}[colStrings[selectedCol]]" ng-click="selectCol(column)">{{column}}</button>
+        <button ng-class="{colBtnSelected: $index == selectCol}" ng-click="setSelectCol($index)">{{column}}</button>
       </td>
     </tr>
     <tr class="fontForText" ng-repeat="row in rows">
       <td class="row-label">{{row}}</td>
       <td class="cellContainer" ng-repeat="column in columns">
         <div class="fontForText">
-          <input class="inputCell" ng-model="cells[column+row]" >
+          <input class="inputCell" ng-model="cells['c' + column + 'r' + row]" >
           <div class="outputCell fontForText" ng-bind="computeCells(column+row)"></div>
         </div>
       </td>
