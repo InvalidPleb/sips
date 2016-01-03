@@ -236,6 +236,9 @@ angular.module('statscalcApp')
     var confidenceLevel;
     var indTEffectSize;
 
+
+
+
   	function add(a, b) {
     	return a + b;
 	  }
@@ -246,37 +249,23 @@ angular.module('statscalcApp')
   		cellsCounterY = 0;
 
 
+  		for (i=0; i <= ($scope.selectedColContain.length - 1); i++) {
 
-  		for (i=1; i <= $scope.selectedColContain.length; i++) {
-
-  			
+  			selectedColArr[i] = [];
 
   			for (j=1; j <= $scope.rows.length; j++) {
 
-  				if (isNaN(varCell['var' + $scope.selectedColContain[i] + 'r' + j]) === false) {
-
-  					selectedColArr[i] = [];
-  					
-  					selectedColArr[i].push(varCell['var' + $scope.selectedColContain[i] + 'r' + j]);
-  					
+  				if (isNaN(varCell['var' + $scope.selectedColContain[i] + 'r' + j]) === false && varCell['var' + $scope.selectedColContain[i] + 'r' + j] !== '') {
   				
+  					selectedColArr[i].push(varCell['var' + $scope.selectedColContain[i] + 'r' + j]);
 
   				}
   			}
 
-  			selectedColObj['var' + $scope.selectedColContain[i]] = selectedColArr[i];
-  			console.log(selectedColArr);
-
-
+  			selectedColObj[i] = selectedColArr[i];
   		}
 
-  		console.log(varCell);
-
-  		//varCell['var' + $scope.selectedColContain[i] + 'r' + i]
-
-
-
-
+  		console.log(selectedColObj);
 
 
 
