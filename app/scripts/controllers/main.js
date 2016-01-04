@@ -36,6 +36,8 @@ angular.module('statscalcApp')
 
     $scope.addCol = function(){
     	$scope.columns.push('var' + ($scope.columns.length + 1));
+    	console.log($scope.columns.length);
+
     };
 
     $scope.deleteRow = function() {
@@ -149,46 +151,11 @@ angular.module('statscalcApp')
 
   	};
 
-  	var varCell = $scope.cells;
-
   	
-  	var selectedColNum;
-  	$scope.selectedColContain = [];
-
-	$scope.selectCol = 0;
-
-  	$scope.setSelectCol = function(column) {
-
-  		/*
-  		$scope.selectedCol = 'selectedCol' + column;
-
-  		selectedColNum = parseInt(column.slice(3) - 1);
-
-  		$scope.colStrings = {};
-  		$scope.colStrings[$scope.selectedCol] = true;
-  		*/
-
-  		$scope.selectCol = column;
-
-
-  		if ($scope.selectedColContain.indexOf($scope.selectCol + 1) === -1) {
-
-  			$scope.selectedColContain.push($scope.selectCol + 1);
-
-  		} else {
-
-  			$scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
-  		}
-
-
-  		console.log($scope.selectedColContain);
-  		console.log($scope.cells);
-  	};
-
-
 
   	var selectedColObj = {};
   	var selectedColArr = [];
+
   	var cellsSquaredX = [];
   	var cellsSquaredY = [];
   	var cellsXY = [];
@@ -236,7 +203,43 @@ angular.module('statscalcApp')
     var confidenceLevel;
     var indTEffectSize;
 
+    var varCell = $scope.cells;
+  	var selectedColNum;
+  	$scope.selectedColContain = [];
+	$scope.selectCol = 0;
 
+	var arrIndex;
+
+  	$scope.setSelectCol = function(column) {
+
+  		/*
+  		$scope.selectedCol = 'selectedCol' + column;
+
+  		selectedColNum = parseInt(column.slice(3) - 1);
+
+  		$scope.colStrings = {};
+  		$scope.colStrings[$scope.selectedCol] = true;
+  		*/
+
+  		$scope.selectCol = column;
+
+
+  		if ($scope.selectedColContain.indexOf($scope.selectCol + 1) === -1) {
+
+  			$scope.selectedColContain.push($scope.selectCol + 1);
+
+  		} else {
+
+  			$scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
+  			console.log($scope.selectedColContain);
+  			delete selectedColObj[column + 1];
+  			console.log(selectedColObj);
+  		}
+
+
+  		
+
+  	};
 
 
   	function add(a, b) {
@@ -249,23 +252,69 @@ angular.module('statscalcApp')
   		cellsCounterY = 0;
 
 
-  		for (i=0; i <= ($scope.selectedColContain.length - 1); i++) {
+  		for (i=0; i <= $scope.columns.length; i++) {
 
-  			selectedColArr[i] = [];
+  			if ($scope.selectedColContain.indexOf(i) !== -1) {
 
-  			for (j=1; j <= $scope.rows.length; j++) {
+  				selectedColArr[i] = [];
+  
+	  			for (j=1; j <= $scope.rows.length; j++) {
 
-  				if (isNaN(varCell['var' + $scope.selectedColContain[i] + 'r' + j]) === false && varCell['var' + $scope.selectedColContain[i] + 'r' + j] !== '') {
-  				
-  					selectedColArr[i].push(varCell['var' + $scope.selectedColContain[i] + 'r' + j]);
+	  				arrIndex = $scope.selectedColContain.indexOf(i);
 
-  				}
+
+	  				if (isNaN(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]) === false && varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j] !== '') {
+	  				
+	  					selectedColArr[i].push(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]);
+	  				}
+
+
+	  			}
+
+	  			console.log(selectedColArr[i]);
+	  			
+
+	  
+
+	  			if (selectedColArr[i] !== undefined) {
+
+	  				selectedColObj[i] = selectedColArr[i];
+	  			}
+
+  			} else {
+
+
+
+
   			}
 
-  			selectedColObj[i] = selectedColArr[i];
+
+
+  			
+
+  			
+  			
+  			/*
+
+  			if (selectedColArr[i].length === 0) {
+
+  				delete selectedColObj.i;
+
+
+  				$scope.selectedColContain.splice($scope.selectedColContain.indexOf(selectedColObj[i]), 1);
+
+
+  			}
+
+  			*/
   		}
 
   		console.log(selectedColObj);
+
+  		
+
+
+  		
 
 
 
