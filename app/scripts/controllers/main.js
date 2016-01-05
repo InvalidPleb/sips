@@ -273,7 +273,7 @@ angular.module('statscalcApp')
 
 	  				if (isNaN(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]) === false && varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j] !== '') {
 	  				
-	  					selectedColArr[i].push(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]);
+	  					selectedColArr[i].push(parseFloat(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]));
 	  				}
 	  			}
 	  		
@@ -359,15 +359,7 @@ angular.module('statscalcApp')
 				cellsXY[i] = cellsSquaredX[i] * cellsSquaredY[i];
 				cellsDiff[i] = cellsSquaredX[i] - cellsSquaredY[i];
 				cellsDiffSquared[i] = Math.pow(cellsDiff[i], 2);
-				
 			}
-
-			console.log(cellsSquaredX);
-			console.log(cellsSquaredY);
-			console.log(cellsXY);
-			console.log(cellsDiff);
-			console.log(cellsDiffSquared);
-
 		}
 
 		numberSamplesX = col1Arr.length;
@@ -427,12 +419,15 @@ angular.module('statscalcApp')
 	   			chosenT = degreesFreedom[i - 1];
 	   			confidenceLevel = tDistributionTable.p[i - 1];
 	   			i = degreesFreedom.length;
+	   		} else {
+	   			chosenT = "P value is less than .0005";
 	   		}
 	   	}
 
 	   	indTEffectSize = Math.sqrt(Math.pow(indTScore, 2) / (Math.pow(indTScore, 2) + indDf));
 
 	   	console.log(chosenT);
+	   	console.log(indTScore);
 
 	   	// Dependent t Score 
 	   	
@@ -455,14 +450,11 @@ angular.module('statscalcApp')
 	   		}
 	   	}
 
-
 	   	console.log(chosenT);
 
   	};
 
   	$scope.calcAnova = function() {
-
-
 
 
 
