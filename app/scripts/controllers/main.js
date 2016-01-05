@@ -73,6 +73,10 @@ angular.module('statscalcApp')
           delete $scope.cells[cell];
         }
 
+        for (var dataArr in selectedColObj) {
+          delete selectedColObj[dataArr];
+        }
+
   		if ($scope.rows.length >= 15) {
 	  		for (i=15; i <= $scope.rows.length; i++) {
 		  		$scope.rows.splice(i);
@@ -94,6 +98,8 @@ angular.module('statscalcApp')
 
   		$scope.inputRows = '';
   		$scope.inputCols = '';
+  		$scope.selectedColContain = [];
+
   	};
 
   	/* need to update for single additions w/ button push */
@@ -244,7 +250,7 @@ angular.module('statscalcApp')
 
   	function add(a, b) {
     	return a + b;
-	  }
+	}
 
 	function parseData() {
 
@@ -262,28 +268,20 @@ angular.module('statscalcApp')
 
 	  				arrIndex = $scope.selectedColContain.indexOf(i);
 
-
 	  				if (isNaN(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]) === false && varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j] !== '') {
 	  				
 	  					selectedColArr[i].push(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]);
 	  				}
-
-
 	  			}
 
-	  			console.log(selectedColArr[i]);
-	  			
-
-	  
-
-	  			if (selectedColArr[i] !== undefined) {
+	  			console.log($scope.selectedColContain);
+	  		
+	  			if (selectedColArr[i].length > 0) {
 
 	  				selectedColObj[i] = selectedColArr[i];
 	  			}
 
   			} else {
-
-
 
 
   			}

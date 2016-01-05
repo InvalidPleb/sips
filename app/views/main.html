@@ -39,7 +39,7 @@
       </td>
     </tr>
     <tr class="fontForText" ng-repeat="row in rows">
-      <td class="row-label">{{row}}</td>
+      <td class="row-label"><span>{{row}}</span></td>
       <td class="cellContainer" ng-repeat="column in columns">
         <div class="fontForText">
           <input class="inputCell" ng-model="cells[column + 'r' + row]" >
