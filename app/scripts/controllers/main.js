@@ -27,7 +27,7 @@ angular.module('statscalcApp')
 
   	$scope.debugBtn = function() {
      
-      parseData();
+      parseSelectedData();
     };
 
     $scope.addRow = function() {
@@ -208,6 +208,9 @@ angular.module('statscalcApp')
     var chosenT;
     var confidenceLevel;
     var indTEffectSize;
+    var col1Arr;
+    var col2Arr;
+
 
     var varCell = $scope.cells;
   	var selectedColNum;
@@ -252,7 +255,7 @@ angular.module('statscalcApp')
     	return a + b;
 	}
 
-	function parseData() {
+	function parseSelectedData() {
 
 		cellsCounterX = 0;
   		cellsCounterY = 0;
@@ -273,50 +276,33 @@ angular.module('statscalcApp')
 	  					selectedColArr[i].push(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]);
 	  				}
 	  			}
-
-	  			console.log($scope.selectedColContain);
 	  		
 	  			if (selectedColArr[i].length > 0) {
 
 	  				selectedColObj[i] = selectedColArr[i];
+
+	  			} else {
+
+	  				//console.log("yo");
+
+	  				//$scope.selectedColArr.splice($scope.selectedColContain.indexOf(selectedColObj[i]), 1);
 	  			}
 
-  			} else {
+	  			
 
-
-  			}
-
-
-
-  			
-
-  			
-  			
-  			/*
-
-  			if (selectedColArr[i].length === 0) {
-
-  				delete selectedColObj.i;
-
-
-  				$scope.selectedColContain.splice($scope.selectedColContain.indexOf(selectedColObj[i]), 1);
-
+  				//delete selectedColObj.i;
+  				
+  				
+  				
 
   			}
+  			
+  			
 
-  			*/
+  			
+
+  			
   		}
-
-  		console.log(selectedColObj);
-
-  		
-
-
-  		
-
-
-
-
 
   		/*
 
@@ -358,15 +344,47 @@ angular.module('statscalcApp')
     	*/
 	}
 
+	function groupData() {
+
+		console.log(selectedColArr);
+		col1Arr = selectedColArr[$scope.selectedColContain[0]];
+		col2Arr = selectedColArr[$scope.selectedColContain[1]];
+
+		if (col1Arr.length === col2Arr.length) {
+		
+			for (i=0; i < col1Arr.length; i++) {
+
+				cellsSquaredX[i] = Math.pow(col1Arr[i], 2);
+				cellsSquaredY[i] = Math.pow(col2Arr[i], 2);
+				cellsXY[i] = cellsSquaredX[i] * cellsSquaredY[i];
+				cellsDiff[i] = cellsSquaredX[i] - cellsSquaredY[i];
+				cellsDiffSquared[i] = Math.pow(cellsDiff[i], 2);
+				
+			}
+
+			console.log(cellsSquaredX);
+			console.log(cellsSquaredY);
+			console.log(cellsXY);
+			console.log(cellsDiff);
+			console.log(cellsDiffSquared);
+
+		}
+
+		numberSamplesX = col1Arr.length;
+		numberSamplesY = col2Arr.length;
+
+	}
+
   	$scope.calcTTest = function () {
 
-  		parseData();
+  		parseSelectedData();
+  		groupData();
 
-    	numberSamplesX = cellsCounterX;
-     	numberSamplesY = cellsCounterY;
+    	//numberSamplesX = cellsCounterX;
+     	//numberSamplesY = cellsCounterY;
 
-     	colXSum = colXArr.reduce(add, 0);
-      	colYSum = colYArr.reduce(add, 0);
+     	colXSum = col1Arr.reduce(add, 0);
+      	colYSum = col2Arr.reduce(add, 0);
       	cellsXYSum = cellsXY.reduce(add, 0);
   		cellsSquaredXSum = cellsSquaredX.reduce(add, 0);
   		cellsSquaredYSum = cellsSquaredY.reduce(add, 0);
@@ -413,9 +431,6 @@ angular.module('statscalcApp')
 	   	}
 
 	   	indTEffectSize = Math.sqrt(Math.pow(indTScore, 2) / (Math.pow(indTScore, 2) + indDf));
-	   	console.log(indTEffectSize);
-
-
 
 	   	console.log(chosenT);
 
