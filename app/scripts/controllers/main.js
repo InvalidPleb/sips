@@ -292,16 +292,8 @@ angular.module('statscalcApp')
 
   				//delete selectedColObj.i;
   				
-  				
-  				
-
   			}
-  			
-  			
-
-  			
-
-  			
+  		
   		}
 
   		/*
@@ -350,20 +342,29 @@ angular.module('statscalcApp')
 		col1Arr = selectedColArr[$scope.selectedColContain[0]];
 		col2Arr = selectedColArr[$scope.selectedColContain[1]];
 
-		if (col1Arr.length === col2Arr.length) {
-		
-			for (i=0; i < col1Arr.length; i++) {
+		if (col1Arr !== undefined && col2Arr !== undefined && col1Arr.length !== 0 && col2Arr.length !== 0) {
+			if (col1Arr.length === col2Arr.length) {
+			
+				for (i=0; i < col1Arr.length; i++) {
 
-				cellsSquaredX[i] = Math.pow(col1Arr[i], 2);
-				cellsSquaredY[i] = Math.pow(col2Arr[i], 2);
-				cellsXY[i] = cellsSquaredX[i] * cellsSquaredY[i];
-				cellsDiff[i] = cellsSquaredX[i] - cellsSquaredY[i];
-				cellsDiffSquared[i] = Math.pow(cellsDiff[i], 2);
+					cellsSquaredX[i] = Math.pow(col1Arr[i], 2);
+					cellsSquaredY[i] = Math.pow(col2Arr[i], 2);
+					cellsXY[i] = cellsSquaredX[i] * cellsSquaredY[i];
+					cellsDiff[i] = cellsSquaredX[i] - cellsSquaredY[i];
+					cellsDiffSquared[i] = Math.pow(cellsDiff[i], 2);
+				}
 			}
+
+
+			numberSamplesX = col1Arr.length;
+			numberSamplesY = col2Arr.length;
+
+		} else {
+
+			console.log("missing values in col1 or col2");
 		}
 
-		numberSamplesX = col1Arr.length;
-		numberSamplesY = col2Arr.length;
+		
 
 	}
 
@@ -372,85 +373,94 @@ angular.module('statscalcApp')
   		parseSelectedData();
   		groupData();
 
-    	//numberSamplesX = cellsCounterX;
-     	//numberSamplesY = cellsCounterY;
+  		console.log(col1Arr);
+		console.log(col2Arr);
 
-     	colXSum = col1Arr.reduce(add, 0);
-      	colYSum = col2Arr.reduce(add, 0);
-      	cellsXYSum = cellsXY.reduce(add, 0);
-  		cellsSquaredXSum = cellsSquaredX.reduce(add, 0);
-  		cellsSquaredYSum = cellsSquaredY.reduce(add, 0);
-  		cellsDiffSum = cellsDiff.reduce(add, 0);
-  		cellsDiffSquaredSum = cellsDiffSquared.reduce(add, 0);
+    	if (col1Arr !== undefined && col2Arr !== undefined && col1Arr.length !== 0 && col2Arr.length !== 0) {
 
-    	if (numberSamplesX === numberSamplesY) {
+	     	colXSum = col1Arr.reduce(add, 0);
+	      	colYSum = col2Arr.reduce(add, 0);
+	      	cellsXYSum = cellsXY.reduce(add, 0);
+	  		cellsSquaredXSum = cellsSquaredX.reduce(add, 0);
+	  		cellsSquaredYSum = cellsSquaredY.reduce(add, 0);
+	  		cellsDiffSum = cellsDiff.reduce(add, 0);
+	  		cellsDiffSquaredSum = cellsDiffSquared.reduce(add, 0);
 
-    		numberSamples = numberSamplesX;
-		    rScore1 = (numberSamples * cellsXYSum) - (colXSum * colYSum);
-		    rScore2 = (numberSamples * cellsSquaredXSum) - Math.pow(colXSum, 2);
-		    rScore3 = (numberSamples * cellsSquaredYSum) - Math.pow(colYSum, 2);
-		    rScore4 = Math.sqrt((rScore2 * rScore3));
-		    rScore = rScore1 / rScore4;
+	    	if (numberSamplesX === numberSamplesY) {
 
-    	} else {
-    		console.log("r needs equal groups?");
+	    		numberSamples = numberSamplesX;
+			    rScore1 = (numberSamples * cellsXYSum) - (colXSum * colYSum);
+			    rScore2 = (numberSamples * cellsSquaredXSum) - Math.pow(colXSum, 2);
+			    rScore3 = (numberSamples * cellsSquaredYSum) - Math.pow(colYSum, 2);
+			    rScore4 = Math.sqrt((rScore2 * rScore3));
+			    rScore = rScore1 / rScore4;
+
+	    	} else {
+	    		console.log("r needs equal groups?");
+	    	}
+
+	    	
+
+	    	// Independent t Score 
+	  
+		   	meanX = colXSum / numberSamplesX;
+		   	meanY = colYSum / numberSamplesY;
+
+		   	indTScore1 = meanX - meanY;
+		   	indTScore2 = cellsSquaredXSum - (Math.pow(colXSum, 2) / numberSamplesX);
+		   	indTScore3 = cellsSquaredYSum - (Math.pow(colYSum, 2) / numberSamplesY);
+		   	indTScore4 = (indTScore2 + indTScore3) / ((numberSamplesX + numberSamplesY) - 2);
+		   	indTScore5 = (1 / numberSamplesX) + (1 / numberSamplesY);
+		   	indTScore6 = Math.sqrt(indTScore4 * indTScore5);
+		   	indTScore = indTScore1 / indTScore6;
+		   	indDf = (numberSamplesX + numberSamplesY) - 2;
+
+		   	// needs to be iterated for nearest df if specific df is not in table
+
+		   	degreesFreedom = tDistributionTable['df' + indDf];
+
+		   	for (i=1; i < degreesFreedom.length; i++) {
+		   		if (degreesFreedom[i] > Math.abs(indTScore)) {
+		   			chosenT = degreesFreedom[i - 1];
+		   			confidenceLevel = tDistributionTable.p[i - 1];
+		   			i = degreesFreedom.length;
+		   		} else {
+		   			chosenT = "P value is less than .0005";
+		   		}
+		   	}
+
+		   	indTEffectSize = Math.sqrt(Math.pow(indTScore, 2) / (Math.pow(indTScore, 2) + indDf));
+
+		   	console.log(chosenT);
+		   	console.log(indTScore);
+
+		   	// Dependent t Score 
+		   	
+		   	depTScore1 = cellsDiffSum / numberSamples;
+		   	depTScore2 = cellsDiffSquaredSum - (Math.pow(cellsDiffSum, 2) / numberSamples);
+		   	depTScore3 = numberSamples * (numberSamples - 1);
+		   	depTScore4 = Math.sqrt(depTScore2 / depTScore3);
+		   	depTScore = depTScore1 / depTScore4;
+		   	depDf = numberSamples - 1;
+
+		   	console.log(depTScore);
+
+		   	for (i=1; i < degreesFreedom.length; i++) {
+
+		   		if (degreesFreedom[i] > Math.abs(depTScore)) {
+		   			chosenT = degreesFreedom[i - 1];
+		   			confidenceLevel = tDistributionTable.p[i - 1];
+		   			i = degreesFreedom.length;
+		   				   			
+		   		}
+		   	}
+
+		   	console.log(chosenT);
+
+	   	} else {
+
+    		console.log("missing values in col1 or col2");
     	}
-
-    	// Independent t Score 
-  
-	   	meanX = colXSum / numberSamplesX;
-	   	meanY = colYSum / numberSamplesY;
-
-	   	indTScore1 = meanX - meanY;
-	   	indTScore2 = cellsSquaredXSum - (Math.pow(colXSum, 2) / numberSamplesX);
-	   	indTScore3 = cellsSquaredYSum - (Math.pow(colYSum, 2) / numberSamplesY);
-	   	indTScore4 = (indTScore2 + indTScore3) / ((numberSamplesX + numberSamplesY) - 2);
-	   	indTScore5 = (1 / numberSamplesX) + (1 / numberSamplesY);
-	   	indTScore6 = Math.sqrt(indTScore4 * indTScore5);
-	   	indTScore = indTScore1 / indTScore6;
-	   	indDf = (numberSamplesX + numberSamplesY) - 2;
-
-	   	// needs to be iterated for nearest df if specific df is not in table
-
-	   	degreesFreedom = tDistributionTable['df' + indDf];
-
-	   	for (i=1; i < degreesFreedom.length; i++) {
-	   		if (degreesFreedom[i] > Math.abs(indTScore)) {
-	   			chosenT = degreesFreedom[i - 1];
-	   			confidenceLevel = tDistributionTable.p[i - 1];
-	   			i = degreesFreedom.length;
-	   		} else {
-	   			chosenT = "P value is less than .0005";
-	   		}
-	   	}
-
-	   	indTEffectSize = Math.sqrt(Math.pow(indTScore, 2) / (Math.pow(indTScore, 2) + indDf));
-
-	   	console.log(chosenT);
-	   	console.log(indTScore);
-
-	   	// Dependent t Score 
-	   	
-	   	depTScore1 = cellsDiffSum / numberSamples;
-	   	depTScore2 = cellsDiffSquaredSum - (Math.pow(cellsDiffSum, 2) / numberSamples);
-	   	depTScore3 = numberSamples * (numberSamples - 1);
-	   	depTScore4 = Math.sqrt(depTScore2 / depTScore3);
-	   	depTScore = depTScore1 / depTScore4;
-	   	depDf = numberSamples - 1;
-
-	   	console.log(depTScore);
-
-	   	for (i=1; i < degreesFreedom.length; i++) {
-
-	   		if (degreesFreedom[i] > Math.abs(depTScore)) {
-	   			chosenT = degreesFreedom[i - 1];
-	   			confidenceLevel = tDistributionTable.p[i - 1];
-	   			i = degreesFreedom.length;
-	   				   			
-	   		}
-	   	}
-
-	   	console.log(chosenT);
 
   	};
 
