@@ -295,45 +295,6 @@ angular.module('statscalcApp')
   			}
   		
   		}
-
-  		/*
-
-  		for (i=1; i <= $scope.rows.length; i++) {
-
-  			if (isNaN(varCell['var' + i]) === false || isNaN(varCell['var2' + i]) === false) {
-
-  				if (isNaN(varCell['var1' + i]) === false && isNaN(varCell['var2' + i]) === true) {
-
-  					colXArr[i] = parseFloat(varCell['var1' + i]);
-  					cellsSquaredX[i] = Math.pow(varCell['var1' + i], 2);
-  					cellsCounterX += 1;
-  				
-  				} else if (isNaN(varCell['var2' + i]) === false && isNaN(varCell['var1' + i]) === true) {
-
-  					colYArr[i] = parseFloat(varCell['var2' + i]);
-  					cellsSquaredY[i] = Math.pow(varCell['var2' + i], 2);
-  					cellsCounterY += 1;
-  					
-  				} else if (isNaN(varCell['var1' + i]) === false && isNaN(varCell['var2' + i]) === false) {
-
-  					colXArr[i] = parseFloat(varCell['var1' + i]);
-  					colYArr[i] = parseFloat(varCell['var2' + i]);
-  					cellsSquaredX[i] = Math.pow(varCell['var1' + i], 2);
-  					cellsSquaredY[i] = Math.pow(varCell['var2' + i], 2);
-  				    cellsDiff[i] = parseFloat(varCell['var1' + i]) - parseFloat(varCell['var2' + i]);
-  				    cellsDiffSquared[i] =  Math.pow(cellsDiff[i], 2);
-  					cellsXY[i] = parseFloat(varCell['var1' + i]) * parseFloat(varCell['var2' + i]);
-  					cellsCounterX += 1;
-  					cellsCounterY += 1;
-  				}	
-      		
-    		} else {
-
-    			i = ($scope.rows.length + 1);
-    		}
-    	}
-
-    	*/
 	}
 
 	function groupData() {
