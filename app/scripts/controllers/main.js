@@ -221,15 +221,6 @@ angular.module('statscalcApp')
 
   	$scope.setSelectCol = function(column) {
 
-  		/*
-  		$scope.selectedCol = 'selectedCol' + column;
-
-  		selectedColNum = parseInt(column.slice(3) - 1);
-
-  		$scope.colStrings = {};
-  		$scope.colStrings[$scope.selectedCol] = true;
-  		*/
-
   		$scope.selectCol = column;
 
 
@@ -244,9 +235,6 @@ angular.module('statscalcApp')
   			delete selectedColObj[column + 1];
   			console.log(selectedColObj);
   		}
-
-
-  		
 
   	};
 
@@ -281,19 +269,8 @@ angular.module('statscalcApp')
 
 	  				selectedColObj[i] = selectedColArr[i];
 
-	  			} else {
-
-	  				//console.log("yo");
-
-	  				//$scope.selectedColArr.splice($scope.selectedColContain.indexOf(selectedColObj[i]), 1);
-	  			}
-
-	  			
-
-  				//delete selectedColObj.i;
-  				
+	  			} 
   			}
-  		
   		}
 	}
 
