@@ -28,6 +28,7 @@ angular.module('statscalcApp')
   	$scope.debugBtn = function() {
      
       parseSelectedData();
+      console.log(selectedColObj);
     };
 
     $scope.addRow = function() {
@@ -233,7 +234,7 @@ angular.module('statscalcApp')
   			$scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
   			console.log($scope.selectedColContain);
   			delete selectedColObj[column + 1];
-  			console.log(selectedColObj);
+  			
   		}
 
   	};
@@ -272,6 +273,8 @@ angular.module('statscalcApp')
 	  			} 
   			}
   		}
+
+  		console.log(selectedColArr);
 	}
 
 	function groupData() {

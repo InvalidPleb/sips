@@ -42,7 +42,11 @@ td { border: 1px solid #EEE; }
 /* input:focus + .outputCell { display: none; } */
 
 
+.spreadsheet-container {
+  position: relative;
+  right: 10%;
 
+}
 
 .mainBtns {
   width: 100px;
@@ -170,18 +174,18 @@ td { border: 1px solid #EEE; }
 
 .topFooter {
   width: 100%;
-  height: 100px;
+  height: 50px;
   background: #EDECE9;
   position: relative;
-  top: 200px;
 }
 
 .floatFooter {
   width: 50%;
   height: 200px;
   background: #4f4d3c;
-  left: 500px;
-  top: 150px;
+  bottom: 50px;
+  left: 25%;
+
   position: relative;
   z-index: 1;
 }
