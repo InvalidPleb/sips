@@ -23,8 +23,8 @@
         <input id="inputForCols" class="inputRowsCols form-control" ng-change="updateInputCols()" ng-model="inputCols">
         <button class="setTable mainBtns" ng-click="setTable()">Set Table</button>
         <p></p>
-        <select multiple class="form-control" ng-model="myselect" ng-options="option as option for option in selectedColArr">
-          <option></option>
+        <select multiple class="form-control" ng-model="allSelectedCols">
+          <option ng-repeat="options in selectedColContain">{{selectedColContain[$index]}}</option>
         </select>
       </div>
     </div>

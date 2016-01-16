@@ -28,7 +28,7 @@ angular.module('statscalcApp')
   	$scope.debugBtn = function() {
      
       parseSelectedData();
-      console.log(selectedColObj);
+      console.log($scope.selectedColContain);
     };
 
     $scope.addRow = function() {
@@ -216,7 +216,7 @@ angular.module('statscalcApp')
     var varCell = $scope.cells;
   	var selectedColNum;
   	$scope.selectedColContain = [];
-	$scope.selectCol = 0;
+	  $scope.selectCol = 0;
 
 	var arrIndex;
 
@@ -247,7 +247,7 @@ angular.module('statscalcApp')
 	function parseSelectedData() {
 
 		cellsCounterX = 0;
-  		cellsCounterY = 0;
+  	cellsCounterY = 0;
 
 
   		for (i=0; i <= $scope.columns.length; i++) {
@@ -315,13 +315,13 @@ angular.module('statscalcApp')
   		groupData();
 
   		console.log(col1Arr);
-		console.log(col2Arr);
+		  console.log(col2Arr);
 
     	if (col1Arr !== undefined && col2Arr !== undefined && col1Arr.length !== 0 && col2Arr.length !== 0) {
 
 	     	colXSum = col1Arr.reduce(add, 0);
-	      	colYSum = col2Arr.reduce(add, 0);
-	      	cellsXYSum = cellsXY.reduce(add, 0);
+	      colYSum = col2Arr.reduce(add, 0);
+	      cellsXYSum = cellsXY.reduce(add, 0);
 	  		cellsSquaredXSum = cellsSquaredX.reduce(add, 0);
 	  		cellsSquaredYSum = cellsSquaredY.reduce(add, 0);
 	  		cellsDiffSum = cellsDiff.reduce(add, 0);
