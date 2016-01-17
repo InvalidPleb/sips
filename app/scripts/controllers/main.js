@@ -218,7 +218,7 @@ angular.module('statscalcApp')
   	$scope.selectedColContain = [];
 	  $scope.selectCol = 0;
 
-	var arrIndex;
+	  var arrIndex;
 
   	$scope.setSelectCol = function(column) {
 
@@ -242,12 +242,12 @@ angular.module('statscalcApp')
 
   	function add(a, b) {
     	return a + b;
-	}
+	  }
 
-	function parseSelectedData() {
+	  function parseSelectedData() {
 
-		cellsCounterX = 0;
-  	cellsCounterY = 0;
+		  cellsCounterX = 0;
+  	  cellsCounterY = 0;
 
 
   		for (i=0; i <= $scope.columns.length; i++) {
@@ -273,41 +273,40 @@ angular.module('statscalcApp')
 	  			} 
   			}
   		}
+  	  console.log(selectedColArr);
+	  }
 
+	  function groupData() {
   		console.log(selectedColArr);
-	}
+  		col1Arr = selectedColArr[$scope.selectedColContain[0]];
+  		col2Arr = selectedColArr[$scope.selectedColContain[1]];
 
-	function groupData() {
+  		if (col1Arr !== undefined && col2Arr !== undefined && col1Arr.length !== 0 && col2Arr.length !== 0) {
+  			if (col1Arr.length === col2Arr.length) {
+  			
+  				for (i=0; i < col1Arr.length; i++) {
 
-		console.log(selectedColArr);
-		col1Arr = selectedColArr[$scope.selectedColContain[0]];
-		col2Arr = selectedColArr[$scope.selectedColContain[1]];
-
-		if (col1Arr !== undefined && col2Arr !== undefined && col1Arr.length !== 0 && col2Arr.length !== 0) {
-			if (col1Arr.length === col2Arr.length) {
-			
-				for (i=0; i < col1Arr.length; i++) {
-
-					cellsSquaredX[i] = Math.pow(col1Arr[i], 2);
-					cellsSquaredY[i] = Math.pow(col2Arr[i], 2);
-					cellsXY[i] = cellsSquaredX[i] * cellsSquaredY[i];
-					cellsDiff[i] = cellsSquaredX[i] - cellsSquaredY[i];
-					cellsDiffSquared[i] = Math.pow(cellsDiff[i], 2);
-				}
-			}
+  					cellsSquaredX[i] = Math.pow(col1Arr[i], 2);
+  					cellsSquaredY[i] = Math.pow(col2Arr[i], 2);
+  					cellsXY[i] = cellsSquaredX[i] * cellsSquaredY[i];
+  					cellsDiff[i] = cellsSquaredX[i] - cellsSquaredY[i];
+  					cellsDiffSquared[i] = Math.pow(cellsDiff[i], 2);
+  				}
+  			}
 
 
-			numberSamplesX = col1Arr.length;
-			numberSamplesY = col2Arr.length;
+  			numberSamplesX = col1Arr.length;
+  			numberSamplesY = col2Arr.length;
 
-		} else {
+  		} else {
 
-			console.log("missing values in col1 or col2");
-		}
+  			console.log("missing values in col1 or col2");
+  		}
+	  }
 
-		
-
-	}
+    $scope.varNaming = function() {
+      
+    }
 
   	$scope.calcTTest = function () {
 

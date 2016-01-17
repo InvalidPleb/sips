@@ -11,6 +11,7 @@
       <button class="mainBtns" type="button" value="debug" ng-click="debugBtn()">Debug</button>
       <button class="mainBtns" ng-click="calcTTest()">t Test</button>
       <button class="mainBtns" ng-click="calcAnova()">ANOVA</button>
+      <input class="varNaming form-control" ng-model="varName">
     </div>
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
       <div class="row">Enter # of Rows:
@@ -23,8 +24,8 @@
         <input id="inputForCols" class="inputRowsCols form-control" ng-change="updateInputCols()" ng-model="inputCols">
         <button class="setTable mainBtns" ng-click="setTable()">Set Table</button>
         <p></p>
-        <select multiple class="form-control" ng-model="allSelectedCols">
-          <option ng-repeat="options in selectedColContain">{{selectedColContain[$index]}}</option>
+        <select multiple class="varList form-control" ng-model="allSelectedCols">
+          <option ng-repeat="options in selectedColContain"><span ng-model="varListName">{{varName}}</span> {{selectedColContain[$index]}}</option>
         </select>
       </div>
     </div>
