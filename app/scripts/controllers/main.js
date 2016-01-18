@@ -306,7 +306,7 @@ angular.module('statscalcApp')
 
     $scope.varNaming = function() {
       
-    }
+    };
 
   	$scope.calcTTest = function () {
 
@@ -355,15 +355,44 @@ angular.module('statscalcApp')
 		   	indTScore = indTScore1 / indTScore6;
 		   	indDf = (numberSamplesX + numberSamplesY) - 2;
 
-		   	// needs to be iterated for nearest df if specific df is not in table
+        var tableDf = 0;
+        var tableKeys = Object.keys(tDistributionTable);
+		   	
+        if (indDf <= 30) {
 
-		   	degreesFreedom = tDistributionTable['df' + indDf];
+          degreesFreedom = tDistributionTable['df' + indDf];
+
+        } else if (indDf > 30 && indDf <= 1000) {
+
+          for (i=0; i <= (tableKeys.length - 2); i++) {
+
+            tableDf = tableKeys[i].substr(2);
+            
+            if (parseInt(tableDf) > indDf) {
+
+              console.log(tableDf);
+              console.log(indDf);
+
+              degreesFreedom = tDistributionTable[tableKeys[i - 1]];
+
+              i = (tableKeys.length - 2);
+            }
+          }
+        } else {
+          console.log("df is greater than 1000");
+        }
+
+        console.log(tableKeys);
+        console.log(degreesFreedom);
 
 		   	for (i=1; i < degreesFreedom.length; i++) {
+
 		   		if (degreesFreedom[i] > Math.abs(indTScore)) {
+
 		   			chosenT = degreesFreedom[i - 1];
 		   			confidenceLevel = tDistributionTable.p[i - 1];
 		   			i = degreesFreedom.length;
+
 		   		} else {
 		   			chosenT = "P value is less than .0005";
 		   		}
@@ -384,6 +413,8 @@ angular.module('statscalcApp')
 		   	depDf = numberSamples - 1;
 
 		   	console.log(depTScore);
+
+        // instead of copying new method, instead make function for both and call it here
 
 		   	for (i=1; i < degreesFreedom.length; i++) {
 
@@ -414,7 +445,6 @@ angular.module('statscalcApp')
 
   	var tDistributionTable = {
 
-  		p: [0.25, 0.20, 0.15, 0.10, 0.05, 0.025, 0.02, 0.01, 0.005, 0.0025, 0.001, 0.0005],
   		df1: [1.000, 1.376, 1.963, 3.078, 6.314, 12.71, 15.89, 31.82, 63.66, 127.3, 318.3, 636.6],
   		df2: [0.816, 1.061, 1.386, 1.886, 2.920, 4.303, 4.849, 6.965, 9.925, 14.09, 22.33, 31.60],
   		df3: [0.765, 0.978, 1.250, 1.638, 2.353, 3.182, 3.482, 4.541, 5.841, 7.453, 10.21, 12.92],
@@ -451,6 +481,7 @@ angular.module('statscalcApp')
   		df80: [0.678, 0.846, 1.043, 1.292, 1.664, 1.990, 2.088, 2.374, 2.639, 2.887, 3.195, 3.416],
   		df100: [0.677, 0.845, 1.042, 1.290, 1.660, 1.984, 2.081, 2.364, 2.626, 2.871, 3.174, 3.390],
   		df1000: [0.675, 0.842, 1.037, 1.282, 1.646, 1.962, 2.056, 2.330, 2.581, 2.813, 3.098, 3.300],
+      p: [0.25, 0.20, 0.15, 0.10, 0.05, 0.025, 0.02, 0.01, 0.005, 0.0025, 0.001, 0.0005],
   		z: [0.674, 0.841, 1.036, 1.282, 1.645, 1.960, 2.054, 2.326, 2.576, 2.807, 3.091, 3.291]
   	};
 
