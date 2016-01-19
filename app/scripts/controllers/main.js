@@ -162,7 +162,6 @@ angular.module('statscalcApp')
 
   	var selectedColObj = {};
   	var selectedColArr = [];
-
   	var cellsSquaredX = [];
   	var cellsSquaredY = [];
   	var cellsXY = [];
@@ -212,13 +211,11 @@ angular.module('statscalcApp')
     var col1Arr;
     var col2Arr;
 
-
     var varCell = $scope.cells;
   	var selectedColNum;
   	$scope.selectedColContain = [];
-	  $scope.selectCol = 0;
-
-	  var arrIndex;
+	$scope.selectCol = 0;
+	var arrIndex;
 
   	$scope.setSelectCol = function(column) {
 
@@ -242,13 +239,11 @@ angular.module('statscalcApp')
 
   	function add(a, b) {
     	return a + b;
-	  }
+	}
 
-	  function parseSelectedData() {
-
-		  cellsCounterX = 0;
-  	  cellsCounterY = 0;
-
+	function parseSelectedData() {
+		cellsCounterX = 0;
+		cellsCounterY = 0;
 
   		for (i=0; i <= $scope.columns.length; i++) {
 
@@ -273,11 +268,12 @@ angular.module('statscalcApp')
 	  			} 
   			}
   		}
-  	  console.log(selectedColArr);
-	  }
+  	  	console.log(selectedColArr);
+	}
 
-	  function groupData() {
-  		console.log(selectedColArr);
+	function groupData() {
+
+		console.log(selectedColArr);
   		col1Arr = selectedColArr[$scope.selectedColContain[0]];
   		col2Arr = selectedColArr[$scope.selectedColContain[1]];
 
@@ -302,10 +298,49 @@ angular.module('statscalcApp')
 
   			console.log("missing values in col1 or col2");
   		}
-	  }
+	}
 
     $scope.varNaming = function() {
       
+    };
+
+    var tLookup = function (df, tScore) {
+
+    	var tableDf = 0;
+	    var tableKeys = Object.keys(tDistributionTable);
+			   	
+       	if (df <= 30) {
+
+        degreesFreedom = tDistributionTable['df' + df];
+
+        } else if (df > 30 && df <= 1000) {
+
+        	for (i=0; i <= (tableKeys.length - 2); i++) {
+
+	            tableDf = tableKeys[i].substr(2);
+	            
+	            if (parseInt(tableDf) > indDf) {
+
+		            degreesFreedom = tDistributionTable[tableKeys[i - 1]];
+		            i = (tableKeys.length - 2);
+	            }
+          	}
+        } else {
+          console.error("df is greater than 1000");
+        }
+
+	   	for (i=1; i < degreesFreedom.length; i++) {
+
+	   		if (degreesFreedom[i] > Math.abs(tScore)) {
+
+	   			chosenT = degreesFreedom[i - 1];
+	   			confidenceLevel = tDistributionTable.p[i - 1];
+	   			i = degreesFreedom.length;
+
+	   		} else {
+	   			chosenT = "P value is less than .0005";
+	   		}
+	   	}
     };
 
   	$scope.calcTTest = function () {
@@ -313,14 +348,11 @@ angular.module('statscalcApp')
   		parseSelectedData();
   		groupData();
 
-  		console.log(col1Arr);
-		  console.log(col2Arr);
-
     	if (col1Arr !== undefined && col2Arr !== undefined && col1Arr.length !== 0 && col2Arr.length !== 0) {
 
 	     	colXSum = col1Arr.reduce(add, 0);
-	      colYSum = col2Arr.reduce(add, 0);
-	      cellsXYSum = cellsXY.reduce(add, 0);
+	      	colYSum = col2Arr.reduce(add, 0);
+	     	cellsXYSum = cellsXY.reduce(add, 0);
 	  		cellsSquaredXSum = cellsSquaredX.reduce(add, 0);
 	  		cellsSquaredYSum = cellsSquaredY.reduce(add, 0);
 	  		cellsDiffSum = cellsDiff.reduce(add, 0);
@@ -339,8 +371,6 @@ angular.module('statscalcApp')
 	    		console.log("r needs equal groups?");
 	    	}
 
-	    	
-
 	    	// Independent t Score 
 	  
 		   	meanX = colXSum / numberSamplesX;
@@ -355,49 +385,7 @@ angular.module('statscalcApp')
 		   	indTScore = indTScore1 / indTScore6;
 		   	indDf = (numberSamplesX + numberSamplesY) - 2;
 
-        var tableDf = 0;
-        var tableKeys = Object.keys(tDistributionTable);
-		   	
-        if (indDf <= 30) {
-
-          degreesFreedom = tDistributionTable['df' + indDf];
-
-        } else if (indDf > 30 && indDf <= 1000) {
-
-          for (i=0; i <= (tableKeys.length - 2); i++) {
-
-            tableDf = tableKeys[i].substr(2);
-            
-            if (parseInt(tableDf) > indDf) {
-
-              console.log(tableDf);
-              console.log(indDf);
-
-              degreesFreedom = tDistributionTable[tableKeys[i - 1]];
-
-              i = (tableKeys.length - 2);
-            }
-          }
-        } else {
-          console.log("df is greater than 1000");
-        }
-
-        console.log(tableKeys);
-        console.log(degreesFreedom);
-
-		   	for (i=1; i < degreesFreedom.length; i++) {
-
-		   		if (degreesFreedom[i] > Math.abs(indTScore)) {
-
-		   			chosenT = degreesFreedom[i - 1];
-		   			confidenceLevel = tDistributionTable.p[i - 1];
-		   			i = degreesFreedom.length;
-
-		   		} else {
-		   			chosenT = "P value is less than .0005";
-		   		}
-		   	}
-
+		   	tLookup(indDf, indTScore);
 		   	indTEffectSize = Math.sqrt(Math.pow(indTScore, 2) / (Math.pow(indTScore, 2) + indDf));
 
 		   	console.log(chosenT);
@@ -412,21 +400,10 @@ angular.module('statscalcApp')
 		   	depTScore = depTScore1 / depTScore4;
 		   	depDf = numberSamples - 1;
 
-		   	console.log(depTScore);
-
-        // instead of copying new method, instead make function for both and call it here
-
-		   	for (i=1; i < degreesFreedom.length; i++) {
-
-		   		if (degreesFreedom[i] > Math.abs(depTScore)) {
-		   			chosenT = degreesFreedom[i - 1];
-		   			confidenceLevel = tDistributionTable.p[i - 1];
-		   			i = degreesFreedom.length;
-		   				   			
-		   		}
-		   	}
-
+		   	tLookup(depDf, depTScore);
+		   	
 		   	console.log(chosenT);
+		   	console.log(depTScore);
 
 	   	} else {
 
@@ -484,6 +461,4 @@ angular.module('statscalcApp')
       p: [0.25, 0.20, 0.15, 0.10, 0.05, 0.025, 0.02, 0.01, 0.005, 0.0025, 0.001, 0.0005],
   		z: [0.674, 0.841, 1.036, 1.282, 1.645, 1.960, 2.054, 2.326, 2.576, 2.807, 3.091, 3.291]
   	};
-
-  	
 });
