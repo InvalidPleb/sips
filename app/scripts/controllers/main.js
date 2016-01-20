@@ -8,14 +8,23 @@
 angular.module('statscalcApp')
   .controller('MainCtrl', function ($scope, $parse) {
 
+  	// Declaring spreadsheet parts as arrays/objects
+
   	$scope.columns = ['var1'];
   	$scope.rows = [];
   	$scope.cells = {};
 
+  	// Iteration vars i & j
+
   	var i;
   	var j;
+
+  	// Default/starting number of rows/cols in spreadsheet
+   
   	var numRows = 15;
   	var numCols = 10;
+
+  	// Populating the rows and columns with empty cells
 
   	for (i=1; i <= numRows; i++) {
   		$scope.rows.push(i);
@@ -25,11 +34,15 @@ angular.module('statscalcApp')
   		$scope.columns.push('var' + i);
   	}
 
+  	// Button for debugging purposes. Will be hidden in release
+
   	$scope.debugBtn = function() {
-     
       parseSelectedData();
       console.log($scope.selectedColContain);
     };
+
+    // The following four functions iterate through the spreadsheet and 
+    // add and delete rows and cols on button push
 
     $scope.addRow = function() {
     	$scope.rows.push($scope.rows.length + 1);
@@ -60,15 +73,25 @@ angular.module('statscalcApp')
     	}
 
     };
+
+    // Function to automatically evaluate equations in cells
   	
   	$scope.computeCells = function(cell) {
     	return $parse($scope.cells[cell])($scope);
   	};
 
+
+  	// Clear button resets the spreadsheet back to default (as much as possible) 
+  	// so no refeshes are necessary
+
   	$scope.clearBtn = function() {
+
+  		// Declars length of row/col scope as shorter vars
 
   		numRows = parseInt($scope.rows.length);
   		numCols = parseInt($scope.columns.length);
+
+  		// Clears out $scope.cells and selectedColObj
 
         for (var cell in $scope.cells) {
           delete $scope.cells[cell];
@@ -77,6 +100,9 @@ angular.module('statscalcApp')
         for (var dataArr in selectedColObj) {
           delete selectedColObj[dataArr];
         }
+
+        // Iterates through spreadsheet and 
+        // deletes/adds cols/rows to reset to default
 
   		if ($scope.rows.length >= 15) {
 	  		for (i=15; i <= $scope.rows.length; i++) {
@@ -97,13 +123,15 @@ angular.module('statscalcApp')
   			}
   		}
 
+  		// Resets scopes
+
   		$scope.inputRows = '';
   		$scope.inputCols = '';
   		$scope.selectedColContain = [];
 
   	};
 
-  	/* need to update for single additions w/ button push */
+  	// Watches input and sets vars that are used in other functions
 
   	$scope.updateInputRows = function() {
 
@@ -115,14 +143,27 @@ angular.module('statscalcApp')
   		numCols = parseInt($scope.columns.length);
   	};
 
-  	var pushRows = 0;
-  	var pushCols = 0;
+
+
+  	// Sets the table to the rows/cols length specified in 
+  	// input fields
   	
   	$scope.setTable = function() {
 
+  		// Initially declaring pushRows + Cols as int
+
+  		var pushRows = 0;
+  		var pushCols = 0;
+
+  		// If the input field isn't empty ...
+
   		if ($scope.inputRows !== '' && $scope.inputRows !== undefined && $scope.inputRows !== 0) {
 
+  			// ... And if the input number is greater than the current row length ...
+
   			if ($scope.inputRows > $scope.rows.length) {
+
+  				// ... Then push the extra rows on top.
 
 	  			pushRows = $scope.inputRows - $scope.rows.length;
 	  			for (i = ($scope.rows.length + 1); i <= (numRows + pushRows); i++) {
@@ -130,6 +171,10 @@ angular.module('statscalcApp')
 	  			}
 
   			} else {
+
+  				// Else, if the input is less than the current row length,
+  				// iterate through the rows, deleting rows if they are over the
+  				// specified input.
 
   				pushRows = $scope.inputRows;
   				for (i = ($scope.rows.length); i >= (pushRows); i--) {
@@ -139,8 +184,15 @@ angular.module('statscalcApp')
   			}
   		}
 
+  		// If the input field isn't empty ...
+
   		if ($scope.inputCols !== '' && $scope.inputCols !== undefined && $scope.inputCols !== 0) {
+
+  			// ... And if the input is greater than the column length ...
+  			
   			if ($scope.inputCols > $scope.columns.length) {
+
+  				// ... Then push the extra cols on top.
 
 	  			pushCols = $scope.inputCols - $scope.columns.length;
 	  			for (i = ($scope.columns.length + 1); i <= (numCols + pushCols); i++) {
@@ -148,6 +200,10 @@ angular.module('statscalcApp')
 	  			}
 
   			} else {
+
+  				// Else, if the input is less than the current col length,
+  				// iterate through the cols, deleting cols if they are over the
+  				// specified input.
 
   				pushCols = $scope.inputCols;
   				for (i = ($scope.columns.length); i >= (pushCols); i--) {
@@ -158,8 +214,8 @@ angular.module('statscalcApp')
 
   	};
 
+  	// Declaring vars as arrays and objects as needed.
   	
-
   	var selectedColObj = {};
   	var selectedColArr = [];
   	var cellsSquaredX = [];
@@ -171,6 +227,15 @@ angular.module('statscalcApp')
   	var colYArr = [];
   	var cellsCounterX = 0;
   	var cellsCounterY = 0;
+  	var varCell = $scope.cells;
+  	var selectedColNum;
+
+  	$scope.selectedColContain = [];
+	$scope.selectCol = 0;
+
+  	// Declaring vars used in multiple functions. 
+  	// Will slim down / shift these inside functions eventually.
+
   	var colX;
     var colY;
     var colXSum;
@@ -210,17 +275,17 @@ angular.module('statscalcApp')
     var indTEffectSize;
     var col1Arr;
     var col2Arr;
-
-    var varCell = $scope.cells;
-  	var selectedColNum;
-  	$scope.selectedColContain = [];
-	$scope.selectCol = 0;
 	var arrIndex;
+
+
+	// Function that is called when a column is selected by the user
 
   	$scope.setSelectCol = function(column) {
 
   		$scope.selectCol = column;
 
+  		// If the column that was just clicked on is not currently inside
+  		// of the selected array, add it to the array. 
 
   		if ($scope.selectedColContain.indexOf($scope.selectCol + 1) === -1) {
 
@@ -228,38 +293,62 @@ angular.module('statscalcApp')
 
   		} else {
 
+  			// Else, remove it from the array and the object that mirrors that array.
+
   			$scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
-  			console.log($scope.selectedColContain);
   			delete selectedColObj[column + 1];
   			
   		}
 
   	};
 
+  	// Function for basic addition of two numbers
 
   	function add(a, b) {
     	return a + b;
 	}
 
+	// Function to group the data contained in the rows and cols
+	// into a useable format; an object of arrays.
+
 	function parseSelectedData() {
+
 		cellsCounterX = 0;
 		cellsCounterY = 0;
 
+		// Iterates through the cols ...
+
   		for (i=0; i <= $scope.columns.length; i++) {
+
+  			// ... and if the column is selected by the user ...
 
   			if ($scope.selectedColContain.indexOf(i) !== -1) {
 
+  				// ... an array is declared for the data inside of it.
+
   				selectedColArr[i] = [];
+
+  				// Iterates through the rows now... 
   
 	  			for (j=1; j <= $scope.rows.length; j++) {
 
+	  				// ... and declares a var to save the order in which the selected
+	  				// cols were clicked.
+
 	  				arrIndex = $scope.selectedColContain.indexOf(i);
 
+	  				// If the cell with the col(i),row(j) coordinates isn't empty ...
+
 	  				if (isNaN(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]) === false && varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j] !== '') {
-	  				
+	  					
+	  					// Add the data contained in the cell to the selected data array.
 	  					selectedColArr[i].push(parseFloat(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]));
 	  				}
 	  			}
+
+	  			// If the array for this selected column isn't empty, 
+	  			// then add it to the final data object. The obj
+	  			// ends up with a data array for each selected column.
 	  		
 	  			if (selectedColArr[i].length > 0) {
 
@@ -268,17 +357,32 @@ angular.module('statscalcApp')
 	  			} 
   			}
   		}
+
   	  	console.log(selectedColArr);
 	}
 
+	// Function to prepare data for calculation.
+	// This is called by every test/calc button.
+
 	function groupData() {
 
-		console.log(selectedColArr);
+		// Declares the cols to to be compared as the selected arrays.
+		
+		/* This needs to change to work with more than two cols */
+
   		col1Arr = selectedColArr[$scope.selectedColContain[0]];
   		col2Arr = selectedColArr[$scope.selectedColContain[1]];
 
+  		// If the selected cols are not empty ...
+
   		if (col1Arr !== undefined && col2Arr !== undefined && col1Arr.length !== 0 && col2Arr.length !== 0) {
+
+  			// ... and if the number of filled data in the columns are the same ... 
+
   			if (col1Arr.length === col2Arr.length) {
+
+  				// ... then iterate through one array and declare some
+  				// vars used for calculations.
   			
   				for (i=0; i < col1Arr.length; i++) {
 
@@ -290,7 +394,8 @@ angular.module('statscalcApp')
   				}
   			}
 
-
+  			// Declares n values 
+  		
   			numberSamplesX = col1Arr.length;
   			numberSamplesY = col2Arr.length;
 
@@ -300,55 +405,101 @@ angular.module('statscalcApp')
   		}
 	}
 
-    $scope.varNaming = function() {
+	$scope.varNaming = function() {
+
+
       
     };
 
-    var tLookup = function (df, tScore) {
+    // Function to find the proper critical value in
+    // the t table for the given calculation.
+    // This is called by the dep & ind t score calcs.
+
+    function tLookup (df, tScore) {
+
+    	// Declares vars for simplicity
 
     	var tableDf = 0;
 	    var tableKeys = Object.keys(tDistributionTable);
+
+	    // Because the t table doesn't have every df value 
+	    // between 1 and 1000, the df must be rounded down
+	    // to the nearest available value.
+	    
+	    // Df values under 30 are all available, but over
+	    // 30 the table begins incrementing by 10.
+	    
+	    // If the df is greater than 30 ...
 			   	
        	if (df <= 30) {
 
-        degreesFreedom = tDistributionTable['df' + df];
+       		// ... the df doesn't need to be rounded.
+
+        	degreesFreedom = tDistributionTable['df' + df];
+
+        // But if the df is greater ...
 
         } else if (df > 30 && df <= 1000) {
+
+        	// ... it iterates through the available df values ...
 
         	for (i=0; i <= (tableKeys.length - 2); i++) {
 
 	            tableDf = tableKeys[i].substr(2);
+
+	            // ... and if the table df is greater than the calculated df ...
 	            
-	            if (parseInt(tableDf) > indDf) {
+	            if (parseInt(tableDf) > df) {
+
+	            	// ... then declare an array with the critical values contained in that df key.
 
 		            degreesFreedom = tDistributionTable[tableKeys[i - 1]];
 		            i = (tableKeys.length - 2);
 	            }
           	}
         } else {
-          console.error("df is greater than 1000");
+
+        	// Throws error if df is greater than 1000 because t table does not offer it.
+        	
+          	console.error("df is greater than 1000");
         }
+
+        // Iterates through the just created array with the proper df critical values.
 
 	   	for (i=1; i < degreesFreedom.length; i++) {
 
+	   		// If the critical value is greater than the absolute value of the calculated tScore ...
+
 	   		if (degreesFreedom[i] > Math.abs(tScore)) {
+
+	   			// ... then select the previous critical value and declare a var for it.
 
 	   			chosenT = degreesFreedom[i - 1];
 	   			confidenceLevel = tDistributionTable.p[i - 1];
 	   			i = degreesFreedom.length;
 
 	   		} else {
+
+	   			// This means the p value is so significant that it isn't in the table.
 	   			chosenT = "P value is less than .0005";
 	   		}
 	   	}
-    };
+    }
 
-  	$scope.calcTTest = function () {
+    // Function to calc the independent t test.
+
+  	$scope.calcIndTTest = function () {
+
+  		// Calls previously defined functions to get data in useful format.
 
   		parseSelectedData();
   		groupData();
 
+  		// If the col arrays are not empty ...
+
     	if (col1Arr !== undefined && col2Arr !== undefined && col1Arr.length !== 0 && col2Arr.length !== 0) {
+
+    		// ... Sum, square, multiply and find the difference between the cols.
 
 	     	colXSum = col1Arr.reduce(add, 0);
 	      	colYSum = col2Arr.reduce(add, 0);
@@ -358,7 +509,11 @@ angular.module('statscalcApp')
 	  		cellsDiffSum = cellsDiff.reduce(add, 0);
 	  		cellsDiffSquaredSum = cellsDiffSquared.reduce(add, 0);
 
+	  		// If the n values are equal ...
+
 	    	if (numberSamplesX === numberSamplesY) {
+
+	    		// ... Calculate the r score.
 
 	    		numberSamples = numberSamplesX;
 			    rScore1 = (numberSamples * cellsXYSum) - (colXSum * colYSum);
@@ -371,7 +526,7 @@ angular.module('statscalcApp')
 	    		console.log("r needs equal groups?");
 	    	}
 
-	    	// Independent t Score 
+	    	// Independent t Score.
 	  
 		   	meanX = colXSum / numberSamplesX;
 		   	meanY = colYSum / numberSamplesY;
@@ -391,7 +546,27 @@ angular.module('statscalcApp')
 		   	console.log(chosenT);
 		   	console.log(indTScore);
 
-		   	// Dependent t Score 
+	   	} else {
+
+    		console.log("missing values in col1 or col2");
+    	}
+
+  	};
+
+  	// Function to calc the independent t test.
+
+  	$scope.calcDepTTest = function () {
+
+  		// Calls previously defined functions to get data in useful format.
+
+  		parseSelectedData();
+  		groupData();
+
+  		// If the col arrays are not empty ...
+
+  		if (col1Arr !== undefined && col2Arr !== undefined && col1Arr.length !== 0 && col2Arr.length !== 0) {
+
+	  		// Dependent t Score 
 		   	
 		   	depTScore1 = cellsDiffSum / numberSamples;
 		   	depTScore2 = cellsDiffSquaredSum - (Math.pow(cellsDiffSum, 2) / numberSamples);
@@ -405,20 +580,17 @@ angular.module('statscalcApp')
 		   	console.log(chosenT);
 		   	console.log(depTScore);
 
-	   	} else {
-
+		} else {
     		console.log("missing values in col1 or col2");
     	}
-
   	};
 
   	$scope.calcAnova = function() {
 
-
-
   	};
 
 
+  	// Student's T test critical values. 
 
   	var tDistributionTable = {
 
