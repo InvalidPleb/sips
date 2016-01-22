@@ -32,8 +32,9 @@ angular.module('statscalcApp')
 
   	// Button for debugging purposes. Will be hidden in release
   	$scope.debugBtn = function() {
-      parseSelectedData();
-      console.log($scope.selectedColContain);
+  		parseSelectedData();
+    	calcManyCols();
+      
     };
 
     // The following four functions iterate through the spreadsheet and 
@@ -201,10 +202,19 @@ angular.module('statscalcApp')
   	var cellsDiffSquared = [];
   	var colXArr = [];
   	var colYArr = [];
+  	var allCols = [];
+  	var arrCont = []; 
+  	var multiColArr = [];
+  	var colSums = [];
+  	var colNums = [];
+
+
+
   	var cellsCounterX = 0;
   	var cellsCounterY = 0;
   	var varCell = $scope.cells;
   	var selectedColNum;
+  	var emptyCols = true;
 
   	$scope.selectedColContain = [];
 	$scope.selectCol = 0;
@@ -251,7 +261,9 @@ angular.module('statscalcApp')
     var col1Arr;
     var col2Arr;
 	var arrIndex;
-	var emptyCols = true;
+	var grandMean;
+	
+	
 
 
 	// Function that is called when a column is selected by the user
@@ -431,7 +443,51 @@ angular.module('statscalcApp')
 	   	}
     }
 
-    function calcColumns () {
+    function calcManyCols () {
+
+    	allCols = [];
+    	arrCont = [];
+
+    	for (i=1; i < selectedColArr.length; i++) {
+
+    		arrCont = selectedColArr[i];
+    		multiColArr.push(arrCont);
+
+    		for (j=0; j < arrCont.length; j++) {
+
+    			allCols.push(arrCont[j])
+    		}
+    		
+    	}
+
+    	for (i=0; i < multiColArr.length; i++) {
+
+    		for (j=0; j < multiColArr[i].length; j++) {
+
+    			
+    		}
+
+    		colSums.push(multiColArr[i].reduce(add, 0));
+    		colNums.push(j)
+
+    	}
+
+    	console.log(colSums);
+    	console.log(colNums);
+
+
+
+    	grandMean = allCols.reduce(add, 0);
+
+
+    	
+
+    	
+
+
+    }
+
+    function calcTwoCols () {
 
     	if (col1Arr !== undefined && col2Arr !== undefined && col1Arr.length !== 0 && col2Arr.length !== 0) {
 
@@ -462,12 +518,11 @@ angular.module('statscalcApp')
 
     $scope.calcRScore = function () {
 
-    	calcColumns();
+    	calcTwoCols();
 
 		//-------- Pearson's r score calculation --------//
 		// Using hand calculation formula taken
 		// from this source: http://psc.dss.ucdavis.edu/sommerb/sommerdemo/correlation/hand/pearson_hand.htm
-		
 		
 	    rScore1 = (numberSamples * cellsXYSum) - (colXSum * colYSum);
 	    rScore2 = (numberSamples * cellsSquaredXSum) - Math.pow(colXSum, 2);
@@ -487,7 +542,7 @@ angular.module('statscalcApp')
 
   		parseSelectedData();
   		groupData();
-  		calcColumns();
+  		calcTwoCols();
 
   		// If the col arrays are not empty ...
   		if (emptyCols === false) {
@@ -576,6 +631,8 @@ angular.module('statscalcApp')
   	};
 
   	$scope.calcAnova = function() {
+
+  		SSTotal = 0;
 
   	};
 
