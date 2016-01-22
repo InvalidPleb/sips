@@ -251,6 +251,7 @@ angular.module('statscalcApp')
     var col1Arr;
     var col2Arr;
 	var arrIndex;
+	var emptyCols = true;
 
 
 	// Function that is called when a column is selected by the user
@@ -430,20 +431,11 @@ angular.module('statscalcApp')
 	   	}
     }
 
-    // Function to calc the independent t test
-
-  	$scope.calcIndTTest = function () {
-
-  		// Calls previously defined functions to get data in useful format.
-
-  		parseSelectedData();
-  		groupData();
-
-  		// If the col arrays are not empty ...
+    function calcColumns () {
 
     	if (col1Arr !== undefined && col2Arr !== undefined && col1Arr.length !== 0 && col2Arr.length !== 0) {
 
-    		// ... Sum, square, multiply and find the difference between the cols.
+	    	// ... Sum, square, multiply and find the difference between the cols.
 	     	colXSum = col1Arr.reduce(add, 0);
 	      	colYSum = col2Arr.reduce(add, 0);
 	     	cellsXYSum = cellsXY.reduce(add, 0);
@@ -452,24 +444,53 @@ angular.module('statscalcApp')
 	  		cellsDiffSum = cellsDiff.reduce(add, 0);
 	  		cellsDiffSquaredSum = cellsDiffSquared.reduce(add, 0);
 
-	  		// If the n values are equal ...
-	    	if (numberSamplesX === numberSamplesY) {
+	  		// Var to track if the columns are empty or filled
+	  		emptyCols = false;
 
-	    		//-------- Pearson's r score calculation --------//
-	    		// Using hand calculation formula taken
-	    		// from this source: http://psc.dss.ucdavis.edu/sommerb/sommerdemo/correlation/hand/pearson_hand.htm
-	    		
-	    		
-	    		numberSamples = numberSamplesX;
-			    rScore1 = (numberSamples * cellsXYSum) - (colXSum * colYSum);
-			    rScore2 = (numberSamples * cellsSquaredXSum) - Math.pow(colXSum, 2);
-			    rScore3 = (numberSamples * cellsSquaredYSum) - Math.pow(colYSum, 2);
-			    rScore4 = Math.sqrt((rScore2 * rScore3));
-			    rScore = rScore1 / rScore4;
+	  		// If the n values are equal let's just use one var
+	  		if (numberSamplesX === numberSamplesY) {
+	  			numberSamples = numberSamplesX;
+	  		} else {
+    			console.log("different group sizes");
+    		}
 
-	    	} else {
-	    		console.log("r needs equal groups?");
-	    	}
+  		} else {
+    		console.log("missing values in col1 or col2");
+    	}
+
+    }
+
+    $scope.calcRScore = function () {
+
+    	calcColumns();
+
+		//-------- Pearson's r score calculation --------//
+		// Using hand calculation formula taken
+		// from this source: http://psc.dss.ucdavis.edu/sommerb/sommerdemo/correlation/hand/pearson_hand.htm
+		
+		
+	    rScore1 = (numberSamples * cellsXYSum) - (colXSum * colYSum);
+	    rScore2 = (numberSamples * cellsSquaredXSum) - Math.pow(colXSum, 2);
+	    rScore3 = (numberSamples * cellsSquaredYSum) - Math.pow(colYSum, 2);
+	    rScore4 = Math.sqrt((rScore2 * rScore3));
+	    rScore = rScore1 / rScore4;
+
+    	
+
+    };
+
+    // Function to calc the independent t test
+
+  	$scope.calcIndTTest = function () {
+
+  		// Calls previously defined functions to get data in useful format.
+
+  		parseSelectedData();
+  		groupData();
+  		calcColumns();
+
+  		// If the col arrays are not empty ...
+  		if (emptyCols === false) {
 
 	    	//--------- Independent t Score calculation ---------// 
 	    	
@@ -506,10 +527,8 @@ angular.module('statscalcApp')
 		   	console.log(indTScore);
 
 	   	} else {
-
-    		console.log("missing values in col1 or col2");
-    	}
-
+	   		console.log("missing values in col1 or col2");
+	   	}
   	};
 
   	// Function to calc the dependent t test.
@@ -520,10 +539,12 @@ angular.module('statscalcApp')
 
   		parseSelectedData();
   		groupData();
+  		calcColumns();
 
   		// If the col arrays are not empty ...
+  		
 
-  		if (col1Arr !== undefined && col2Arr !== undefined && col1Arr.length !== 0 && col2Arr.length !== 0) {
+  		if (emptyCols === false) {
 
 	  		//--------- Dependent t Score calculation ---------// 
 	  		// Using hand calculation formula taken
