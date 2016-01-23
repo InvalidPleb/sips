@@ -32,7 +32,7 @@ angular.module('statscalcApp')
 
   	// Button for debugging purposes. Will be hidden in release
   	$scope.debugBtn = function() {
-  		parseSelectedData();
+  		
     	calcManyCols();
       
     };
@@ -207,6 +207,9 @@ angular.module('statscalcApp')
   	var multiColArr = [];
   	var colSums = [];
   	var colNums = [];
+  	var colMeans = [];
+  	var SSTotalArr = [];
+  	var SSBetweenArr = [];
 
 
 
@@ -262,6 +265,10 @@ angular.module('statscalcApp')
     var col2Arr;
 	var arrIndex;
 	var grandMean;
+	var grandSum;
+	var SSTotal;
+	var SSBetween;
+	var SSWithin;
 	
 	
 
@@ -445,43 +452,38 @@ angular.module('statscalcApp')
 
     function calcManyCols () {
 
-    	allCols = [];
-    	arrCont = [];
+    	parseSelectedData();
+
+    	allCols.length = 0;
+    	arrCont.length = 0;
+    	colSums.length = 0;
+    	colNums.length = 0;
+    	colMeans.length = 0;
+    	multiColArr.length = 0;
 
     	for (i=1; i < selectedColArr.length; i++) {
 
-    		arrCont = selectedColArr[i];
-    		multiColArr.push(arrCont);
+    		if (selectedColArr[i] !== undefined) {
 
-    		for (j=0; j < arrCont.length; j++) {
+	    		arrCont = selectedColArr[i];
+	    		multiColArr.push(arrCont);
 
-    			allCols.push(arrCont[j])
+	    		for (j=0; j < arrCont.length; j++) {
+
+	    			allCols.push(arrCont[j]);
+	    		}
     		}
-    		
     	}
 
     	for (i=0; i < multiColArr.length; i++) {
 
-    		for (j=0; j < multiColArr[i].length; j++) {
-
-    			
-    		}
-
     		colSums.push(multiColArr[i].reduce(add, 0));
-    		colNums.push(j)
-
+    		colNums.push(j);
+    		colMeans.push(colSums[i] / colNums[i]);
     	}
 
-    	console.log(colSums);
-    	console.log(colNums);
-
-
-
-    	grandMean = allCols.reduce(add, 0);
-
-
-    	
-
+    	grandSum = allCols.reduce(add, 0);
+    	grandMean = grandSum / allCols.length;
     	
 
 
@@ -594,11 +596,10 @@ angular.module('statscalcApp')
 
   		parseSelectedData();
   		groupData();
-  		calcColumns();
+  		calcTwoCols();
 
   		// If the col arrays are not empty ...
   		
-
   		if (emptyCols === false) {
 
 	  		//--------- Dependent t Score calculation ---------// 
@@ -632,7 +633,36 @@ angular.module('statscalcApp')
 
   	$scope.calcAnova = function() {
 
+  		parseSelectedData();
+  		groupData();
+  		calcManyCols();
+
+  		SSTotalArr.length = 0;
+  		SSBetweenArr.length = 0;
   		SSTotal = 0;
+  		SSBetween = 0;
+  		SSWithin = 0;
+
+  		for (i=0; i < allCols.length; i++) {
+
+  			SSTotalArr.push(Math.pow((allCols[i] - grandMean), 2));
+
+  		}
+
+  		SSTotal = SSTotalArr.reduce(add, 0);
+
+  		for (i=0; i < colMeans.length; i++) {
+
+  			SSBetweenArr.push(Math.pow((colMeans[i] - grandMean), 2));
+  		}
+
+  		SSBetween = SSBetweenArr.reduce(add, 0);
+
+  		
+
+
+
+
 
   	};
 
