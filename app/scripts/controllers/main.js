@@ -208,8 +208,8 @@ angular.module('statscalcApp')
   	var colSums = [];
   	var colNums = [];
   	var colMeans = [];
-  	var SSTotalArr = [];
-  	var SSBetweenArr = [];
+  	var colSquares = [];
+  	var oneSSTreatArr = [];
 
 
 
@@ -266,9 +266,13 @@ angular.module('statscalcApp')
 	var arrIndex;
 	var grandMean;
 	var grandSum;
-	var SSTotal;
-	var SSBetween;
-	var SSWithin;
+	var oneSSTotal;
+	var oneSSTreat;
+	var oneSSErr;
+	var oneCorrectionMean;
+	var oneMeanSqrTreat;
+  	var oneMeanSqrErr;
+  	var oneFScore;
 	
 	
 
@@ -459,6 +463,7 @@ angular.module('statscalcApp')
     	colSums.length = 0;
     	colNums.length = 0;
     	colMeans.length = 0;
+    	colSquares.length = 0;
     	multiColArr.length = 0;
 
     	for (i=1; i < selectedColArr.length; i++) {
@@ -480,12 +485,18 @@ angular.module('statscalcApp')
     		colSums.push(multiColArr[i].reduce(add, 0));
     		colNums.push(j);
     		colMeans.push(colSums[i] / colNums[i]);
+    		
+    	}
+
+    	for (i=0; i < allCols.length; i++) {
+
+    		colSquares.push(Math.pow(allCols[i], 2));
+    		
     	}
 
     	grandSum = allCols.reduce(add, 0);
     	grandMean = grandSum / allCols.length;
     	
-
 
     }
 
@@ -637,26 +648,40 @@ angular.module('statscalcApp')
   		groupData();
   		calcManyCols();
 
-  		SSTotalArr.length = 0;
-  		SSBetweenArr.length = 0;
-  		SSTotal = 0;
-  		SSBetween = 0;
-  		SSWithin = 0;
+  		oneSSTreatArr.length = 0;
+  		oneSSTotal = 0;
+  		oneSSTreat = 0;
+  		oneSSErr = 0;
+  		oneMeanSqrTreat = 0;
+  		oneMeanSqrErr = 0;
+  		oneFScore = 0;
+  		oneCorrectionMean = 0;
 
-  		for (i=0; i < allCols.length; i++) {
+  		for (i=0; i < multiColArr.length; i++) {
 
-  			SSTotalArr.push(Math.pow((allCols[i] - grandMean), 2));
-
+  			oneSSTreatArr.push(Math.pow(colSums[i], 2) / multiColArr[i].length);
   		}
 
-  		SSTotal = SSTotalArr.reduce(add, 0);
+  		oneCorrectionMean = Math.pow(allCols.reduce(add, 0), 2) / allCols.length;
+  		oneSSTotal = colSquares.reduce(add, 0) - oneCorrectionMean;
+  		oneSSTreat = oneSSTreatArr.reduce(add, 0) - oneCorrectionMean;
+  		oneSSErr = oneSSTotal - oneSSTreat;
 
-  		for (i=0; i < colMeans.length; i++) {
+  		oneMeanSqrTreat = oneSSTreat / (colSums.length - 1);
+  		oneMeanSqrErr = oneSSErr / (allCols.length - colSums.length);
 
-  			SSBetweenArr.push(Math.pow((colMeans[i] - grandMean), 2));
-  		}
+  		oneFScore = oneMeanSqrTreat / oneMeanSqrErr;
 
-  		SSBetween = SSBetweenArr.reduce(add, 0);
+  		console.log(colSquares.reduce(add, 0));
+  		
+  		console.log(oneFScore);
+  		
+
+
+
+
+
+
 
   		
 
