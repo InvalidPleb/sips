@@ -193,86 +193,85 @@ angular.module('statscalcApp')
   	};
 
   	// Declaring vars as arrays and objects as needed.
-  	var selectedColObj = {};
-  	var selectedColArr = [];
-  	var cellsSquaredX = [];
-  	var cellsSquaredY = [];
-  	var cellsXY = [];
-  	var cellsDiff = [];
-  	var cellsDiffSquared = [];
-  	var colXArr = [];
-  	var colYArr = [];
-  	var allCols = [];
-  	var arrCont = []; 
-  	var multiColArr = [];
-  	var colSums = [];
-  	var colNums = [];
-  	var colMeans = [];
-  	var colSquares = [];
-  	var oneSSTreatArr = [];
+  	var selectedColObj = {},
+        selectedColArr = [],
+        cellsSquaredX = [],
+        cellsSquaredY = [],
+        cellsXY = [],
+        cellsDiff = [],
+        cellsDiffSquared = [],
+        colXArr = [],
+        colYArr = [],
+        allCols = [],
+        arrCont = [],
+        multiColArr = [],
+        colSums = [],
+        colNums = [],
+        colMeans = [],
+        colSquares = [],
+        oneSSTreatArr = [];
 
 
 
   	var cellsCounterX = 0;
   	var cellsCounterY = 0;
   	var varCell = $scope.cells;
-  	var selectedColNum;
   	var emptyCols = true;
 
   	$scope.selectedColContain = [];
-	$scope.selectCol = 0;
+    $scope.selectCol = 0;
 
   	// Declaring vars used in multiple functions. 
-  	// Will slim down / shift these inside functions eventually.
-  	var colX;
-    var colY;
-    var colXSum;
-    var colYSum;
-    var cellsXYSum;
-    var cellsSquaredXSum;
-    var cellsSquaredYSum;
-    var cellsDiffSum;
-    var cellsDiffSquaredSum;
-  	var numberSamples;
-    var numberSamplesX;
-    var numberSamplesY;
-    var rScore;
-    var rScore1;
-    var rScore2;
-    var rScore3;
-    var rScore4;
-    var meanX;
-    var meanY;
-    var indTScore;
-  	var indTScore1;
-    var indTScore2;
-    var indTScore3;
-    var indTScore4;
-    var indTScore5;
-    var indTScore6;
-    var depTScore;
-    var depTScore1;
-    var depTScore2;
-    var depTScore3;
-  	var depTScore4;
-    var indDf;
-    var depDf;
-    var degreesFreedom;
-    var chosenT;
-    var confidenceLevel;
-    var indTEffectSize;
-    var col1Arr;
-    var col2Arr;
-	var arrIndex;
-	var grandMean;
-	var grandSum;
-	var oneSSTotal;
-	var oneSSTreat;
-	var oneSSErr;
-	var oneCorrectionMean;
-	var oneMeanSqrTreat;
-  	var oneMeanSqrErr;
-  	var oneFScore;
+  	var selectedColNum,
+        colX,
+        colY,
+        colXSum,
+        colYSum,
+        cellsXYSum,
+        cellsSquaredXSum,
+        cellsSquaredYSum,
+        cellsDiffSum,
+        cellsDiffSquaredSum,
+        numberSamples,
+        numberSamplesX,
+        numberSamplesY,
+        rScore,
+        rScore1,
+        rScore2,
+        rScore3,
+        rScore4,
+        meanX,
+        meanY,
+        indTScore,
+        indTScore1,
+        indTScore2,
+        indTScore3,
+        indTScore4,
+        indTScore5,
+        indTScore6,
+        depTScore,
+        depTScore1,
+        depTScore2,
+        depTScore3,
+        depTScore4,
+        indDf,
+        depDf,
+        degreesFreedom,
+        chosenT,
+        confidenceLevel,
+        indTEffectSize,
+        col1Arr,
+        col2Arr,
+        arrIndex,
+        grandMean,
+        grandSum,
+        oneSSTotal,
+        oneSSTreat,
+        oneSSErr,
+        oneCorrectionMean,
+        oneMeanSqrTreat,
+        oneMeanSqrErr,
+        oneFScore;
 	
 	
 
@@ -298,13 +297,13 @@ angular.module('statscalcApp')
 
   	};
 
-  	// Function for addition of two numbers
-  	function add(a, b) {
+  // Function for addition of two numbers
+  function add(a, b) {
     	return a + b;
 	}
 
 	// Function to group the data contained in the rows and cols
-	// into a useable format; an object of arrays.
+	// into a useable format: an object of arrays.
 	function parseSelectedData() {
 
 		cellsCounterX = 0;
@@ -319,7 +318,7 @@ angular.module('statscalcApp')
   				// ... an array is declared for the data inside of it.
   				selectedColArr[i] = [];
 
-  				// Iterates through the rows ... 
+  				// It then iterates through the rows ... 
 	  			for (j=1; j <= $scope.rows.length; j++) {
 
 	  				// ... and declares a var to save the order in which the selected
@@ -506,7 +505,7 @@ angular.module('statscalcApp')
 
 	    	// ... Sum, square, multiply and find the difference between the cols.
 	     	colXSum = col1Arr.reduce(add, 0);
-	      	colYSum = col2Arr.reduce(add, 0);
+	      colYSum = col2Arr.reduce(add, 0);
 	     	cellsXYSum = cellsXY.reduce(add, 0);
 	  		cellsSquaredXSum = cellsSquaredX.reduce(add, 0);
 	  		cellsSquaredYSum = cellsSquaredY.reduce(add, 0);
@@ -642,10 +641,8 @@ angular.module('statscalcApp')
     	}
   	};
 
-  	$scope.calcAnova = function() {
-
-  		parseSelectedData();
-  		groupData();
+  	$scope.calcOneAnova = function() {
+      
   		calcManyCols();
 
   		oneSSTreatArr.length = 0;
@@ -672,22 +669,12 @@ angular.module('statscalcApp')
 
   		oneFScore = oneMeanSqrTreat / oneMeanSqrErr;
 
-  		console.log(colSquares.reduce(add, 0));
-  		
-  		console.log(oneFScore);
-  		
+      console.log(oneFScore);
 
 
+  	};
 
-
-
-
-
-  		
-
-
-
-
+  	$scope.calcTwoAnova = function() {
 
   	};
 
@@ -731,7 +718,7 @@ angular.module('statscalcApp')
   		df80: [0.678, 0.846, 1.043, 1.292, 1.664, 1.990, 2.088, 2.374, 2.639, 2.887, 3.195, 3.416],
   		df100: [0.677, 0.845, 1.042, 1.290, 1.660, 1.984, 2.081, 2.364, 2.626, 2.871, 3.174, 3.390],
   		df1000: [0.675, 0.842, 1.037, 1.282, 1.646, 1.962, 2.056, 2.330, 2.581, 2.813, 3.098, 3.300],
-      p: [0.25, 0.20, 0.15, 0.10, 0.05, 0.025, 0.02, 0.01, 0.005, 0.0025, 0.001, 0.0005],
+      	p: [0.25, 0.20, 0.15, 0.10, 0.05, 0.025, 0.02, 0.01, 0.005, 0.0025, 0.001, 0.0005],
   		z: [0.674, 0.841, 1.036, 1.282, 1.645, 1.960, 2.054, 2.326, 2.576, 2.807, 3.091, 3.291]
   	};
 });
