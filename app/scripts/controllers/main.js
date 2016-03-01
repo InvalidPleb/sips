@@ -30,10 +30,18 @@ angular.module('statscalcApp')
   		$scope.columns.push('var' + i);
   	}
 
+    var counter1 = 1;
+
   	// Button for debugging purposes. Will be hidden in release
   	$scope.debugBtn = function() {
   		
-    	calcManyCols();
+      console.log($scope.selectedColContain);
+      console.log($scope.selectedColContain2);
+      console.log($scope.selectedColContain3);
+
+
+      console.log($scope.colButtonObj.color);
+
       
     };
 
@@ -219,6 +227,8 @@ angular.module('statscalcApp')
   	var emptyCols = true;
 
   	$scope.selectedColContain = [];
+    $scope.selectedColContain2 = [];
+    $scope.selectedColContain3 = [];
     $scope.selectCol = 0;
 
   	// Declaring vars used in multiple functions. 
@@ -276,7 +286,7 @@ angular.module('statscalcApp')
 
     $scope.colorSelectObj = {
 
-      group1Color: "colGroup1",
+      group1Select: "colGroup1",
       group2Color: "colGroup2",
       group3Color: "colGroup3"
 
@@ -287,8 +297,6 @@ angular.module('statscalcApp')
       color: "colGroup1($index)"
 
     };
-
-
 
 
   	$scope.colGroup1 = function(column) {
@@ -306,22 +314,26 @@ angular.module('statscalcApp')
   			
   		}
 
+      console.log("grn");
+
   	};
 
     $scope.colGroup2 = function(column) {
 
       $scope.selectCol = column;
 
-      if ($scope.selectedColContain.indexOf($scope.selectCol + 1) === -1) {
+      if ($scope.selectedColContain2.indexOf($scope.selectCol + 1) === -1) {
 
-        $scope.selectedColContain.push($scope.selectCol + 1);
+        $scope.selectedColContain2.push($scope.selectCol + 1);
 
       } else {
 
-        $scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
+        $scope.selectedColContain2.splice($scope.selectedColContain2.indexOf($scope.selectCol + 1), 1);
         delete selectedColObj[column + 1];
         
       }
+
+      console.log("red");
 
     };
 
@@ -329,111 +341,136 @@ angular.module('statscalcApp')
 
       $scope.selectCol = column;
 
-      if ($scope.selectedColContain.indexOf($scope.selectCol + 1) === -1) {
+      if ($scope.selectedColContain3.indexOf($scope.selectCol + 1) === -1) {
 
-        $scope.selectedColContain.push($scope.selectCol + 1);
+        $scope.selectedColContain3.push($scope.selectCol + 1);
 
       } else {
 
-        $scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
+        $scope.selectedColContain3.splice($scope.selectedColContain3.indexOf($scope.selectCol + 1), 1);
         delete selectedColObj[column + 1];
         
       }
 
+      console.log("blue");
+
     };
 
-  // Function for addition of two numbers
-  function add(a, b) {
-    	return a + b;
-	}
+    $scope.colorCheck = "grp1";
 
-	// Function to group the data contained in the rows and cols
-	// into a useable format: an object of arrays.
-	function parseSelectedData() {
+    $scope.updateColorCheck = function() {
 
-		cellsCounterX = 0;
-		cellsCounterY = 0;
+      if ($scope.colorCheck === "grp1") {
 
-		// Iterates through the cols ...
-  		for (i=0; i <= $scope.columns.length; i++) {
+        $scope.colButtonObj.color = "colGroup1($index)";
 
-  			// ... and if the column is selected by the user ...
-  			if ($scope.selectedColContain.indexOf(i) !== -1) {
+      } else if ($scope.colorCheck === "grp2") {
 
-  				// ... an array is declared for the data inside of it.
-  				selectedColArr[i] = [];
+        $scope.colButtonObj.color = "colGroup2($index)";
 
-  				// It then iterates through the rows ... 
-	  			for (j=1; j <= $scope.rows.length; j++) {
+      } else if ($scope.colorCheck === "grp3") {
 
-	  				// ... and declares a var to save the order in which the selected
-	  				// cols were clicked.
-	  				arrIndex = $scope.selectedColContain.indexOf(i);
+        $scope.colButtonObj.color = "colGroup3($index)";
 
-	  				// If the cell with the col(i),row(j) coordinates isn't empty ...
-	  				if (isNaN(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]) === false && varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j] !== '') {
-	  					
-	  					// ... add the data contained in the cell to the selected data array.
-	  					selectedColArr[i].push(parseFloat(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]));
-	  				}
-	  			}
-
-	  			// If the array for this selected column (i) isn't empty, 
-	  			// then add it to the final data object. The obj
-	  			// ends up with a data array for each selected column.
-	  			if (selectedColArr[i].length > 0) {
-	  				selectedColObj[i] = selectedColArr[i];
-	  			} 
-  			}
-  		}
-
-  	  	console.log(selectedColArr);
-	}
-
-	// Function to prepare data for calculation.
-	// This is called by every test/calc button.
-	function groupData() {
-
-		// Declares the cols to to be compared as the selected arrays.
-		
-		/* This needs to change to work with more than two cols */
-
-  		col1Arr = selectedColArr[$scope.selectedColContain[0]];
-  		col2Arr = selectedColArr[$scope.selectedColContain[1]];
-
-  		// If the selected cols are not empty ...
-  		if (col1Arr !== undefined && col2Arr !== undefined && col1Arr.length !== 0 && col2Arr.length !== 0) {
-
-  			// ... and if the number of filled data in the columns are the same ... 
-  			if (col1Arr.length === col2Arr.length) {
-
-  				// ... then iterate through one array and declare some
-  				// vars used for calculations.
-  				for (i=0; i < col1Arr.length; i++) {
-
-  					cellsSquaredX[i] = Math.pow(col1Arr[i], 2);
-  					cellsSquaredY[i] = Math.pow(col2Arr[i], 2);
-  					cellsXY[i] = cellsSquaredX[i] * cellsSquaredY[i];
-  					cellsDiff[i] = cellsSquaredX[i] - cellsSquaredY[i];
-  					cellsDiffSquared[i] = Math.pow(cellsDiff[i], 2);
-  				}
-  			}
-
-  			// Declares n values 
-  			numberSamplesX = col1Arr.length;
-  			numberSamplesY = col2Arr.length;
-
-  		} else {
-
-  			console.log("missing values in col1 or col2");
-  		}
-	}
-
-	$scope.varNaming = function() {
+      }
 
 
-      
-  };
+      console.log($scope.colButtonObj.color);
+
+    };
+
+    // Function for addition of two numbers
+    function add(a, b) {
+      	return a + b;
+  	}
+
+  	// Function to group the data contained in the rows and cols
+  	// into a useable format: an object of arrays.
+  	function parseSelectedData() {
+
+  		cellsCounterX = 0;
+  		cellsCounterY = 0;
+
+  		// Iterates through the cols ...
+    		for (i=0; i <= $scope.columns.length; i++) {
+
+    			// ... and if the column is selected by the user ...
+    			if ($scope.selectedColContain.indexOf(i) !== -1) {
+
+    				// ... an array is declared for the data inside of it.
+    				selectedColArr[i] = [];
+
+    				// It then iterates through the rows ... 
+  	  			for (j=1; j <= $scope.rows.length; j++) {
+
+  	  				// ... and declares a var to save the order in which the selected
+  	  				// cols were clicked.
+  	  				arrIndex = $scope.selectedColContain.indexOf(i);
+
+  	  				// If the cell with the col(i),row(j) coordinates isn't empty ...
+  	  				if (isNaN(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]) === false && varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j] !== '') {
+  	  					
+  	  					// ... add the data contained in the cell to the selected data array.
+  	  					selectedColArr[i].push(parseFloat(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]));
+  	  				}
+  	  			}
+
+  	  			// If the array for this selected column (i) isn't empty, 
+  	  			// then add it to the final data object. The obj
+  	  			// ends up with a data array for each selected column.
+  	  			if (selectedColArr[i].length > 0) {
+  	  				selectedColObj[i] = selectedColArr[i];
+  	  			} 
+    			}
+    		}
+
+    	  	console.log(selectedColArr);
+  	}
+
+  	// Function to prepare data for calculation.
+  	// This is called by every test/calc button.
+  	function groupData() {
+
+  		// Declares the cols to to be compared as the selected arrays.
+  		
+  		/* This needs to change to work with more than two cols */
+
+    		col1Arr = selectedColArr[$scope.selectedColContain[0]];
+    		col2Arr = selectedColArr[$scope.selectedColContain[1]];
+
+    		// If the selected cols are not empty ...
+    		if (col1Arr !== undefined && col2Arr !== undefined && col1Arr.length !== 0 && col2Arr.length !== 0) {
+
+    			// ... and if the number of filled data in the columns are the same ... 
+    			if (col1Arr.length === col2Arr.length) {
+
+    				// ... then iterate through one array and declare some
+    				// vars used for calculations.
+    				for (i=0; i < col1Arr.length; i++) {
+
+    					cellsSquaredX[i] = Math.pow(col1Arr[i], 2);
+    					cellsSquaredY[i] = Math.pow(col2Arr[i], 2);
+    					cellsXY[i] = cellsSquaredX[i] * cellsSquaredY[i];
+    					cellsDiff[i] = cellsSquaredX[i] - cellsSquaredY[i];
+    					cellsDiffSquared[i] = Math.pow(cellsDiff[i], 2);
+    				}
+    			}
+
+    			// Declares n values 
+    			numberSamplesX = col1Arr.length;
+    			numberSamplesY = col2Arr.length;
+
+    		} else {
+
+    			console.log("missing values in col1 or col2");
+    		}
+  	}
+
+  	$scope.varNaming = function() {
+
+
+        
+    };
 
     // Function to find the proper critical value in
     // the t table for the given calculation.
@@ -609,7 +646,7 @@ angular.module('statscalcApp')
 
     // Function to calc the independent t test
 
-  	$scope.calcIndTTest = function () {
+    $scope.calcIndTTest = function () {
 
   		// Calls previously defined functions to get data in useful format.
 

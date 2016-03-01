@@ -46,7 +46,7 @@
     <tr class="column-label">
       <td></td>
       <td class="fontForText" id="colTitleCell" ng-repeat="column in columns">
-        <button class="colBtn" ng-class="{colBtnSelected: selectedColContain.indexOf($index + 1) !== -1}" ng-click="{{colButtonObj.color}}">
+        <button class="colBtn" ng-class="{colBtnSelected1: selectedColContain.indexOf($index + 1) !== -1, colBtnSelected2: selectedColContain2.indexOf($index + 1) !== -1, colBtnSelected3: selectedColContain3.indexOf($index + 1) !== -1}" ng-click="{{colButtonObj.color}}">
           <span>{{column}}</span>
         </button>
       </td>
