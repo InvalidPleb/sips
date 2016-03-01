@@ -272,30 +272,75 @@ angular.module('statscalcApp')
         oneMeanSqrTreat,
         oneMeanSqrErr,
         oneFScore;
-	
-	
 
 
-	// Function that is called when a column is selected by the user
-  	$scope.setSelectCol = function(column) {
+    $scope.colorSelectObj = {
+
+      group1Color: "colGroup1",
+      group2Color: "colGroup2",
+      group3Color: "colGroup3"
+
+    };
+	
+	  $scope.colButtonObj = {
+
+      color: "colGroup1($index)"
+
+    };
+
+
+
+
+  	$scope.colGroup1 = function(column) {
 
   		$scope.selectCol = column;
 
-  		// If the column that was just clicked on is not currently inside
-  		// of the selected array, add it to the array. 
   		if ($scope.selectedColContain.indexOf($scope.selectCol + 1) === -1) {
 
   			$scope.selectedColContain.push($scope.selectCol + 1);
 
   		} else {
 
-  			// Else, remove it from the array and the object that mirrors that array.
   			$scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
   			delete selectedColObj[column + 1];
   			
   		}
 
   	};
+
+    $scope.colGroup2 = function(column) {
+
+      $scope.selectCol = column;
+
+      if ($scope.selectedColContain.indexOf($scope.selectCol + 1) === -1) {
+
+        $scope.selectedColContain.push($scope.selectCol + 1);
+
+      } else {
+
+        $scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
+        delete selectedColObj[column + 1];
+        
+      }
+
+    };
+
+    $scope.colGroup3 = function(column) {
+
+      $scope.selectCol = column;
+
+      if ($scope.selectedColContain.indexOf($scope.selectCol + 1) === -1) {
+
+        $scope.selectedColContain.push($scope.selectCol + 1);
+
+      } else {
+
+        $scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
+        delete selectedColObj[column + 1];
+        
+      }
+
+    };
 
   // Function for addition of two numbers
   function add(a, b) {
@@ -388,7 +433,7 @@ angular.module('statscalcApp')
 
 
       
-    };
+  };
 
     // Function to find the proper critical value in
     // the t table for the given calculation.
@@ -465,21 +510,32 @@ angular.module('statscalcApp')
     	colSquares.length = 0;
     	multiColArr.length = 0;
 
+      // Iterates through the array containing the selected columns.
     	for (i=1; i < selectedColArr.length; i++) {
 
     		if (selectedColArr[i] !== undefined) {
 
+          // A var is defined for ease of use.
 	    		arrCont = selectedColArr[i];
+
+          // And the current iteration is pushed to the final column container.
 	    		multiColArr.push(arrCont);
 
+
+          // Iterates through the individual selected columns ...
 	    		for (j=0; j < arrCont.length; j++) {
 
+            // ... and pushes the the individual scores in the cols to another array containing all values.
 	    			allCols.push(arrCont[j]);
 	    		}
     		}
     	}
 
+
+      // Iterates through the final column container
     	for (i=0; i < multiColArr.length; i++) {
+
+        // Defines values in individual arrays for access by formulas later.
 
     		colSums.push(multiColArr[i].reduce(add, 0));
     		colNums.push(j);
@@ -487,11 +543,16 @@ angular.module('statscalcApp')
     		
     	}
 
+      // Iterates through the array containing all values regardless of column.
     	for (i=0; i < allCols.length; i++) {
+
+        // And defines values in individual array for access by formulas later.
 
     		colSquares.push(Math.pow(allCols[i], 2));
     		
     	}
+
+      // Defining some more math vars used by formulas.
 
     	grandSum = allCols.reduce(add, 0);
     	grandMean = grandSum / allCols.length;
@@ -642,9 +703,11 @@ angular.module('statscalcApp')
   	};
 
   	$scope.calcOneAnova = function() {
-      
+
+      // Initially calling the function that prepares the selected columns for math.
   		calcManyCols();
 
+      // Clearing the vars for each click of the btn.
   		oneSSTreatArr.length = 0;
   		oneSSTotal = 0;
   		oneSSTreat = 0;
@@ -653,6 +716,7 @@ angular.module('statscalcApp')
   		oneMeanSqrErr = 0;
   		oneFScore = 0;
   		oneCorrectionMean = 0;
+
 
   		for (i=0; i < multiColArr.length; i++) {
 
@@ -675,6 +739,8 @@ angular.module('statscalcApp')
   	};
 
   	$scope.calcTwoAnova = function() {
+
+
 
   	};
 

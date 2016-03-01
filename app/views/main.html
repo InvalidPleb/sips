@@ -10,7 +10,17 @@
       <button class="mainBtns" type="button" value="debug" ng-click="debugBtn()">Debug</button>
       <button class="mainBtns" ng-click="calcIndTTest()">Ind t Test</button>
       <button class="mainBtns" ng-click="calcDepTTest()">Dep t Test</button>
-      <button class="mainBtns" ng-click="calcOneAnova()">ANOVA</button>
+      <button class="mainBtns" ng-click="calcOneAnova()">One ANOVA</button>
+      <label class="colGroup1" ng-class="{grp1: 'colGroup1 selectColorBorder', grp2: 'colGroup1', grp3: 'colGroup1'}[colorCheck]">
+            <input type="radio" class="pickColorRadio" ng-change="updateColorCheck()" ng-model="colorCheck" value="grp1" >
+      </label>
+      <label class="colGroup2" ng-class="{grp1: 'colGroup2', grp2: 'colGroup2 selectColorBorder', grp3: 'colGroup2'}[colorCheck]">
+            <input type="radio" class="pickColorRadio" ng-change="updateColorCheck()" ng-model="colorCheck" value="grp2" >
+      </label>
+      <label class="colGroup3" ng-class="{grp1: 'colGroup3', grp2: 'colGroup3', grp3: 'colGroup3 selectColorBorder'}[colorCheck]">
+            <input type="radio" class="pickColorRadio" ng-change="updateColorCheck()" ng-model="colorCheck" value="grp3" >
+      </label>
+      
       <input class="varNaming form-control" ng-model="varName">
     </div>
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -36,7 +46,7 @@
     <tr class="column-label">
       <td></td>
       <td class="fontForText" id="colTitleCell" ng-repeat="column in columns">
-        <button class="colBtn" ng-class="{colBtnSelected: selectedColContain.indexOf($index + 1) !== -1}" ng-click="setSelectCol($index)">
+        <button class="colBtn" ng-class="{colBtnSelected: selectedColContain.indexOf($index + 1) !== -1}" ng-click="{{colButtonObj.color}}">
           <span>{{column}}</span>
         </button>
       </td>

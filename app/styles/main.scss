@@ -77,6 +77,10 @@ td { border: 1px solid #EEE; }
   outline: 0;
 }
 
+
+
+
+
 .varNaming {
   position: relative;
   top: 10px;
@@ -211,12 +215,6 @@ td { border: 1px solid #EEE; }
   height: 10px;
 }
 
-
-
-
-
-
-
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -281,4 +279,75 @@ td { border: 1px solid #EEE; }
   .jumbotron {
     border-bottom: 0;
   }
+}
+
+
+
+
+
+.pickColorRadio {
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  
+}
+
+
+
+.colGroup1 {
+  width: 50px;
+  height: 25px;
+  background: #51c64f;
+  border-radius: 5px;
+  margin-top: 5px;
+  transition: all 0.15s cubic-bezier(0.27,1,1,0.9);
+  box-shadow: -1px 1px 5px 1px #888;
+  position: relative;
+  z-index: 1;
+
+}
+
+.colGroup2 {
+  width: 50px;
+  height: 25px;
+  background: #d71d06;
+  border-radius: 5px;
+  margin-top: 5px;
+  transition: all 0.15s cubic-bezier(0.27,1,1,0.9);
+  box-shadow: -1px 1px 5px 1px #888;
+  position: relative;
+  z-index: 1;
+}
+
+.colGroup3 {
+  width: 50px;
+  height: 25px;
+  background: #2820c9;
+  border-radius: 5px;
+  margin-top: 5px;
+  transition: all 0.15s cubic-bezier(0.27,1,1,0.9);
+  box-shadow: -1px 1px 5px 1px #888;
+  position: relative;
+  z-index: 1;
+
+}
+
+.selectColorBorder {
+  border: 1px solid #FFF;
+
+}
+
+.colGroup1:hover, .colGroup2:hover, .colGroup3:hover {
+  border: 1px solid #FFF;
+  cursor: pointer;
+}
+
+
+.colGroup1:active, .colGroup2:active, .colGroup3:active  {
+  background: #ffffff;
+  border: 1px solid white;
+}
+
+.colGroup1:focus {
+  outline: 0;
 }
