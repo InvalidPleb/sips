@@ -30,7 +30,6 @@ angular.module('statscalcApp')
   		$scope.columns.push('var' + i);
   	}
 
-    var counter1 = 1;
 
   	// Button for debugging purposes. Will be hidden in release
   	$scope.debugBtn = function() {
@@ -38,9 +37,6 @@ angular.module('statscalcApp')
       console.log($scope.selectedColContain);
       console.log($scope.selectedColContain2);
       console.log($scope.selectedColContain3);
-
-
-      console.log($scope.colButtonObj.color);
 
       
     };
@@ -125,6 +121,8 @@ angular.module('statscalcApp')
   		$scope.inputRows = '';
   		$scope.inputCols = '';
   		$scope.selectedColContain = [];
+      $scope.selectedColContain2 = [];
+      $scope.selectedColContain3 = [];
 
   	};
 
@@ -292,92 +290,119 @@ angular.module('statscalcApp')
 
     };
 	
-	  $scope.colButtonObj = {
-
-      color: "colGroup1($index)"
-
-    };
 
 
-  	$scope.colGroup1 = function(column) {
-
-  		$scope.selectCol = column;
-
-  		if ($scope.selectedColContain.indexOf($scope.selectCol + 1) === -1) {
-
-  			$scope.selectedColContain.push($scope.selectCol + 1);
-
-  		} else {
-
-  			$scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
-  			delete selectedColObj[column + 1];
-  			
-  		}
-
-      console.log("grn");
-
-  	};
-
-    $scope.colGroup2 = function(column) {
-
-      $scope.selectCol = column;
-
-      if ($scope.selectedColContain2.indexOf($scope.selectCol + 1) === -1) {
-
-        $scope.selectedColContain2.push($scope.selectCol + 1);
-
-      } else {
-
-        $scope.selectedColContain2.splice($scope.selectedColContain2.indexOf($scope.selectCol + 1), 1);
-        delete selectedColObj[column + 1];
-        
-      }
-
-      console.log("red");
-
-    };
-
-    $scope.colGroup3 = function(column) {
-
-      $scope.selectCol = column;
-
-      if ($scope.selectedColContain3.indexOf($scope.selectCol + 1) === -1) {
-
-        $scope.selectedColContain3.push($scope.selectCol + 1);
-
-      } else {
-
-        $scope.selectedColContain3.splice($scope.selectedColContain3.indexOf($scope.selectCol + 1), 1);
-        delete selectedColObj[column + 1];
-        
-      }
-
-      console.log("blue");
-
-    };
-
-    $scope.colorCheck = "grp1";
-
-    $scope.updateColorCheck = function() {
+    $scope.changeGroup = function(column) {
 
       if ($scope.colorCheck === "grp1") {
 
-        $scope.colButtonObj.color = "colGroup1($index)";
+        colGroup1(column);
 
       } else if ($scope.colorCheck === "grp2") {
 
-        $scope.colButtonObj.color = "colGroup2($index)";
+        colGroup2(column);
 
       } else if ($scope.colorCheck === "grp3") {
 
-        $scope.colButtonObj.color = "colGroup3($index)";
+        colGroup3(column);
 
       }
 
-
-      console.log($scope.colButtonObj.color);
-
     };
+
+  $scope.colorCheck = "grp1";
+
+
+  	function colGroup1(column) {
+
+      $scope.selectCol = column;
+
+  		if ($scope.selectedColContain.indexOf($scope.selectCol + 1) === -1 &&
+       $scope.selectedColContain2.indexOf($scope.selectCol + 1) === -1 &&
+       $scope.selectedColContain3.indexOf($scope.selectCol + 1) === -1) {
+  		  
+        $scope.selectedColContain.push($scope.selectCol + 1);
+        
+
+  		} else {
+
+        if ($scope.selectedColContain.indexOf($scope.selectCol + 1) !== -1) {
+
+          $scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
+
+        } else if ($scope.selectedColContain2.indexOf($scope.selectCol + 1) !== -1) {
+
+          $scope.selectedColContain2.splice($scope.selectedColContain2.indexOf($scope.selectCol + 1), 1);
+
+
+        } else if ( $scope.selectedColContain3.indexOf($scope.selectCol + 1) !== -1) {
+
+          $scope.selectedColContain3.splice($scope.selectedColContain3.indexOf($scope.selectCol + 1), 1);
+
+        }	
+  		}
+  	}
+
+    function colGroup2(column) {
+
+      $scope.selectCol = column;
+
+      if ($scope.selectedColContain.indexOf($scope.selectCol + 1) === -1 &&
+       $scope.selectedColContain2.indexOf($scope.selectCol + 1) === -1 &&
+       $scope.selectedColContain3.indexOf($scope.selectCol + 1) === -1) {
+        
+        $scope.selectedColContain2.push($scope.selectCol + 1);
+        
+
+      } else {
+
+        if ($scope.selectedColContain.indexOf($scope.selectCol + 1) !== -1) {
+
+          $scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
+
+        } else if ($scope.selectedColContain2.indexOf($scope.selectCol + 1) !== -1) {
+
+          $scope.selectedColContain2.splice($scope.selectedColContain2.indexOf($scope.selectCol + 1), 1);
+
+
+        } else if ( $scope.selectedColContain3.indexOf($scope.selectCol + 1) !== -1) {
+
+          $scope.selectedColContain3.splice($scope.selectedColContain3.indexOf($scope.selectCol + 1), 1);
+
+        } 
+      }
+    }
+
+    function colGroup3(column) {
+
+      $scope.selectCol = column;
+
+      if ($scope.selectedColContain.indexOf($scope.selectCol + 1) === -1 &&
+       $scope.selectedColContain2.indexOf($scope.selectCol + 1) === -1 &&
+       $scope.selectedColContain3.indexOf($scope.selectCol + 1) === -1) {
+        
+        $scope.selectedColContain3.push($scope.selectCol + 1);
+        
+
+      } else {
+
+        if ($scope.selectedColContain.indexOf($scope.selectCol + 1) !== -1) {
+
+          $scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
+
+        } else if ($scope.selectedColContain2.indexOf($scope.selectCol + 1) !== -1) {
+
+          $scope.selectedColContain2.splice($scope.selectedColContain2.indexOf($scope.selectCol + 1), 1);
+
+
+        } else if ( $scope.selectedColContain3.indexOf($scope.selectCol + 1) !== -1) {
+
+          $scope.selectedColContain3.splice($scope.selectedColContain3.indexOf($scope.selectCol + 1), 1);
+
+        } 
+      }
+    }
+
 
     // Function for addition of two numbers
     function add(a, b) {

@@ -21,7 +21,7 @@
             <input type="radio" class="pickColorRadio" ng-change="updateColorCheck()" ng-model="colorCheck" value="grp3" >
       </label>
       
-      <input class="varNaming form-control" ng-model="varName">
+      <!-- <input class="varNaming form-control" ng-model="varName"> -->
     </div>
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
       <div class="row">Enter # of Rows:
@@ -46,7 +46,7 @@
     <tr class="column-label">
       <td></td>
       <td class="fontForText" id="colTitleCell" ng-repeat="column in columns">
-        <button class="colBtn" ng-class="{colBtnSelected1: selectedColContain.indexOf($index + 1) !== -1, colBtnSelected2: selectedColContain2.indexOf($index + 1) !== -1, colBtnSelected3: selectedColContain3.indexOf($index + 1) !== -1}" ng-click="{{colButtonObj.color}}">
+        <button class="colBtn" ng-class="{colBtnSelected1: selectedColContain.indexOf($index + 1) !== -1, colBtnSelected2: selectedColContain2.indexOf($index + 1) !== -1, colBtnSelected3: selectedColContain3.indexOf($index + 1) !== -1}" ng-click="changeGroup($index)">
           <span>{{column}}</span>
         </button>
       </td>
