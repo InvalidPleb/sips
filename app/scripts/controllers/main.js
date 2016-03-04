@@ -201,6 +201,8 @@ angular.module('statscalcApp')
   	// Declaring vars as arrays and objects as needed.
   	var selectedColObj = {},
         selectedColArr = [],
+        selectedColArr2 = [],
+        selectedColArr3 = [],
         cellsSquaredX = [],
         cellsSquaredY = [],
         cellsXY = [],
@@ -409,6 +411,74 @@ angular.module('statscalcApp')
       	return a + b;
   	}
 
+
+    function parseSelectedData() {
+
+      for (i=0; i <= $scope.columns.length; i++) {
+
+        if ($scope.selectedColContain.indexOf(i) !== -1 ||
+          $scope.selectedColContain2.indexOf(i) !== -1 ||
+          $scope.selectedColContain3.indexOf(i) !== -1) {
+
+          if ($scope.selectedColContain.indexOf(i) !== -1) {
+
+            selectedColArr[i] = [];
+
+            for (j=1; j <= $scope.rows.length; j++) {
+
+              arrIndex = $scope.selectedColContain.indexOf(i);
+
+              if (isNaN(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]) === false && varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j] !== '') {
+
+                selectedColArr[i].push(parseFloat(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]));
+              }
+            }
+          } else if ($scope.selectedColContain2.indexOf(i) !== -1) {
+
+            selectedColArr2[i] = [];
+
+            for (j=1; j <= $scope.rows.length; j++) {
+
+              arrIndex = $scope.selectedColContain2.indexOf(i);
+
+              if (isNaN(varCell['var' + $scope.selectedColContain2[arrIndex] + 'r' + j]) === false && varCell['var' + $scope.selectedColContain2[arrIndex] + 'r' + j] !== '') {
+
+                selectedColArr2[i].push(parseFloat(varCell['var' + $scope.selectedColContain2[arrIndex] + 'r' + j]));
+              }
+            }
+            
+          } else if ($scope.selectedColContain3.indexOf(i) !== -1) {
+
+            selectedColArr3[i] = [];
+
+            for (j=1; j <= $scope.rows.length; j++) {
+
+              arrIndex = $scope.selectedColContain3.indexOf(i);
+
+              if (isNaN(varCell['var' + $scope.selectedColContain3[arrIndex] + 'r' + j]) === false && varCell['var' + $scope.selectedColContain3[arrIndex] + 'r' + j] !== '') {
+
+                selectedColArr3[i].push(parseFloat(varCell['var' + $scope.selectedColContain3[arrIndex] + 'r' + j]));
+              }
+            }
+            
+          }
+
+          
+
+        } else {
+
+
+
+        }
+
+      }
+
+      console.log(selectedColArr);
+          console.log(selectedColArr2);
+          console.log(selectedColArr3);
+    }
+    /*
+
   	// Function to group the data contained in the rows and cols
   	// into a useable format: an object of arrays.
   	function parseSelectedData() {
@@ -429,7 +499,7 @@ angular.module('statscalcApp')
   	  			for (j=1; j <= $scope.rows.length; j++) {
 
   	  				// ... and declares a var to save the order in which the selected
-  	  				// cols were clicked.
+  	  				// cols were clicked & to slim down the next line of code.
   	  				arrIndex = $scope.selectedColContain.indexOf(i);
 
   	  				// If the cell with the col(i),row(j) coordinates isn't empty ...
@@ -451,6 +521,8 @@ angular.module('statscalcApp')
 
     	  	console.log(selectedColArr);
   	}
+
+    */
 
   	// Function to prepare data for calculation.
   	// This is called by every test/calc button.
