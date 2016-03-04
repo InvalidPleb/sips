@@ -460,22 +460,16 @@ angular.module('statscalcApp')
                 selectedColArr3[i].push(parseFloat(varCell['var' + $scope.selectedColContain3[arrIndex] + 'r' + j]));
               }
             }
-            
           }
 
-          
-
         } else {
-
-
-
         }
 
       }
 
       console.log(selectedColArr);
-          console.log(selectedColArr2);
-          console.log(selectedColArr3);
+      console.log(selectedColArr2);
+      console.log(selectedColArr3);
     }
     /*
 
@@ -524,44 +518,6 @@ angular.module('statscalcApp')
 
     */
 
-  	// Function to prepare data for calculation.
-  	// This is called by every test/calc button.
-  	function groupData() {
-
-  		// Declares the cols to to be compared as the selected arrays.
-  		
-  		/* This needs to change to work with more than two cols */
-
-    		col1Arr = selectedColArr[$scope.selectedColContain[0]];
-    		col2Arr = selectedColArr[$scope.selectedColContain[1]];
-
-    		// If the selected cols are not empty ...
-    		if (col1Arr !== undefined && col2Arr !== undefined && col1Arr.length !== 0 && col2Arr.length !== 0) {
-
-    			// ... and if the number of filled data in the columns are the same ... 
-    			if (col1Arr.length === col2Arr.length) {
-
-    				// ... then iterate through one array and declare some
-    				// vars used for calculations.
-    				for (i=0; i < col1Arr.length; i++) {
-
-    					cellsSquaredX[i] = Math.pow(col1Arr[i], 2);
-    					cellsSquaredY[i] = Math.pow(col2Arr[i], 2);
-    					cellsXY[i] = cellsSquaredX[i] * cellsSquaredY[i];
-    					cellsDiff[i] = cellsSquaredX[i] - cellsSquaredY[i];
-    					cellsDiffSquared[i] = Math.pow(cellsDiff[i], 2);
-    				}
-    			}
-
-    			// Declares n values 
-    			numberSamplesX = col1Arr.length;
-    			numberSamplesY = col2Arr.length;
-
-    		} else {
-
-    			console.log("missing values in col1 or col2");
-    		}
-  	}
 
   	$scope.varNaming = function() {
 
@@ -632,9 +588,10 @@ angular.module('statscalcApp')
 	   	}
     }
 
+
     function calcManyCols () {
 
-    	parseSelectedData();
+      parseSelectedData();
 
     	allCols.length = 0;
     	arrCont.length = 0;
@@ -644,26 +601,63 @@ angular.module('statscalcApp')
     	colSquares.length = 0;
     	multiColArr.length = 0;
 
-      // Iterates through the array containing the selected columns.
-    	for (i=1; i < selectedColArr.length; i++) {
+      if (selectedColArr.length > 0) {
 
-    		if (selectedColArr[i] !== undefined) {
+        for (i=0; i < selectedColArr.length; i++) {
 
-          // A var is defined for ease of use.
-	    		arrCont = selectedColArr[i];
+          arrCont = selectedColArr[i];
 
-          // And the current iteration is pushed to the final column container.
-	    		multiColArr.push(arrCont);
+          for (j=0; j < arrCont.length; j++) {
+
+            allCols.push(arrCont[j]);
+          }
+      
+        }
 
 
-          // Iterates through the individual selected columns ...
-	    		for (j=0; j < arrCont.length; j++) {
+      } else {
 
-            // ... and pushes the the individual scores in the cols to another array containing all values.
-	    			allCols.push(arrCont[j]);
-	    		}
-    		}
-    	}
+
+      } 
+
+      if (selectedColArr2.length > 0) {
+
+        for (i=0; i < selectedColArr2.length; i++) {
+
+          arrCont = selectedColArr2[i];
+
+          for (j=0; j < arrCont.length; j++) {
+
+            allCols.push(arrCont[j]);
+          }
+      
+        }
+
+
+      } else {
+
+
+      }
+
+      if (selectedColArr3.length > 0) {
+
+        for (i=0; i < selectedColArr3.length; i++) {
+
+          arrCont = selectedColArr3[i];
+
+          for (j=0; j < arrCont.length; j++) {
+
+            allCols.push(arrCont[j]);
+          }
+      
+        }
+
+
+      } else {
+
+
+      }
+
 
 
       // Iterates through the final column container
@@ -707,9 +701,6 @@ angular.module('statscalcApp')
 	  		cellsDiffSum = cellsDiff.reduce(add, 0);
 	  		cellsDiffSquaredSum = cellsDiffSquared.reduce(add, 0);
 
-	  		// Var to track if the columns are empty or filled
-	  		emptyCols = false;
-
 	  		// If the n values are equal let's just use one var
 	  		if (numberSamplesX === numberSamplesY) {
 	  			numberSamples = numberSamplesX;
@@ -721,6 +712,43 @@ angular.module('statscalcApp')
     		console.log("missing values in col1 or col2");
     	}
 
+    }
+
+    function groupData() {
+
+      // Declares the cols to to be compared as the selected arrays.
+      
+      /* This needs to change to work with more than two cols */
+
+        col1Arr = selectedColArr[$scope.selectedColContain[0]];
+        col2Arr = selectedColArr[$scope.selectedColContain[1]];
+
+        // If the selected cols are not empty ...
+        if (col1Arr !== undefined && col2Arr !== undefined && col1Arr.length !== 0 && col2Arr.length !== 0) {
+
+          // ... and if the number of filled data in the columns are the same ... 
+          if (col1Arr.length === col2Arr.length) {
+
+            // ... then iterate through one array and declare some
+            // vars used for calculations.
+            for (i=0; i < col1Arr.length; i++) {
+
+              cellsSquaredX[i] = Math.pow(col1Arr[i], 2);
+              cellsSquaredY[i] = Math.pow(col2Arr[i], 2);
+              cellsXY[i] = cellsSquaredX[i] * cellsSquaredY[i];
+              cellsDiff[i] = cellsSquaredX[i] - cellsSquaredY[i];
+              cellsDiffSquared[i] = Math.pow(cellsDiff[i], 2);
+            }
+          }
+
+          // Declares n values 
+          numberSamplesX = col1Arr.length;
+          numberSamplesY = col2Arr.length;
+
+        } else {
+
+          console.log("missing values in col1 or col2");
+        }
     }
 
     $scope.calcRScore = function () {
