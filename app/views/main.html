@@ -15,15 +15,7 @@
             <li><a href="#/">ANOVA</a></li>
           </ul>
         </span>
-        <div class="btn-group">
-          <button class="btn btn-success" ng-click="addRow()">Add Row</button>
-          <button class="btn btn-danger" ng-click="deleteRow()">Delete Row</button>
-          
-        </div>
-        <div class="btn-group">
-          <button class="btn btn-success" ng-click="addCol()">Add Col</button> 
-          <button class="btn btn-danger" ng-click="deleteCol()">Delete Col</button>
-        </div>
+        
       </div>
       <br>
 
@@ -52,19 +44,30 @@
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <br>
+    
+    <div class="inline">
+      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+        Scale Table
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu menuSize menuContainer">
+        <li><span class="menuText">Enter # of Rows:</span><input id="inputForRows" class="inputRowsCols form-control" ng-change="updateInputRows()" ng-model="inputRows"></li>
+        <br>
+        <li><span class="menuText">Enter # of Cols:</span><input id="inputForCols" class="inputRowsCols form-control" ng-change="updateInputCols()" ng-model="inputCols"></li>
+        <li role="separator" class="divider"></li>
+        <li><button class="setTable mainBtns" ng-click="setTable()">Set Table</button></li>
+      </ul>
+    </div>
+    
     <span class="btn-group">
-          <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-            Scale Table
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu menuSize" aria-labelledby="dropdownMenu1">
-            <li>Enter # of Rows<input class="inputRowsCols form-control" ng-change="updateInputRows()" ng-model="inputRows"></li>
-            <li>Enter # of Cols:<input id="inputForCols" class="inputRowsCols form-control" ng-change="updateInputCols()" ng-model="inputCols"></li>
-            <li role="separator" class="divider"></li>
-            <li><button class="setTable mainBtns" ng-click="setTable()">Set Table</button></li>
-          </ul>
+      <button class="btn btn-success" ng-click="addRow()">Add Row</button>
+        <button class="btn btn-danger" ng-click="deleteRow()">Delete Row</button>
+      </span>
+      <span class="btn-group">
+        <button class="btn btn-success" ng-click="addCol()">Add Col</button> 
+        <button class="btn btn-danger" ng-click="deleteCol()">Delete Col</button>
+      </span>
     </span>
-    </div
     
   </thead>
   <tbody>

@@ -53,10 +53,7 @@ td { border: 1px solid #EEE; }
 
 }
 
-.menuSize {
-    width: 300px;
-    height: 100px;
-}
+
 
 .mainBtns {
   width: 100px;
@@ -96,7 +93,10 @@ td { border: 1px solid #EEE; }
 }
 
 
-
+.tableBody {
+  position: relative;
+  top: 25px;
+}
 
 
 .varNaming {
@@ -116,22 +116,37 @@ td { border: 1px solid #EEE; }
   padding: 0px;
 }
 
+.menuSize {
+    width: 300px;
+    height: 150px;
+}
+
+.menuContainer {
+
+  padding: 20px;
+}
+
 
 .inputRowsCols {
-  left: 170px;
+  left: 140px;
   width: 100px;
 }
 
 #inputCols {
-  margin-top: 20px;
+  margin-top: 0px;
 }
 
 #inputForCols {
-  top: 40px;
+  top: 55px;
+}
+
+#inputForRows {
+  bottom: 98px;
 }
 
 .setTable {
-  left: 140px;
+  left:20px;
+  width: 220px;
 }
 
 
