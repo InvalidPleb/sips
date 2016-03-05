@@ -45,6 +45,14 @@ td { border: 1px solid #EEE; }
 
 }
 
+.inline {
+  display: inline-block;
+}
+
+.btn-group { display: inline-block; 
+
+}
+
 .mainBtns {
   width: 100px;
   height: 25px;
@@ -75,6 +83,11 @@ td { border: 1px solid #EEE; }
 
 .mainBtns:focus, .colBtn:focus, .colBtnSelected:focus, .form-control {
   outline: 0;
+}
+
+.dropdownBtns {
+  width: 100%;
+
 }
 
 
