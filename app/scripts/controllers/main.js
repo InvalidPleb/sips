@@ -34,7 +34,7 @@ angular.module('statscalcApp')
   	// Button for debugging purposes. Will be hidden in release
   	$scope.debugBtn = function() {
 
-      parseSelectedData()
+      parseSelectedData();
   		
       console.log(selectedColObj);
       console.log(selectedColObj2);
@@ -334,18 +334,18 @@ angular.module('statscalcApp')
         if ($scope.selectedColContain.indexOf($scope.selectCol + 1) !== -1) {
 
           $scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
-          selectedColObj.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
+          delete selectedColObj[($scope.selectedColContain.indexOf($scope.selectCol + 1), 1)];
 
         } else if ($scope.selectedColContain2.indexOf($scope.selectCol + 1) !== -1) {
 
           $scope.selectedColContain2.splice($scope.selectedColContain2.indexOf($scope.selectCol + 1), 1);
-          selectedColObj2.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
+          delete selectedColObj2[($scope.selectedColContain.indexOf($scope.selectCol + 1), 1)];
 
 
         } else if ( $scope.selectedColContain3.indexOf($scope.selectCol + 1) !== -1) {
 
           $scope.selectedColContain3.splice($scope.selectedColContain3.indexOf($scope.selectCol + 1), 1);
-          selectedColObj3.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
+          delete selectedColObj3[($scope.selectedColContain.indexOf($scope.selectCol + 1), 1)];
 
         }	
   		}
@@ -368,19 +368,19 @@ angular.module('statscalcApp')
         if ($scope.selectedColContain.indexOf($scope.selectCol + 1) !== -1) {
 
           $scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
-          selectedColObj.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
+          delete selectedColObj[($scope.selectedColContain.indexOf($scope.selectCol + 1), 1)];
           
 
         } else if ($scope.selectedColContain2.indexOf($scope.selectCol + 1) !== -1) {
 
           $scope.selectedColContain2.splice($scope.selectedColContain2.indexOf($scope.selectCol + 1), 1);
-          selectedColObj2.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
+          delete selectedColObj2[($scope.selectedColContain.indexOf($scope.selectCol + 1), 1)];
 
 
         } else if ( $scope.selectedColContain3.indexOf($scope.selectCol + 1) !== -1) {
 
           $scope.selectedColContain3.splice($scope.selectedColContain3.indexOf($scope.selectCol + 1), 1);
-          selectedColObj3.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
+          delete selectedColObj3[($scope.selectedColContain.indexOf($scope.selectCol + 1), 1)];
 
         } 
       }
@@ -404,18 +404,18 @@ angular.module('statscalcApp')
         if ($scope.selectedColContain.indexOf($scope.selectCol + 1) !== -1) {
 
           $scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
-          selectedColObj.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
+          delete selectedColObj[($scope.selectedColContain.indexOf($scope.selectCol + 1), 1)];
 
         } else if ($scope.selectedColContain2.indexOf($scope.selectCol + 1) !== -1) {
 
           $scope.selectedColContain2.splice($scope.selectedColContain2.indexOf($scope.selectCol + 1), 1);
-          selectedColObj2.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
+          delete selectedColObj2[($scope.selectedColContain.indexOf($scope.selectCol + 1), 1)];
 
 
         } else if ( $scope.selectedColContain3.indexOf($scope.selectCol + 1) !== -1) {
 
           $scope.selectedColContain3.splice($scope.selectedColContain3.indexOf($scope.selectCol + 1), 1);
-          selectedColObj3.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
+          delete selectedColObj3[($scope.selectedColContain.indexOf($scope.selectCol + 1), 1)];
 
         } 
       }
@@ -447,8 +447,6 @@ angular.module('statscalcApp')
               if (isNaN(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]) === false && varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j] !== '') {
 
                 selectedColObj[i].push(parseFloat(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]));
-                console.log(selectedColObj);
-                console.log(selectedColObj[i]);
 
               }
             }
@@ -607,9 +605,8 @@ angular.module('statscalcApp')
         colArr2Empty,
         colArr3Empty;
 
-    function sortNumber(a,b) {
-      return a - b;
-    }
+
+    
 
 
     function calcManyCols () {
@@ -629,14 +626,26 @@ angular.module('statscalcApp')
       colArr2Empty = true;
       colArr3Empty = true;
 
+      Object.keys(selectedColObj).forEach(function(key) {
+
+        console.log(key, selectedColObj[key]);
+        
+      });
+
+
+
+
       if (selectedColObj.length > 0) {
         
         colArr1Empty = false;
 
         for (i=0; i < selectedColObj.length; i++) {
 
+          console.log(selectedColObj[i]);
+
           arrCont = selectedColObj[i];
           multiColArr.push(arrCont);
+
 
           for (j=0; j < arrCont.length; j++) {
 
@@ -681,8 +690,7 @@ angular.module('statscalcApp')
       } else {
       }
 
-      console.log(selectedColObj[0]);
-
+      
 
       // Iterates through the final column container
     	for (i=0; i < multiColArr.length; i++) {
