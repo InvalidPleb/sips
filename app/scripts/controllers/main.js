@@ -95,8 +95,18 @@ angular.module('statscalcApp')
         }
 
         for (var dataArr in selectedColObj) {
+          console.log(selectedColObj[dataArr]);
           delete selectedColObj[dataArr];
         }
+
+        for (dataArr in selectedColObj2) {
+          delete selectedColObj2[dataArr];
+        }
+        for (dataArr in selectedColObj3) {
+          delete selectedColObj3[dataArr];
+        }
+
+
 
         // Iterates through spreadsheet and 
         // deletes/adds cols/rows to reset to default
@@ -214,6 +224,7 @@ angular.module('statscalcApp')
         colYArr = [],
         allCols = [],
         arrCont = [],
+        valueArr = [],
         multiColArr = [],
         colSums = [],
         colNums = [],
@@ -626,71 +637,56 @@ angular.module('statscalcApp')
       colArr2Empty = true;
       colArr3Empty = true;
 
-      Object.keys(selectedColObj).forEach(function(key) {
+      if (selectedColObj.length > 0) {
 
-        console.log(key, selectedColObj[key]);
-        
-      });
+        Object.keys(selectedColObj).forEach(function(key) {
 
+          console.log(key, selectedColObj[key]);
 
+          valueArr = selectedColObj[key];
+          multiColArr.push(valueArr);
 
+          for (i=0; i < valueArr.length; i++) {
+
+            allCols.push(valueArr[i]);
+          }     
+        });
+      }
 
       if (selectedColObj.length > 0) {
-        
-        colArr1Empty = false;
+        Object.keys(selectedColObj2).forEach(function(key) {
 
-        for (i=0; i < selectedColObj.length; i++) {
+          console.log(key, selectedColObj2[key]);
 
-          console.log(selectedColObj[i]);
+          valueArr = selectedColObj2[key];
+          multiColArr.push(valueArr);
 
-          arrCont = selectedColObj[i];
-          multiColArr.push(arrCont);
+          for (i=0; i < valueArr.length; i++) {
 
+            allCols.push(valueArr[i]);
 
-          for (j=0; j < arrCont.length; j++) {
-
-            allCols.push(arrCont[j]);
           }
-        }
-      } else {
-      } 
-
-      if (selectedColObj2.length > 0) {
-
-        colArr2Empty = false;
-
-        for (i=0; i < selectedColObj2.length; i++) {
-
-          arrCont = selectedColObj2[i];
-          multiColArr.push(arrCont);
-
-          for (j=0; j < arrCont.length; j++) {
-
-            allCols.push(arrCont[j]);
-          }
-      
-        }
-      } else {
+        });
       }
 
-      if (selectedColObj3.length > 0) {
+      if (selectedColObj.length > 0) {
 
-        colArr3Empty = false;
+        Object.keys(selectedColObj3).forEach(function(key) {
 
-        for (i=0; i < selectedColObj3.length; i++) {
+          console.log(key, selectedColObj3[key]);
 
-          arrCont = selectedColObj3[i];
-          multiColArr.push(arrCont);
+          valueArr = selectedColObj3[key];
+          multiColArr.push(valueArr);
 
-          for (j=0; j < arrCont.length; j++) {
+          for (i=0; i < valueArr.length; i++) {
 
-            allCols.push(arrCont[j]);
-          }
-        }
-      } else {
+            allCols.push(valueArr[i]);
+          }  
+        });
       }
 
-      
+      console.log(allCols);
+      console.log(multiColArr);
 
       // Iterates through the final column container
     	for (i=0; i < multiColArr.length; i++) {
