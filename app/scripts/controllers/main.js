@@ -230,6 +230,18 @@ angular.module('statscalcApp')
         colNums = [],
         colMeans = [],
         colSquares = [],
+        group1Sums = [],
+        group1Nums = [],
+        group1Means = [],
+        group1Squares = [],
+        group2Sums = [],
+        group2Nums = [],
+        group2Means = [],
+        group2Squares = [],
+        group3Sums = [],
+        group3Nums = [],
+        group3Means = [],
+        group3Squares = [],
         oneSSTreatArr = [];
 
 
@@ -238,6 +250,7 @@ angular.module('statscalcApp')
   	var cellsCounterY = 0;
   	var varCell = $scope.cells;
   	var emptyCols = true;
+    var colContainer = [1,2,3];
 
   	$scope.selectedColContain = [];
     $scope.selectedColContain2 = [];
@@ -612,18 +625,14 @@ angular.module('statscalcApp')
 	   	}
     }
 
-    var colArr1Empty,
-        colArr2Empty,
-        colArr3Empty;
+    var numberCols = [];
 
 
     
 
 
     function calcManyCols () {
-
-
-
+      
       parseSelectedData();
 
     	allCols.length = 0;
@@ -632,16 +641,33 @@ angular.module('statscalcApp')
     	colNums.length = 0;
     	colMeans.length = 0;
     	colSquares.length = 0;
-    	multiColArr.length = 0;
-      colArr1Empty = true;
-      colArr2Empty = true;
-      colArr3Empty = true;
 
-      if (selectedColObj.length > 0) {
+      group1Sums.length = 0;
+      group1Nums.length = 0;
+      group1Means.length = 0;
+      group1Squares.length = 0;
+
+      group2Sums.length = 0;
+      group2Nums.length = 0;
+      group2Means.length = 0;
+      group3Squares.length = 0;
+
+      group3Sums.length = 0;
+      group3Nums.length = 0;
+      group3Means.length = 0;
+      group3Squares.length = 0;
+
+
+
+    	multiColArr.length = 0;
+      numberCols = [];
+
+
+      if (Object.keys(selectedColObj).length !== 0) {
+
+        numberCols[0] = Object.keys(selectedColObj).length;
 
         Object.keys(selectedColObj).forEach(function(key) {
-
-          console.log(key, selectedColObj[key]);
 
           valueArr = selectedColObj[key];
           multiColArr.push(valueArr);
@@ -651,12 +677,14 @@ angular.module('statscalcApp')
             allCols.push(valueArr[i]);
           }     
         });
+
       }
 
-      if (selectedColObj.length > 0) {
-        Object.keys(selectedColObj2).forEach(function(key) {
+      if (Object.keys(selectedColObj2).length !== 0) {
 
-          console.log(key, selectedColObj2[key]);
+        numberCols[1] = Object.keys(selectedColObj2).length;
+      
+        Object.keys(selectedColObj2).forEach(function(key) {
 
           valueArr = selectedColObj2[key];
           multiColArr.push(valueArr);
@@ -667,13 +695,14 @@ angular.module('statscalcApp')
 
           }
         });
+
       }
 
-      if (selectedColObj.length > 0) {
+      if (Object.keys(selectedColObj3).length !== 0) {
+
+        numberCols[2] = Object.keys(selectedColObj3).length;
 
         Object.keys(selectedColObj3).forEach(function(key) {
-
-          console.log(key, selectedColObj3[key]);
 
           valueArr = selectedColObj3[key];
           multiColArr.push(valueArr);
@@ -681,12 +710,48 @@ angular.module('statscalcApp')
           for (i=0; i < valueArr.length; i++) {
 
             allCols.push(valueArr[i]);
+
           }  
         });
+
       }
 
-      console.log(allCols);
-      console.log(multiColArr);
+      for (i=0; i < numberCols[0]; i++) {
+
+        group1Sums.push(multiColArr[i].reduce(add,0));
+        group1Nums.push(multiColArr[i].length);
+        group1Means.push(group1Sums[i] / group1Nums[i]);
+
+      }
+
+      for (i=0; i < numberCols[1]; i++) {
+
+        group2Sums.push(multiColArr[i + numberCols[0]].reduce(add,0));
+        group2Nums.push(multiColArr[i + numberCols[0]].length);
+        group2Means.push(group2Sums[i] / group2Nums[i]);
+
+      }
+
+      for (i=0; i < numberCols[2]; i++) {
+
+        group3Sums.push(multiColArr[i + numberCols[1] + numberCols[0]].reduce(add,0));
+        group3Nums.push(multiColArr[i + numberCols[1] + numberCols[0]].length);
+        group3Means.push(group3Sums[i] / group3Nums[i]);
+
+      }
+
+      console.log(group1Sums);
+      console.log(group1Nums);
+      console.log(group1Means);
+
+       console.log(group2Sums);
+      console.log(group2Nums);
+      console.log(group2Means);
+
+       console.log(group3Sums);
+      console.log(group3Nums);
+      console.log(group3Means);
+
 
       // Iterates through the final column container
     	for (i=0; i < multiColArr.length; i++) {
