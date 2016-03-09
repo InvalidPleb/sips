@@ -230,18 +230,12 @@ angular.module('statscalcApp')
         colNums = [],
         colMeans = [],
         colSquares = [],
-        group1Sums = [],
-        group1Nums = [],
-        group1Means = [],
-        group1Squares = [],
-        group2Sums = [],
-        group2Nums = [],
-        group2Means = [],
-        group2Squares = [],
-        group3Sums = [],
-        group3Nums = [],
-        group3Means = [],
-        group3Squares = [],
+        factor1Arr1 = [],
+        factor1Arr2 = [],
+        factor1Arr3 = [],
+        factor2Arr1 = [],
+        factor2Arr2 = [],
+        factor2Arr3 = [],
         oneSSTreatArr = [];
 
 
@@ -642,22 +636,12 @@ angular.module('statscalcApp')
     	colMeans.length = 0;
     	colSquares.length = 0;
 
-      group1Sums.length = 0;
-      group1Nums.length = 0;
-      group1Means.length = 0;
-      group1Squares.length = 0;
-
-      group2Sums.length = 0;
-      group2Nums.length = 0;
-      group2Means.length = 0;
-      group3Squares.length = 0;
-
-      group3Sums.length = 0;
-      group3Nums.length = 0;
-      group3Means.length = 0;
-      group3Squares.length = 0;
-
-
+      factor1Arr1.length = 0;
+      factor1Arr2.length = 0;
+      factor1Arr3.length = 0;
+      factor2Arr1.length = 0;
+      factor2Arr2.length = 0;
+      factor2Arr3.length = 0;
 
     	multiColArr.length = 0;
       numberCols = [];
@@ -675,9 +659,13 @@ angular.module('statscalcApp')
           for (i=0; i < valueArr.length; i++) {
 
             allCols.push(valueArr[i]);
+            factor1Arr1.push(valueArr[i]);
           }     
         });
 
+      } else {
+
+        numberCols[0] = 0;
       }
 
       if (Object.keys(selectedColObj2).length !== 0) {
@@ -692,10 +680,14 @@ angular.module('statscalcApp')
           for (i=0; i < valueArr.length; i++) {
 
             allCols.push(valueArr[i]);
+            factor1Arr2.push(valueArr[i]);
 
           }
         });
 
+      } else {
+
+        numberCols[1] = 0;
       }
 
       if (Object.keys(selectedColObj3).length !== 0) {
@@ -710,12 +702,50 @@ angular.module('statscalcApp')
           for (i=0; i < valueArr.length; i++) {
 
             allCols.push(valueArr[i]);
+            factor1Arr3.push(valueArr[i]);
 
           }  
         });
 
+      } else {
+
+        numberCols[2] = 0;
       }
 
+      for (i=0; i < factor1Arr1; i++) {
+
+      }
+
+
+      if (numberCols[0] === numberCols[1] && numberCols[0] === numberCols[2]) {
+
+        for (i=0; i < (numberCols[0] * 3); i += numberCols[0]) {
+
+          factor2Arr1.push(multiColArr[i]);
+          
+        }
+
+        for (i=1; i < ((numberCols[0] * 3)); i += numberCols[0]) {
+
+          factor2Arr2.push(multiColArr[i]);
+          
+        }
+
+        for (i=2; i < ((numberCols[0] * 3)); i += numberCols[0]) {
+
+          factor2Arr3.push(multiColArr[i]);
+          
+        }
+
+      }
+
+        
+
+      
+
+      /*
+
+   
       for (i=0; i < numberCols[0]; i++) {
 
         group1Sums.push(multiColArr[i].reduce(add,0));
@@ -740,17 +770,22 @@ angular.module('statscalcApp')
 
       }
 
-      console.log(group1Sums);
+      console.log(multiColArr);
+
+
+      console.log(factor1Arr1);
+      console.log(factor1Arr2);
+      console.log(factor1Arr3);
+
+
       console.log(group1Nums);
       console.log(group1Means);
 
-       console.log(group2Sums);
-      console.log(group2Nums);
-      console.log(group2Means);
+      */
 
-       console.log(group3Sums);
-      console.log(group3Nums);
-      console.log(group3Means);
+      
+
+
 
 
       // Iterates through the final column container
@@ -994,6 +1029,8 @@ angular.module('statscalcApp')
   	};
 
   	$scope.calcTwoAnova = function() {
+
+      
 
 
 
