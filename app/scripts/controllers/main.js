@@ -301,7 +301,20 @@ angular.module('statscalcApp')
         oneCorrectionMean,
         oneMeanSqrTreat,
         oneMeanSqrErr,
-        oneFScore;
+        oneFScore,
+        factor1Sum1,
+        factor1Sum2,
+        factor1Sum3,
+        factor2Sum1,
+        factor2Sum2,
+        factor2Sum3,
+        factor1Mean1,
+        factor1Mean2,
+        factor1Mean3,
+        factor2Mean1,
+        factor2Mean2,
+        factor2Mean3;
+
 
 
     $scope.colorSelectObj = {
@@ -712,81 +725,73 @@ angular.module('statscalcApp')
         numberCols[2] = 0;
       }
 
-      for (i=0; i < factor1Arr1; i++) {
-
-      }
-
-
-      if (numberCols[0] === numberCols[1] && numberCols[0] === numberCols[2]) {
+      if (numberCols[0] > 0) {
 
         for (i=0; i < (numberCols[0] * 3); i += numberCols[0]) {
 
-          factor2Arr1.push(multiColArr[i]);
+          valueArr = multiColArr[i];
           
-        }
+          for (j=0; j < valueArr.length; j++) {
 
+            factor2Arr1.push(valueArr[j]);
+          }
+        }
+      }
+
+      if (numberCols[1] > 0) {
+      
         for (i=1; i < ((numberCols[0] * 3)); i += numberCols[0]) {
 
-          factor2Arr2.push(multiColArr[i]);
-          
+          valueArr = multiColArr[i];
+
+          for (j=0; j < valueArr.length; j++) {
+
+            factor2Arr2.push(valueArr[j]);
+          }
         }
+      }
+
+      if (numberCols[2] > 0) {
 
         for (i=2; i < ((numberCols[0] * 3)); i += numberCols[0]) {
 
-          factor2Arr3.push(multiColArr[i]);
-          
+          valueArr = multiColArr[i];
+
+          for (j=0; j < valueArr.length; j++) {
+
+            factor2Arr3.push(valueArr[j]);
+          }
         }
-
       }
 
-        
+      factor1Sum1 = factor1Arr1.reduce(add, 0);
+      factor1Sum2 = factor1Arr2.reduce(add, 0);
+      factor1Sum3 = factor1Arr3.reduce(add, 0);
 
-      
+      factor2Sum1 = factor2Arr1.reduce(add, 0);
+      factor2Sum2 = factor2Arr2.reduce(add, 0);
+      factor2Sum3 = factor2Arr3.reduce(add, 0);
 
-      /*
+      factor1Mean1 = factor1Sum1 / factor1Arr1.length;
+      factor1Mean2 = factor1Sum2 / factor1Arr2.length;
+      factor1Mean3 = factor1Sum3 / factor1Arr3.length;
 
-   
-      for (i=0; i < numberCols[0]; i++) {
+      factor2Mean1 = factor2Sum1 / factor2Arr1.length;
+      factor2Mean2 = factor2Sum2 / factor2Arr2.length;
+      factor2Mean3 = factor2Sum3 / factor2Arr3.length;
 
-        group1Sums.push(multiColArr[i].reduce(add,0));
-        group1Nums.push(multiColArr[i].length);
-        group1Means.push(group1Sums[i] / group1Nums[i]);
-
-      }
-
-      for (i=0; i < numberCols[1]; i++) {
-
-        group2Sums.push(multiColArr[i + numberCols[0]].reduce(add,0));
-        group2Nums.push(multiColArr[i + numberCols[0]].length);
-        group2Means.push(group2Sums[i] / group2Nums[i]);
-
-      }
-
-      for (i=0; i < numberCols[2]; i++) {
-
-        group3Sums.push(multiColArr[i + numberCols[1] + numberCols[0]].reduce(add,0));
-        group3Nums.push(multiColArr[i + numberCols[1] + numberCols[0]].length);
-        group3Means.push(group3Sums[i] / group3Nums[i]);
-
-      }
-
-      console.log(multiColArr);
-
-
-      console.log(factor1Arr1);
-      console.log(factor1Arr2);
-      console.log(factor1Arr3);
-
-
-      console.log(group1Nums);
-      console.log(group1Means);
-
-      */
-
-      
-
-
-
+      console.log(factor1Sum1);
+      console.log(factor1Sum2);
+      console.log(factor1Sum3);
+      console.log(factor2Sum1);
+      console.log(factor2Sum2);
+      console.log(factor2Sum3);
+      console.log(factor1Mean1);
+      console.log(factor1Mean2);
+      console.log(factor1Mean3);
+      console.log(factor2Mean1);
+      console.log(factor2Mean2);
+      console.log(factor2Mean3);
 
       // Iterates through the final column container
     	for (i=0; i < multiColArr.length; i++) {
@@ -794,7 +799,7 @@ angular.module('statscalcApp')
         // Defines values in individual arrays for access by formulas later.
 
     		colSums.push(multiColArr[i].reduce(add, 0));
-    		colNums.push(j);
+    		colNums.push(multiColArr[i].length);
     		colMeans.push(colSums[i] / colNums[i]);
     		
     	}
@@ -812,9 +817,10 @@ angular.module('statscalcApp')
 
     	grandSum = allCols.reduce(add, 0);
     	grandMean = grandSum / allCols.length;
-    	
 
     }
+
+
 
     function calcTwoCols () {
 
