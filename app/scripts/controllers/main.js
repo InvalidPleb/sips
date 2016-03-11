@@ -240,7 +240,9 @@ angular.module('statscalcApp')
         factor2Arr2 = [],
         factor2Arr3 = [],
         factor1Concat = [],
+        factor1All = [],
         factor2Concat = [],
+        factor2All = [],
         oneSSTreatArr = [];
 
 
@@ -323,7 +325,16 @@ angular.module('statscalcApp')
         factor1GrandSum,
         factor2GrandSum,
         factor1GrandMean,
-        factor2GrandMean;
+        factor2GrandMean,
+        SS1Grp1,
+        SS1Grp2,
+        SS1Grp3,
+        SS2Grp1,
+        SS2Grp2,
+        SS2Grp3,
+        SS1Total,
+        SS2Total;
+
 
 
 
@@ -666,7 +677,7 @@ angular.module('statscalcApp')
 
     	multiColArr.length = 0;
       activeGroups = 0;
-      numberCols.length = 0;;
+      numberCols.length = 0;
 
 
       if (Object.keys(selectedColObj).length !== 0) {
@@ -765,7 +776,7 @@ angular.module('statscalcApp')
         }
       }
 
-      if (numberCols[1] > 0) {
+      if (numberCols[0] >= 2 && numberCols[1] >= 2) {
       
         for (i=1; i < ((numberCols[0] * activeGroups)); i += numberCols[0]) {
 
@@ -778,7 +789,7 @@ angular.module('statscalcApp')
         }
       }
 
-      if (numberCols[2] > 0) {
+      if (numberCols[0] >= 3 && numberCols[1] >= 3) {
 
         for (i=2; i < ((numberCols[0] * activeGroups)); i += numberCols[0]) {
 
@@ -806,13 +817,6 @@ angular.module('statscalcApp')
       factor2Mean1 = factor2Sum1 / factor2Arr1.length;
       factor2Mean2 = factor2Sum2 / factor2Arr2.length;
       factor2Mean3 = factor2Sum3 / factor2Arr3.length;
-
-      factor1Concat = factor1Arr1.concat(factor1Arr2, factor1Arr3);
-      factor2Concat = factor2Arr1.concat(factor2Arr2, factor2Arr3);
-
-      console.log(factor1Concat);
-      console.log(factor2Concat);
-      
 
       factor1GrandSum = factor1Sum1 + factor1Sum2 + factor1Sum3;
       factor1GrandMean = factor1GrandSum / (factor1Arr1.length + factor1Arr2.length + factor1Arr3.length);
@@ -906,14 +910,53 @@ angular.module('statscalcApp')
 
     $scope.calcTwoAnova = function() {
 
-      console.log(factor1Arr1.length);
-      console.log(factor1Arr2.length);
-      console.log(factor1Arr3.length);
+      console.log(factor1Arr1);
+      console.log(factor1Arr2);
+      console.log(factor1Arr3);
+      console.log(factor2Arr1);
+      console.log(factor2Arr2);
+      console.log(factor2Arr3);
 
-      for (i=0; i <= (factor1Arr1.length + factor1Arr2.length + factor1Arr3.length); i++){
+      if (factor1Arr1.length > 0) {
 
+        SS1Grp1 = Math.pow((factor1Mean1 - grandMean), 2) * factor1Arr1.length;
+
+      }
+
+      if (factor1Arr2.length > 0) {
+
+        SS1Grp2 = Math.pow((factor1Mean2 - grandMean), 2) * factor1Arr2.length;
         
       }
+
+      if (factor1Arr3.length > 0) {
+
+        SS1Grp3 = Math.pow((factor1Mean3 - grandMean), 2) * factor1Arr3.length;
+        
+      }
+
+
+
+      if (factor2Arr1.length > 0) {
+
+        SS2Grp1 = Math.pow((factor2Mean1 - grandMean), 2) * factor2Arr1.length;
+      }
+
+      if (factor2Arr2.length > 0) {
+
+        SS2Grp2 = Math.pow((factor2Mean2 - grandMean), 2) * factor2Arr2.length;
+      }
+
+      if (factor2Arr3.length > 0) {
+
+        SS2Grp3 = Math.pow((factor2Mean3 - grandMean), 2) * factor2Arr3.length;
+      }
+
+
+      SS1Total = SS1Grp1 + SS1Grp2 + SS1Grp3;
+      SS2Total = SS2Grp1 + SS2Grp2 + SS2Grp3;
+
+
 
       
 
