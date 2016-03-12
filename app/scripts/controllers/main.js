@@ -243,6 +243,8 @@ angular.module('statscalcApp')
         factor1All = [],
         factor2Concat = [],
         factor2All = [],
+        factor1SubMeans = [],
+        factor2SubMeans = [],
         oneSSTreatArr = [];
 
 
@@ -536,54 +538,7 @@ angular.module('statscalcApp')
 
       }
     }
-    /*
-
-  	// Function to group the data contained in the rows and cols
-  	// into a useable format: an object of arrays.
-  	function parseSelectedData() {
-
-  		cellsCounterX = 0;
-  		cellsCounterY = 0;
-
-  		// Iterates through the cols ...
-    		for (i=0; i <= $scope.columns.length; i++) {
-
-    			// ... and if the column is selected by the user ...
-    			if ($scope.selectedColContain.indexOf(i) !== -1) {
-
-    				// ... an array is declared for the data inside of it.
-    				selectedColArr[i] = [];
-
-    				// It then iterates through the rows ... 
-  	  			for (j=1; j <= $scope.rows.length; j++) {
-
-  	  				// ... and declares a var to save the order in which the selected
-  	  				// cols were clicked & to slim down the next line of code.
-  	  				arrIndex = $scope.selectedColContain.indexOf(i);
-
-  	  				// If the cell with the col(i),row(j) coordinates isn't empty ...
-  	  				if (isNaN(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]) === false && varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j] !== '') {
-  	  					
-  	  					// ... add the data contained in the cell to the selected data array.
-  	  					selectedColArr[i].push(parseFloat(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]));
-  	  				}
-  	  			}
-
-  	  			// If the array for this selected column (i) isn't empty, 
-  	  			// then add it to the final data object. The obj
-  	  			// ends up with a data array for each selected column.
-  	  			if (selectedColArr[i].length > 0) {
-  	  				selectedColObj[i] = selectedColArr[i];
-  	  			} 
-    			}
-    		}
-
-    	  	console.log(selectedColArr);
-  	}
-
-    */
-
-
+   
   	$scope.varNaming = function() {
 
 
@@ -955,6 +910,21 @@ angular.module('statscalcApp')
 
       SS1Total = SS1Grp1 + SS1Grp2 + SS1Grp3;
       SS2Total = SS2Grp1 + SS2Grp2 + SS2Grp3;
+
+      for (i=0; i < numberCols[0]; i++) {
+
+        factor1SubMeans.push(factor1Arr1[i]);
+
+      }
+
+
+
+
+      console.log(colNums);
+
+
+
+
 
 
 
