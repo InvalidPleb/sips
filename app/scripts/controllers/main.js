@@ -337,19 +337,9 @@ angular.module('statscalcApp')
         SS1Total,
         SS2Total;
 
-
-
-
-    $scope.colorSelectObj = {
-
-      group1Select: "colGroup1",
-      group2Color: "colGroup2",
-      group3Color: "colGroup3"
-
-    };
-	
-
-
+    // Function to route the function called by clicking the 
+    // column buttons to a different function depending upon
+    // the current selected group.
     $scope.changeGroup = function(column) {
 
       if ($scope.colorCheck === "grp1") {
@@ -368,73 +358,77 @@ angular.module('statscalcApp')
 
     };
 
-  $scope.colorCheck = "grp1";
+    // Initially setting the called function to group one.
+    $scope.colorCheck = "grp1";
 
 
+    // Function for the default column group 1, green.
   	function colGroup1(column) {
 
 
-      $scope.selectCol = column;
-
-  		if ($scope.selectedColContain.indexOf($scope.selectCol + 1) === -1 &&
-       $scope.selectedColContain2.indexOf($scope.selectCol + 1) === -1 &&
-       $scope.selectedColContain3.indexOf($scope.selectCol + 1) === -1) {
+      // If the clicked column doesn't currently belong to any groups, add it to this group.
+  		if ($scope.selectedColContain.indexOf(column + 1) === -1 &&
+       $scope.selectedColContain2.indexOf(column + 1) === -1 &&
+       $scope.selectedColContain3.indexOf(column + 1) === -1) {
   		  
-        $scope.selectedColContain.push($scope.selectCol + 1);
+        $scope.selectedColContain.push(column + 1);
         
 
   		} else {
 
-        if ($scope.selectedColContain.indexOf($scope.selectCol + 1) !== -1) {
+        // Else, if the clicked column already belongs to group 1, delete it from group 1.
+        if ($scope.selectedColContain.indexOf(column + 1) !== -1) {
 
-          $scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
-          delete selectedColObj[($scope.selectedColContain.indexOf($scope.selectCol + 1), 1)];
+          $scope.selectedColContain.splice($scope.selectedColContain.indexOf(column + 1), 1);
+          delete selectedColObj[($scope.selectedColContain.indexOf(column + 1), 1)];
 
-        } else if ($scope.selectedColContain2.indexOf($scope.selectCol + 1) !== -1) {
+        // If it belongs to group 2, delete it from there.
+        } else if ($scope.selectedColContain2.indexOf(column + 1) !== -1) {
 
-          $scope.selectedColContain2.splice($scope.selectedColContain2.indexOf($scope.selectCol + 1), 1);
-          delete selectedColObj2[($scope.selectedColContain.indexOf($scope.selectCol + 1), 1)];
+          $scope.selectedColContain2.splice($scope.selectedColContain2.indexOf(column + 1), 1);
+          delete selectedColObj2[($scope.selectedColContain.indexOf(column + 1), 1)];
 
+        // If it belongs to group 3, delete it from there.
+        } else if ( $scope.selectedColContain3.indexOf(column + 1) !== -1) {
 
-        } else if ( $scope.selectedColContain3.indexOf($scope.selectCol + 1) !== -1) {
-
-          $scope.selectedColContain3.splice($scope.selectedColContain3.indexOf($scope.selectCol + 1), 1);
-          delete selectedColObj3[($scope.selectedColContain.indexOf($scope.selectCol + 1), 1)];
+          $scope.selectedColContain3.splice($scope.selectedColContain3.indexOf(column + 1), 1);
+          delete selectedColObj3[($scope.selectedColContain.indexOf(column + 1), 1)];
 
         }	
   		}
 
   	}
 
+    // Function for the column group 2, red.
     function colGroup2(column) {
 
-      $scope.selectCol = column;
-
-      if ($scope.selectedColContain.indexOf($scope.selectCol + 1) === -1 &&
-       $scope.selectedColContain2.indexOf($scope.selectCol + 1) === -1 &&
-       $scope.selectedColContain3.indexOf($scope.selectCol + 1) === -1) {
+      // If the clicked column doesn't currently belong to any groups, add it to this group.
+      if ($scope.selectedColContain.indexOf(column + 1) === -1 &&
+       $scope.selectedColContain2.indexOf(column + 1) === -1 &&
+       $scope.selectedColContain3.indexOf(column + 1) === -1) {
         
-        $scope.selectedColContain2.push($scope.selectCol + 1);
+        $scope.selectedColContain2.push(column + 1);
         
 
       } else {
 
-        if ($scope.selectedColContain.indexOf($scope.selectCol + 1) !== -1) {
+        // Else, if the clicked column already belongs to group 1, delete it from group 1.
+        if ($scope.selectedColContain.indexOf(column + 1) !== -1) {
 
-          $scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
-          delete selectedColObj[($scope.selectedColContain.indexOf($scope.selectCol + 1), 1)];
+          $scope.selectedColContain.splice($scope.selectedColContain.indexOf(column + 1), 1);
+          delete selectedColObj[($scope.selectedColContain.indexOf(column + 1), 1)];
           
+        // If it belongs to group 2, delete it from there.
+        } else if ($scope.selectedColContain2.indexOf(column + 1) !== -1) {
 
-        } else if ($scope.selectedColContain2.indexOf($scope.selectCol + 1) !== -1) {
+          $scope.selectedColContain2.splice($scope.selectedColContain2.indexOf(column + 1), 1);
+          delete selectedColObj2[($scope.selectedColContain.indexOf(column + 1), 1)];
 
-          $scope.selectedColContain2.splice($scope.selectedColContain2.indexOf($scope.selectCol + 1), 1);
-          delete selectedColObj2[($scope.selectedColContain.indexOf($scope.selectCol + 1), 1)];
+        // If it belongs to group 3, delete it from there.
+        } else if ( $scope.selectedColContain3.indexOf(column + 1) !== -1) {
 
-
-        } else if ( $scope.selectedColContain3.indexOf($scope.selectCol + 1) !== -1) {
-
-          $scope.selectedColContain3.splice($scope.selectedColContain3.indexOf($scope.selectCol + 1), 1);
-          delete selectedColObj3[($scope.selectedColContain.indexOf($scope.selectCol + 1), 1)];
+          $scope.selectedColContain3.splice($scope.selectedColContain3.indexOf(column + 1), 1);
+          delete selectedColObj3[($scope.selectedColContain.indexOf(column + 1), 1)];
 
         } 
       }
@@ -442,34 +436,35 @@ angular.module('statscalcApp')
       
     }
 
+    // Function for the column group 3, blue.
     function colGroup3(column) {
 
-      $scope.selectCol = column;
-
-      if ($scope.selectedColContain.indexOf($scope.selectCol + 1) === -1 &&
-       $scope.selectedColContain2.indexOf($scope.selectCol + 1) === -1 &&
-       $scope.selectedColContain3.indexOf($scope.selectCol + 1) === -1) {
+      // If the clicked column doesn't currently belong to any groups, add it to this group.
+      if ($scope.selectedColContain.indexOf(column + 1) === -1 &&
+       $scope.selectedColContain2.indexOf(column + 1) === -1 &&
+       $scope.selectedColContain3.indexOf(column + 1) === -1) {
         
-        $scope.selectedColContain3.push($scope.selectCol + 1);
+        $scope.selectedColContain3.push(column + 1);
         
-
       } else {
 
-        if ($scope.selectedColContain.indexOf($scope.selectCol + 1) !== -1) {
+        // Else, if the clicked column already belongs to group 1, delete it from group 1.
+        if ($scope.selectedColContain.indexOf(column + 1) !== -1) {
 
-          $scope.selectedColContain.splice($scope.selectedColContain.indexOf($scope.selectCol + 1), 1);
-          delete selectedColObj[($scope.selectedColContain.indexOf($scope.selectCol + 1), 1)];
+          $scope.selectedColContain.splice($scope.selectedColContain.indexOf(column + 1), 1);
+          delete selectedColObj[($scope.selectedColContain.indexOf(column + 1), 1)];
 
-        } else if ($scope.selectedColContain2.indexOf($scope.selectCol + 1) !== -1) {
+        // If it belongs to group 2, delete it from there.
+        } else if ($scope.selectedColContain2.indexOf(column + 1) !== -1) {
 
-          $scope.selectedColContain2.splice($scope.selectedColContain2.indexOf($scope.selectCol + 1), 1);
-          delete selectedColObj2[($scope.selectedColContain.indexOf($scope.selectCol + 1), 1)];
+          $scope.selectedColContain2.splice($scope.selectedColContain2.indexOf(column + 1), 1);
+          delete selectedColObj2[($scope.selectedColContain.indexOf(column + 1), 1)];
 
+        // If it belongs to group 3, delete it from there.
+        } else if ( $scope.selectedColContain3.indexOf(column + 1) !== -1) {
 
-        } else if ( $scope.selectedColContain3.indexOf($scope.selectCol + 1) !== -1) {
-
-          $scope.selectedColContain3.splice($scope.selectedColContain3.indexOf($scope.selectCol + 1), 1);
-          delete selectedColObj3[($scope.selectedColContain.indexOf($scope.selectCol + 1), 1)];
+          $scope.selectedColContain3.splice($scope.selectedColContain3.indexOf(column + 1), 1);
+          delete selectedColObj3[($scope.selectedColContain.indexOf(column + 1), 1)];
 
         } 
       }
@@ -481,29 +476,40 @@ angular.module('statscalcApp')
       	return a + b;
   	}
 
-
+    // Parses the data in the columns and groups it into a more usable format. 
     function parseSelectedData() {
 
+      // Loops through all the columns in the spreadsheet.
       for (i=0; i <= $scope.columns.length; i++) {
 
+
+        // If the current iteration column is in at least one of the groups.
         if ($scope.selectedColContain.indexOf(i) !== -1 ||
           $scope.selectedColContain2.indexOf(i) !== -1 ||
           $scope.selectedColContain3.indexOf(i) !== -1) {
 
+
+          // If the current iteration column is in group 1.
           if ($scope.selectedColContain.indexOf(i) !== -1) {
 
+            // Declares an array for the current column's contained values.
             selectedColObj[i] = [];
 
+            // Saves the current location of the column within the selected column group.
+            arrIndex = $scope.selectedColContain.indexOf(i);
+
+            // Loops through all the rows in the spreadsheet.
             for (j=1; j <= $scope.rows.length; j++) {
 
-              arrIndex = $scope.selectedColContain.indexOf(i);
-
+             
+              // If the j values in the current array aren't empty/null for the current iteration...
               if (isNaN(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]) === false && varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j] !== '') {
-
+                // Pushes the value to the array defined previously, using the correct index.
                 selectedColObj[i].push(parseFloat(varCell['var' + $scope.selectedColContain[arrIndex] + 'r' + j]));
 
               }
             }
+          // If the current iteration column is in group 2. See group 1 for comments.
           } else if ($scope.selectedColContain2.indexOf(i) !== -1) {
 
             selectedColObj2[i] = [];
@@ -517,7 +523,8 @@ angular.module('statscalcApp')
                 selectedColObj2[i].push(parseFloat(varCell['var' + $scope.selectedColContain2[arrIndex] + 'r' + j]));
               }
             }
-            
+
+          // If the current iteration column is in group 3. See group 1 for comments.
           } else if ($scope.selectedColContain3.indexOf(i) !== -1) {
 
             selectedColObj3[i] = [];
