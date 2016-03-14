@@ -786,62 +786,6 @@ angular.module('statscalcApp')
       factor2GrandSum = factor2Sum1 + factor2Sum2 + factor2Sum3;
       factor2GrandMean = factor2GrandSum / (factor2Arr1.length + factor2Arr2.length + factor2Arr3.length);
 
-      /* 
-
-      if (factor1Arr1.length > 0) {
-
-        factor1SumArr.push(factor1Arr1.reduce(add, 0));
-
-      }
-
-      if (factor1Arr2.length > 0) {
-
-        factor1SumArr.push(factor1Arr2.reduce(add, 0));
-
-      }
-
-      if (factor1Arr3.length > 0) {
-
-        factor1SumArr.push(factor1Arr3.reduce(add, 0));
-
-      }
-
-      if (factor2Arr1.length > 0) {
-
-        factor2SumArr.push(factor2Arr1.reduce(add, 0));
-
-      }
-
-      if (factor2Arr2.length > 0) {
-
-        factor2SumArr.push(factor2Arr2.reduce(add, 0));
-
-      }
-
-      if (factor2Arr3.length > 0) {
-
-        factor2SumArr.push(factor2Arr3.reduce(add, 0));
-
-      }
-
-
-
-      if (factor1Arr1.length > 0) {
-
-        factor1MeanArr.push(factor1SumArr[0] / factor1Arr1.length);
-
-      } else if (factor1Arr1.length <= 0 && factor1Arr2.length > 0) {
-
-        factor1MeanArr.push(factor1SumArr[0] / factor1Arr2.length);
-
-      } else if (factor1Arr1.length <= 0 && factor1Arr2.length <= 0 && factor1Arr3.length > 0) {
-
-        factor1MeanArr.push(factor1SumArr[0] / factor1Arr3.length);
-
-      }
-
-      */
-
       // Iterates through the final column container
     	for (i=0; i < multiColArr.length; i++) {
 
