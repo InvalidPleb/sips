@@ -641,26 +641,36 @@ angular.module('statscalcApp')
       activeGroups = 0;
       numberCols.length = 0;
 
-
+      // If the selectedCol group 1 object has something in it.
       if (Object.keys(selectedColObj).length !== 0) {
 
+        // Storing the number of columns in this group in an array for later use.
         numberCols[0] = Object.keys(selectedColObj).length;
 
+        // Loops through the object keys.
         Object.keys(selectedColObj).forEach(function(key) {
 
+          // Sets a value equal to the array in the object value and pushes it to an 
+          // array of arrays containing all of the columns in all groups.
           valueArr = selectedColObj[key];
           multiColArr.push(valueArr);
 
+          // Loops through that array.
           for (i=0; i < valueArr.length; i++) {
 
+            // Then pushes the values to allCols, an array containing all of the values independent
+            // of column, and the array for the it's specific first factor. 
             allCols.push(valueArr[i]);
             factor1Arr1.push(valueArr[i]);
+
           }     
         });
 
       } else {
 
+        // Else, this group is empty.
         numberCols[0] = 0;
+
       }
 
       if (Object.keys(selectedColObj2).length !== 0) {
@@ -707,30 +717,32 @@ angular.module('statscalcApp')
         numberCols[2] = 0;
       }
 
+
+      // The following three functions count how many columns there are in each group.
       if (numberCols[0] > 0) {
-
         activeGroups += 1;
-
       }
 
       if (numberCols[1] > 0) {
-
         activeGroups += 1;
-
       } 
 
       if (numberCols[2] > 0) {
-
         activeGroups += 1;
-
       } 
 
+
+      // If group one has something in it.
       if (numberCols[0] > 0) {
 
+        // Loops once for each column in each group, skipping by the number of columns
+        // each iteration so that e.g. the first col of group 1, 2, & 3 are grouped.
         for (i=0; i < (numberCols[0] * activeGroups); i += numberCols[0]) {
 
+          // Declares a var for the array containing the data for ease.
           valueArr = multiColArr[i];
           
+          // Loops through the value array and pushes it to the second factor for this specific group.
           for (j=0; j < valueArr.length; j++) {
 
             factor2Arr1.push(valueArr[j]);
@@ -869,17 +881,7 @@ angular.module('statscalcApp')
       }
 
 
-
-
       console.log(colNums);
-
-
-
-
-
-
-
-      
 
 
 
