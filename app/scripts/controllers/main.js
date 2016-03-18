@@ -553,6 +553,24 @@ angular.module('statscalcApp')
       });
     }
 
+    function factorTwo(array, originNum) {
+
+      // Loops once for each column in each group, skipping by the number of columns
+      // each iteration so that e.g. the first col of group 1, 2, & 3 are grouped.
+      for (i=originNum; i < (numberCols[0] * activeGroups); i += numberCols[0]) {
+
+        // Declares a var for the array containing the data for ease.
+        valueArr = multiColArr[i];
+        
+        // Loops through the value array and pushes it to the second factor for this specific group.
+        for (j=0; j < valueArr.length; j++) {
+
+          array.push(valueArr[j]);
+        }
+      }
+
+    }
+
 
     function calcManyCols () {
       
@@ -581,31 +599,21 @@ angular.module('statscalcApp')
 
       // If the selectedCol group 1 object has something in it.
       if (Object.keys(selectedColObj).length !== 0) {
-
         factorOne(selectedColObj, factor1Arr1, 0);
-
       } else {
-
         // Else, this group is empty.
         numberCols[0] = 0;
-
       }
 
       if (Object.keys(selectedColObj2).length !== 0) {
-
         factorOne(selectedColObj2, factor1Arr2, 1);
-
       } else {
-
         numberCols[1] = 0;
       }
 
       if (Object.keys(selectedColObj3).length !== 0) {
-
         factorOne(selectedColObj3, factor1Arr3, 2);
-
       } else {
-
         numberCols[2] = 0;
       }
 
@@ -613,11 +621,9 @@ angular.module('statscalcApp')
       if (numberCols[0] > 0) {
         activeGroups += 1;
       }
-
       if (numberCols[1] > 0) {
         activeGroups += 1;
       } 
-
       if (numberCols[2] > 0) {
         activeGroups += 1;
       } 
@@ -625,46 +631,15 @@ angular.module('statscalcApp')
 
       // If group one has something in it.
       if (numberCols[0] > 0) {
-
-        // Loops once for each column in each group, skipping by the number of columns
-        // each iteration so that e.g. the first col of group 1, 2, & 3 are grouped.
-        for (i=0; i < (numberCols[0] * activeGroups); i += numberCols[0]) {
-
-          // Declares a var for the array containing the data for ease.
-          valueArr = multiColArr[i];
-          
-          // Loops through the value array and pushes it to the second factor for this specific group.
-          for (j=0; j < valueArr.length; j++) {
-
-            factor2Arr1.push(valueArr[j]);
-          }
-        }
+        factorTwo(factor2Arr1, 0);
       }
 
       if (numberCols[0] >= 2 && numberCols[1] >= 2) {
-      
-        for (i=1; i < ((numberCols[0] * activeGroups)); i += numberCols[0]) {
-
-          valueArr = multiColArr[i];
-
-          for (j=0; j < valueArr.length; j++) {
-
-            factor2Arr2.push(valueArr[j]);
-          }
-        }
+        factorTwo(factor2Arr2, 1);
       }
 
       if (numberCols[0] >= 3 && numberCols[1] >= 3) {
-
-        for (i=2; i < ((numberCols[0] * activeGroups)); i += numberCols[0]) {
-
-          valueArr = multiColArr[i];
-
-          for (j=0; j < valueArr.length; j++) {
-
-            factor2Arr3.push(valueArr[j]);
-          }
-        }
+        factorTwo(factor2Arr3, 2);
       }
 
       factor1Sum1 = factor1Arr1.reduce(add, 0);
@@ -716,54 +691,33 @@ angular.module('statscalcApp')
 
     }
 
-
     $scope.calcTwoAnova = function() {
 
-      console.log(factor1Arr1);
-      console.log(factor1Arr2);
-      console.log(factor1Arr3);
-      console.log(factor2Arr1);
-      console.log(factor2Arr2);
-      console.log(factor2Arr3);
-
-      if (factor1Arr1.length > 0) {
-
-        SS1Grp1 = Math.pow((factor1Mean1 - grandMean), 2) * factor1Arr1.length;
-
+      function sumOfSquares(inputArray, inputArrayMean) {
+        if (inputArray.length > 0) {
+          return Math.pow((inputArrayMean - grandMean), 2) * inputArray.length;
+        }
       }
+      
 
-      if (factor1Arr2.length > 0) {
+      SS1Grp1 = sumOfSquares(factor1Arr1, factor1Mean1);
+      SS1Grp2 = sumOfSquares(factor1Arr2, factor1Mean2);
+      SS1Grp3 = sumOfSquares(factor1Arr3, factor1Mean3);
 
-        SS1Grp2 = Math.pow((factor1Mean2 - grandMean), 2) * factor1Arr2.length;
-        
-      }
-
-      if (factor1Arr3.length > 0) {
-
-        SS1Grp3 = Math.pow((factor1Mean3 - grandMean), 2) * factor1Arr3.length;
-        
-      }
-
-
-
-      if (factor2Arr1.length > 0) {
-
-        SS2Grp1 = Math.pow((factor2Mean1 - grandMean), 2) * factor2Arr1.length;
-      }
-
-      if (factor2Arr2.length > 0) {
-
-        SS2Grp2 = Math.pow((factor2Mean2 - grandMean), 2) * factor2Arr2.length;
-      }
-
-      if (factor2Arr3.length > 0) {
-
-        SS2Grp3 = Math.pow((factor2Mean3 - grandMean), 2) * factor2Arr3.length;
-      }
-
+      SS2Grp1 = sumOfSquares(factor2Arr1, factor2Mean1);
+      SS2Grp2 = sumOfSquares(factor2Arr2, factor2Mean2);
+      SS2Grp3 = sumOfSquares(factor2Arr3, factor2Mean3);
 
       SS1Total = SS1Grp1 + SS1Grp2 + SS1Grp3;
       SS2Total = SS2Grp1 + SS2Grp2 + SS2Grp3;
+
+      console.log(SS1Grp1);
+      console.log(SS1Grp2);
+      console.log(SS1Grp3);
+
+      console.log(SS2Grp1);
+      console.log(SS2Grp2);
+      console.log(SS2Grp3);
 
       for (i=0; i < numberCols[0]; i++) {
 
