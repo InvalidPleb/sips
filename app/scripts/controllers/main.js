@@ -42,9 +42,7 @@ angular.module('statscalcApp')
       console.log(selectedColObj2);
       console.log(selectedColObj3);
 
-      console.log(factor2Arr1);
-      console.log(factor2Arr2);
-      console.log(factor2Arr3);
+      console.log(numberCols);
 
       
     };
@@ -249,7 +247,9 @@ angular.module('statscalcApp')
         factor2All = [],
         factor1SubMeans = [],
         factor2SubMeans = [],
-        oneSSTreatArr = [];
+        oneSSTreatArr = [],
+        SSErrFactor1 = [],
+        SSErrFactor2 = [];
 
 
 
@@ -340,7 +340,11 @@ angular.module('statscalcApp')
         SS2Grp3,
         SS1Total,
         SS2Total,
-        groupHost;
+        groupHost,
+        arrCont,
+        arrMean,
+        arrErr,
+        SSError;
 
     // Initially setting the called function to group one.
     $scope.colorCheck = "grp1";
@@ -407,7 +411,7 @@ angular.module('statscalcApp')
       // Declares an array for the current column's contained values.
       containerObj[i] = [];
 
-      // Saves the current location of the column within the selected column group.
+      // Indexes the current location of the column within the selected column group.
       arrIndex = containerArr.indexOf(i);
 
       // Loops through all the rows in the spreadsheet.
@@ -693,13 +697,50 @@ angular.module('statscalcApp')
 
     $scope.calcTwoAnova = function() {
 
-      function sumOfSquares(inputArray, inputArrayMean) {
-        if (inputArray.length > 0) {
-          return Math.pow((inputArrayMean - grandMean), 2) * inputArray.length;
+      function sumOfSquares(array, arrayMean) {
+        if (array.length > 0) {
+          return Math.pow((arrayMean - grandMean), 2) * array.length;
+        } else {
+          return console.error("Factor group is empty");
         }
       }
-      
 
+      function sumOfSquaresErr(array) {
+
+        arrCont = [];
+        arrErr = [];
+
+        for (i=0; i < (array.length / numberCols[0]); i++) {
+          
+          arrCont.push(array[i]);
+        }
+
+        arrMean = arrCont.reduce(add, 0) / arrCont.length;
+        console.log(arrMean);
+
+        for (i=0; i < (array.length / numberCols[0]); i++) {
+          arrErr.push(Math.pow((array[i] - arrMean), 2));
+        }
+        console.log(arrErr);
+        return arrErr;
+      }
+
+      SSErrFactor1.push(sumOfSquaresErr(factor1Arr1));
+      SSErrFactor1.push(sumOfSquaresErr(factor1Arr2));
+      SSErrFactor1.push(sumOfSquaresErr(factor1Arr3));
+
+      SSErrFactor2.push(sumOfSquaresErr(factor2Arr1));
+      SSErrFactor2.push(sumOfSquaresErr(factor2Arr2));
+      SSErrFactor2.push(sumOfSquaresErr(factor2Arr3));
+
+      SSError = parseFloat(SSErrFactor1.reduce(add, 0)) + parseFloat(SSErrFactor2.reduce(add, 0));
+
+      console.log(SSErrFactor1);
+      console.log(SSErrFactor2);
+
+      console.log(SSError);
+
+      
       SS1Grp1 = sumOfSquares(factor1Arr1, factor1Mean1);
       SS1Grp2 = sumOfSquares(factor1Arr2, factor1Mean2);
       SS1Grp3 = sumOfSquares(factor1Arr3, factor1Mean3);
@@ -711,15 +752,7 @@ angular.module('statscalcApp')
       SS1Total = SS1Grp1 + SS1Grp2 + SS1Grp3;
       SS2Total = SS2Grp1 + SS2Grp2 + SS2Grp3;
 
-      console.log(SS1Grp1);
-      console.log(SS1Grp2);
-      console.log(SS1Grp3);
-
-      console.log(SS2Grp1);
-      console.log(SS2Grp2);
-      console.log(SS2Grp3);
-
-      for (i=0; i < numberCols[0]; i++) {
+      for (i=0; i < factor1Arr1.length; i++) {
 
         factor1SubMeans.push(factor1Arr1[i]);
 
