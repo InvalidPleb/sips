@@ -341,7 +341,6 @@ angular.module('statscalcApp')
         SS1Total,
         SS2Total,
         groupHost,
-        arrCont,
         arrMean,
         arrErr,
         SSError;
@@ -461,12 +460,6 @@ angular.module('statscalcApp')
 
       }
     }
-   
-  	$scope.varNaming = function() {
-
-
-        
-    };
 
     // Function to find the proper critical value in
     // the t table for the given calculation.
@@ -534,27 +527,31 @@ angular.module('statscalcApp')
 
     function factorOne(object, array, groupNum) {
 
-      // Storing the number of columns in this group in an array for later use.
-      numberCols[groupNum] = Object.keys(object).length;
+      if (Object.keys(object).length !== 0) {
+        // Storing the number of columns in this group in an array for later use.
+        numberCols[groupNum] = Object.keys(object).length;
 
-      // Loops through the object keys.
-      Object.keys(object).forEach(function(key) {
+        // Loops through the object keys.
+        Object.keys(object).forEach(function(key) {
 
-        // Sets a value equal to the array in the object value and pushes it to an 
-        // array of arrays containing all of the columns in all groups.
-        valueArr = object[key];
-        multiColArr.push(valueArr);
+          // Sets a value equal to the array in the object value and pushes it to an 
+          // array of arrays containing all of the columns in all groups.
+          valueArr = object[key];
+          multiColArr.push(valueArr);
 
-        // Loops through that array.
-        for (i=0; i < valueArr.length; i++) {
+          // Loops through that array.
+          for (i=0; i < valueArr.length; i++) {
 
-          // Then pushes the values to allCols, an array containing all of the values independent
-          // of column, and the array for the it's specific first factor. 
-          allCols.push(valueArr[i]);
-          array.push(valueArr[i]);
-
-        }     
-      });
+            // Then pushes the values to allCols, an array containing all of the values independent
+            // of column, and the array for the it's specific first factor. 
+            allCols.push(valueArr[i]);
+            array.push(valueArr[i]);
+          }     
+        });
+      } else {
+        // Else, this group is empty.
+        numberCols[groupNum] = 0;
+      }
     }
 
     function factorTwo(array, originNum) {
@@ -601,26 +598,11 @@ angular.module('statscalcApp')
       activeGroups = 0;
       numberCols.length = 0;
 
-      // If the selectedCol group 1 object has something in it.
-      if (Object.keys(selectedColObj).length !== 0) {
-        factorOne(selectedColObj, factor1Arr1, 0);
-      } else {
-        // Else, this group is empty.
-        numberCols[0] = 0;
-      }
-
-      if (Object.keys(selectedColObj2).length !== 0) {
-        factorOne(selectedColObj2, factor1Arr2, 1);
-      } else {
-        numberCols[1] = 0;
-      }
-
-      if (Object.keys(selectedColObj3).length !== 0) {
-        factorOne(selectedColObj3, factor1Arr3, 2);
-      } else {
-        numberCols[2] = 0;
-      }
-
+    
+      factorOne(selectedColObj, factor1Arr1, 0);
+      factorOne(selectedColObj2, factor1Arr2, 1);
+      factorOne(selectedColObj3, factor1Arr3, 2);
+      
       // The following three functions count how many columns there are in each group.
       if (numberCols[0] > 0) {
         activeGroups += 1;
@@ -697,6 +679,8 @@ angular.module('statscalcApp')
 
     $scope.calcTwoAnova = function() {
 
+
+      // Function to calculate the sum of squares for the 
       function sumOfSquares(array, arrayMean) {
         if (array.length > 0) {
           return Math.pow((arrayMean - grandMean), 2) * array.length;
