@@ -249,7 +249,8 @@ angular.module('statscalcApp')
         factor2SubMeans = [],
         oneSSTreatArr = [],
         SSErrFactor1 = [],
-        SSErrFactor2 = [];
+        SSErrFactor2 = [],
+        SSTotalArr = [];
 
 
 
@@ -343,7 +344,9 @@ angular.module('statscalcApp')
         groupHost,
         arrMean,
         arrErr,
-        SSError;
+        SSError,
+        SSTotal,
+        SSBothFactors;
 
     // Initially setting the called function to group one.
     $scope.colorCheck = "grp1";
@@ -665,7 +668,6 @@ angular.module('statscalcApp')
     	for (i=0; i < allCols.length; i++) {
 
         // And defines values in individual array for access by formulas later.
-
     		colSquares.push(Math.pow(allCols[i], 2));
     		
     	}
@@ -679,8 +681,7 @@ angular.module('statscalcApp')
 
     $scope.calcTwoAnova = function() {
 
-
-      // Function to calculate the sum of squares for the 
+      // Function to calculate the sum of squares for the first and second factors.
       function sumOfSquares(array, arrayMean) {
         if (array.length > 0) {
           return Math.pow((arrayMean - grandMean), 2) * array.length;
@@ -719,12 +720,6 @@ angular.module('statscalcApp')
 
       SSError = parseFloat(SSErrFactor1.reduce(add, 0)) + parseFloat(SSErrFactor2.reduce(add, 0));
 
-      console.log(SSErrFactor1);
-      console.log(SSErrFactor2);
-
-      console.log(SSError);
-
-      
       SS1Grp1 = sumOfSquares(factor1Arr1, factor1Mean1);
       SS1Grp2 = sumOfSquares(factor1Arr2, factor1Mean2);
       SS1Grp3 = sumOfSquares(factor1Arr3, factor1Mean3);
@@ -736,14 +731,21 @@ angular.module('statscalcApp')
       SS1Total = SS1Grp1 + SS1Grp2 + SS1Grp3;
       SS2Total = SS2Grp1 + SS2Grp2 + SS2Grp3;
 
-      for (i=0; i < factor1Arr1.length; i++) {
-
-        factor1SubMeans.push(factor1Arr1[i]);
-
+      for (i=0; i < allCols.length; i++) {
+        SSTotalArr.push(Math.pow((allCols[i] - grandMean), 2));
       }
 
+      SSTotal = SSTotalArr.reduce(add, 0);
+      SSBothFactors = SSTotal - SS1Total - SS2Total - SSError;
 
-      console.log(colNums);
+      console.log(SS1Total);
+      console.log(SS2Total);
+      console.log(SSErrFactor1);
+      console.log(SSErrFactor2);
+      console.log(SSError);
+      console.log(SSBothFactors);
+      console.log(SSTotal);
+
 
 
 
