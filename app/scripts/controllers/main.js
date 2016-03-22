@@ -94,21 +94,21 @@ angular.module('statscalcApp')
   		numCols = parseInt($scope.columns.length);
 
   		// Clears out $scope.cells and selectedColObj
-        for (var cell in $scope.cells) {
-          delete $scope.cells[cell];
-        }
+      for (var cell in $scope.cells) {
+        delete $scope.cells[cell];
+      }
 
-        for (var dataArr in selectedColObj) {
-          console.log(selectedColObj[dataArr]);
-          delete selectedColObj[dataArr];
-        }
+      for (var dataArr in selectedColObj) {
+        console.log(selectedColObj[dataArr]);
+        delete selectedColObj[dataArr];
+      }
 
-        for (dataArr in selectedColObj2) {
-          delete selectedColObj2[dataArr];
-        }
-        for (dataArr in selectedColObj3) {
-          delete selectedColObj3[dataArr];
-        }
+      for (dataArr in selectedColObj2) {
+        delete selectedColObj2[dataArr];
+      }
+      for (dataArr in selectedColObj3) {
+        delete selectedColObj3[dataArr];
+      }
 
 
 
@@ -346,7 +346,14 @@ angular.module('statscalcApp')
         arrErr,
         SSError,
         SSTotal,
-        SSBothFactors;
+        SSBothFactors,
+        df1,
+        df2,
+        dfErr,
+        dfBoth,
+        MS1,
+        MSErr,
+        twoFScore;
 
     // Initially setting the called function to group one.
     $scope.colorCheck = "grp1";
@@ -481,32 +488,32 @@ angular.module('statscalcApp')
 	    // 30 the table begins incrementing by 10.
 	    
 	    // If the df is greater than 30 ...  
-       	if (df <= 30) {
+     	if (df <= 30) {
 
-       		// ... the df doesn't need to be rounded.
-        	degreesFreedom = tDistributionTable['df' + df];
+     		// ... the df doesn't need to be rounded.
+      	degreesFreedom = tDistributionTable['df' + df];
 
-        // But if the df is greater ...
-        } else if (df > 30 && df <= 1000) {
+      // But if the df is greater ...
+      } else if (df > 30 && df <= 1000) {
 
-        	// ... iterate through the available df values ...
-        	for (i=0; i <= (tableKeys.length - 2); i++) {
+      	// ... iterate through the available df values ...
+      	for (i=0; i <= (tableKeys.length - 2); i++) {
 
-	            tableDf = tableKeys[i].substr(2);
+            tableDf = tableKeys[i].substr(2);
 
-	            // ... and if the table df of this iteration is greater than the calculated df ...
-	            if (parseInt(tableDf) > df) {
+            // ... and if the table df of this iteration is greater than the calculated df ...
+            if (parseInt(tableDf) > df) {
 
-	            	// ... then declare an array with the critical values contained in that df key.
-		            degreesFreedom = tDistributionTable[tableKeys[i - 1]];
-		            i = (tableKeys.length - 2);
-	            }
-          	}
-        } else {
+            	// ... then declare an array with the critical values contained in that df key.
+	            degreesFreedom = tDistributionTable[tableKeys[i - 1]];
+	            i = (tableKeys.length - 2);
+            }
+        	}
+      } else {
 
-        	// Throws error if df is greater than 1000 because t table does not offer it.
-          	console.error("df is greater than 1000");
-        }
+      	// Throws error if df is greater than 1000 because t table does not offer it.
+        	console.error("df is greater than 1000");
+      }
 
         // Iterates through the just created array with the proper df critical values.
 	   	for (i=1; i < degreesFreedom.length; i++) {
@@ -701,12 +708,10 @@ angular.module('statscalcApp')
         }
 
         arrMean = arrCont.reduce(add, 0) / arrCont.length;
-        console.log(arrMean);
 
         for (i=0; i < (array.length / numberCols[0]); i++) {
           arrErr.push(Math.pow((array[i] - arrMean), 2));
         }
-        console.log(arrErr);
         return arrErr;
       }
 
@@ -735,19 +740,26 @@ angular.module('statscalcApp')
         SSTotalArr.push(Math.pow((allCols[i] - grandMean), 2));
       }
 
+      function dfError(array) {
+        for (i=0; i < array.length; i++) {
+          array[i] - 1;
+        }
+        return array.reduce(add, 0);
+      }
+
       SSTotal = SSTotalArr.reduce(add, 0);
       SSBothFactors = SSTotal - SS1Total - SS2Total - SSError;
 
-      console.log(SS1Total);
-      console.log(SS2Total);
-      console.log(SSErrFactor1);
-      console.log(SSErrFactor2);
-      console.log(SSError);
-      console.log(SSBothFactors);
-      console.log(SSTotal);
+      df1 = activeGroups - 1;
+      df2 = numberCols[0]; // if groups have equal amount of columns
+      dfErr = dfError(colNums);
+      dfBoth = df1 * df2;
 
+      MS1 = SS1Total / df1;
+      MSErr = SSError / dfErr;
+      twoFScore =  MS1 / MSErr;
 
-
+      console.log(twoFScore);
 
     };
 
